@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+
+import { InventoryPage } from '../inventory/inventory';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
+  inventoryPage = InventoryPage;
 
-  constructor(public navCtrl: NavController) {
-
-  }
+  constructor() {}
 
 }
