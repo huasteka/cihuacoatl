@@ -10,9 +10,16 @@ export class StorageWrite extends SerializedModel {
   addChild(storage: StorageWrite) {
     this.children.push(storage);
   }
+
+  static createStorage(source: StorageRead) {
+    let target = source.attributes;
+    target.id = source.id;
+    return target;
+  }
 }
 
 export class StorageRead extends SerializedModel {
-  type: string;
-  attributes: StorageWrite;
+  constructor(public type: string, public attributes: StorageWrite) {
+    super();
+  }
 }

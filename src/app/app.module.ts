@@ -20,10 +20,13 @@ import { StorageService } from '../services/storage';
 import { UserService } from '../services/user';
 import { ChangeNamePage } from '../pages/user/change-name/change-name';
 import { ChangePasswordPage } from '../pages/user/change-password/change-password';
+import { StorageChildPage } from '../pages/inventory/storage/storage-child/storage-child';
+import { LongPressDirective } from '../pages/directives/long-press';
 
 @NgModule({
   declarations: [
     MyApp,
+    LongPressDirective,
     SignInPage,
     HomePage,
     DashboardPage,
@@ -31,6 +34,7 @@ import { ChangePasswordPage } from '../pages/user/change-password/change-passwor
     ChangePasswordPage,
     InventoryPage,
     StoragePage,
+    StorageChildPage,
     StorageFormPage,
     MeasureUnitPage
   ],
@@ -50,6 +54,7 @@ import { ChangePasswordPage } from '../pages/user/change-password/change-passwor
     ChangePasswordPage,
     InventoryPage,
     StoragePage,
+    StorageChildPage,
     StorageFormPage,
     MeasureUnitPage
   ],

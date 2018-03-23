@@ -3,7 +3,7 @@ import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { StorageWrite } from '../../../../models/storage';
-import { InventoryService } from '../../../../services/inventory';
+import { StorageService } from '../../../../services/storage';
 
 export enum StorageFormMode {
   Create = 'New',
@@ -22,13 +22,15 @@ export class StorageFormPage implements OnInit {
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private toastCtrl: ToastController,
-              private inventoryService: InventoryService) {
+              private storageService: StorageService) {
   }
 
   ngOnInit() {
     this.mode = this.navParams.get('mode');
     if (this.isUpdate()) {
+      console.log(this.navParams.get('storage'));
       this.storage = this.navParams.get('storage');
+      console.log(this.storage);
     }
     this.createForm();
   }
@@ -36,14 +38,17 @@ export class StorageFormPage implements OnInit {
   onSubmit() {
     const {code, name} = this.storageForm.value;
     if (this.isUpdate()) {
-      this.inventoryService
+      this.storageService
         .updateStorage(this.storage.id, code, name)
-        .subscribe();
+        .subscribe(() => {
+          this.createToast('Storage was successfully updated!');
+          this.navCtrl.pop();
+        });
     } else {
-      this.inventoryService
+      this.storageService
         .createStorage(code, name)
         .subscribe(() => {
-          this.createToast('StorageWrite was successfully created!');
+          this.createToast('Storage was successfully created!');
           this.navCtrl.pop();
         });
     }

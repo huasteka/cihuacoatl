@@ -5,32 +5,36 @@ import 'rxjs/add/operator/map';
 import { StorageRead, StorageWrite } from '../models/storage';
 
 @Injectable()
-export class InventoryService {
-  private requestUrl = 'http://localhost:3000/api';
+export class StorageService {
+  private requestUrl = 'http://localhost:3000/api/storages';
 
   constructor(private http: HttpClient) {
   }
 
   createStorage(code: string, name: string) {
     const storage = new StorageWrite(code, name);
-    return this.http.post(`${this.requestUrl}/storages`, storage);
+    return this.http.post(`${this.requestUrl}`, storage);
   }
 
   updateStorage(storageId: number, code: string, name: string) {
     const storage = new StorageWrite(code, name);
-    return this.http.put(`${this.requestUrl}/storages/${storageId}`, storage);
+    return this.http.put(`${this.requestUrl}/${storageId}`, storage);
+  }
+
+  deleteStorage(storageId: number) {
+    return this.http.delete(`${this.requestUrl}/${storageId}`);
   }
 
   findStorages() {
     return this.http
-      .get<StorageRead[]>(`${this.requestUrl}/storages`)
+      .get<StorageRead[]>(`${this.requestUrl}`)
       .map((response: any) => {
         return response.data;
       });
   }
 
   findStorageById(storageId: number) {
-    return this.http.get<StorageRead>(`${this.requestUrl}/storages/${storageId}`);
+    return this.http.get<StorageRead>(`${this.requestUrl}/${storageId}`);
   }
 
 }
