@@ -1,5 +1,17 @@
-<ion-tabs>
-  <ion-tab [root]="inventoryPage" tabTitle="Inventory" tabIcon="list-box"></ion-tab>
-  <ion-tab tabTitle="Finance" tabIcon="card"></ion-tab>
-  <ion-tab tabTitle="Sales" tabIcon="trending-up"></ion-tab>
-</ion-tabs>
+<ion-menu [content]="sideMenu">
+  <ion-content>
+    <ion-list>
+      <ion-list-header>{{getProperUserName()}}</ion-list-header>
+      <button ion-item menuClose [navPush]="changeNamePage" [navParams]="user">
+        <ion-icon name="person" item-start></ion-icon>
+        Change Name
+      </button>
+      <button ion-item menuClose [navPush]="changePasswordPage" [navParams]="user">
+        <ion-icon name="lock" item-start></ion-icon>
+        Change Password
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-nav #sideMenu [root]="dashboardPage"></ion-nav>
