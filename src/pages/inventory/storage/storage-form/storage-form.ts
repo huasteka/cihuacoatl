@@ -18,6 +18,7 @@ export enum StorageFormMode {
 export class StorageFormPage implements OnInit {
   mode: string = StorageFormMode.Create;
   storage: StorageWrite;
+  storageId: number;
   storageForm: FormGroup;
 
   constructor(private navCtrl: NavController,
@@ -30,33 +31,57 @@ export class StorageFormPage implements OnInit {
     this.mode = this.navParams.get('mode');
     if (this.isUpdate() || this.isAddChild()) {
       this.storage = this.navParams.get('storage');
+      this.storageId = this.navParams.get('storageId');
     }
     this.createForm();
   }
 
   onSubmit() {
     const {code, name} = this.storageForm.value;
-    if (this.isUpdate()) {
-      this.storageService
-        .updateStorage(this.storage.id, code, name)
-        .subscribe(() => {
-          this.createToast('Storage was successfully updated!');
-          this.navCtrl.pop();
-        });
+    if (this.isCreate()) {
+      this.onStorageCreate(code, name);
+    } else if (this.isUpdate()) {
+      this.onStorageUpdate(code, name);
     } else if (this.isAddChild()) {
-      this.storageService
-        .createStorageChild(this.storage.id, code, name)
-        .subscribe(() => {
-          this.createToast(`Storage was successfully added to ${this.storage.name}!`);
-          this.navCtrl.pop();
-        });
+      this.onStorageAddChild(code, name);
+    }
+  }
+
+  private onStorageCreate(code: string, name: string) {
+    this.storageService
+      .createStorage(code, name)
+      .subscribe(() => {
+        this.createToast('Storage was successfully created!');
+        this.storageService.findStorages();
+        this.navCtrl.pop();
+      });
+  }
+
+  private onStorageUpdate(code: string, name: string) {
+    this.storageService
+      .updateStorage(this.storage.id, code, name)
+      .subscribe(() => {
+        this.createToast('Storage was successfully updated!');
+        this.onStorageReload();
+        this.navCtrl.pop();
+      });
+  }
+
+  private onStorageAddChild(code: string, name: string) {
+    this.storageService
+      .createStorageChild(this.storage.id, code, name)
+      .subscribe(() => {
+        this.createToast(`Storage was successfully added to ${this.storage.name}!`);
+        this.onStorageReload();
+        this.navCtrl.pop();
+      });
+  }
+
+  private onStorageReload() {
+    if (this.storageId) {
+      this.storageService.findStorageById(this.storageId);
     } else {
-      this.storageService
-        .createStorage(code, name)
-        .subscribe(() => {
-          this.createToast('Storage was successfully created!');
-          this.navCtrl.pop();
-        });
+      this.storageService.findStorages();
     }
   }
 
@@ -79,6 +104,10 @@ export class StorageFormPage implements OnInit {
       duration: 1500
     });
     toast.present();
+  }
+
+  private isCreate() {
+    return this.mode === StorageFormMode.Create;
   }
 
   private isUpdate() {

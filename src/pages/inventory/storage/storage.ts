@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActionSheetController, NavController, ToastController } from 'ionic-angular';
 
 import { StorageFormMode, StorageFormPage } from './storage-form/storage-form';
@@ -6,29 +6,33 @@ import { StorageService } from '../../../services/storage';
 import { StorageRead, StorageWrite } from '../../../models/storage';
 import { StorageChildPage } from './storage-child/storage-child';
 import { StorageSharedPage } from './storage-shared/storage-shared';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'page-storage',
   templateUrl: 'storage.html'
 })
-export class StoragePage extends StorageSharedPage {
+export class StoragePage extends StorageSharedPage implements OnInit, OnDestroy {
   storageList: StorageRead[] = [];
+  private subscription: Subscription;
 
   constructor(storageService: StorageService,
               navCtrl: NavController,
               actionSheetCtrl: ActionSheetController,
               toastCtrl: ToastController) {
     super(storageService, navCtrl, actionSheetCtrl, toastCtrl);
+    this.subscription = this.storageService.storageListListener
+      .subscribe((storageList: StorageRead[]) => {
+        this.storageList = storageList;
+      });
   }
 
-  ionViewWillEnter() {
-    this.onStorageLoad();
+  ngOnInit(): void {
+    this.storageService.findStorages();
   }
 
-  onStorageLoad() {
-    this.storageService.findStorages().subscribe((storageList: StorageRead[]) => {
-      this.storageList = storageList
-    });
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onStorageCreate() {
@@ -44,7 +48,7 @@ export class StoragePage extends StorageSharedPage {
 
   onStorageDeleteSuccess = (storage: StorageWrite) => {
     this.createToast(`Successfully deleted the storage: ${storage.name} (${storage.code})!`);
-    this.onStorageLoad();
+    this.storageService.findStorages();
   };
 
   onStorageDeleteError = (storage: StorageWrite) => {
@@ -55,8 +59,8 @@ export class StoragePage extends StorageSharedPage {
     const storage = StorageWrite.createStorage(payload);
     const buttons = [
       this.createDeleteButton(storage, this.onStorageDeleteSuccess, this.onStorageDeleteError),
-      this.createUpdateButton(storage),
-      this.createAddChildButton(storage)
+      this.createUpdateButton(storage.id, storage),
+      this.createAddChildButton(storage.id, storage)
     ];
     this.createActionSheet(buttons).present();
   }

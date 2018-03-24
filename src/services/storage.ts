@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
 import { StorageRead, StorageWrite } from '../models/storage';
@@ -7,18 +8,20 @@ import { StorageRead, StorageWrite } from '../models/storage';
 @Injectable()
 export class StorageService {
   private requestUrl = 'http://localhost:3000/api/storages';
+  storageListener = new Subject<StorageRead>();
+  storageListListener = new Subject<StorageRead[]>();
 
   constructor(private http: HttpClient) {
   }
 
   createStorage(code: string, name: string) {
     const storage = new StorageWrite(code, name);
-    return this.http.post<StorageWrite>(`${this.requestUrl}`, storage);
+    return this.http.post<StorageRead>(`${this.requestUrl}`, storage);
   }
 
   createStorageChild(parentId: number, code: string, name: string) {
     const storage = new StorageWrite(code, name);
-    return this.http.post<StorageWrite>(`${this.requestUrl}/${parentId}/add`, storage);
+    return this.http.post<StorageRead>(`${this.requestUrl}/${parentId}/add`, storage);
   }
 
   updateStorage(storageId: number, code: string, name: string) {
@@ -34,16 +37,20 @@ export class StorageService {
     return this.http
       .get<StorageRead[]>(`${this.requestUrl}`)
       .map((response: any) => {
+        this.storageListListener.next(response.data);
         return response.data;
-      });
+      })
+      .subscribe();
   }
 
   findStorageById(storageId: number) {
     return this.http
       .get<StorageRead>(`${this.requestUrl}/${storageId}`)
       .map((response: any) => {
+        this.storageListener.next(response.data);
         return response.data;
-      });
+      })
+      .subscribe();
   }
 
 }

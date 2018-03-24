@@ -24,26 +24,28 @@ export class StorageSharedPage {
     };
   }
 
-  createUpdateButton(storage: StorageWrite): ActionSheetButton {
+  createUpdateButton(storageId: number, storage: StorageWrite): ActionSheetButton {
     return {
       text: 'Update',
       icon: 'create',
       handler: () => {
         this.navCtrl.push(StorageFormPage, {
           mode: StorageFormMode.Update,
+          storageId,
           storage
         });
       }
     };
   }
 
-  createAddChildButton(storage: StorageWrite): ActionSheetButton {
+  createAddChildButton(storageId: number, storage: StorageWrite): ActionSheetButton {
     return {
       text: 'Append',
       icon: 'add',
       handler: () => {
         this.navCtrl.push(StorageFormPage, {
           mode: StorageFormMode.AddChild,
+          storageId,
           storage
         });
       }
