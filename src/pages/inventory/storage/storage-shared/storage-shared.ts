@@ -1,7 +1,8 @@
-import { StorageService } from '../../../../services/storage';
 import { ActionSheetButton, ActionSheetController, NavController, ToastController, ToastOptions } from 'ionic-angular';
-import { StorageWrite } from '../../../../models/storage';
+
 import { StorageFormMode, StorageFormPage } from '../storage-form/storage-form';
+import { StorageWrite } from '../../../../models/storage';
+import { StorageService } from '../../../../services/storage';
 
 export class StorageSharedPage {
   constructor(protected storageService: StorageService,

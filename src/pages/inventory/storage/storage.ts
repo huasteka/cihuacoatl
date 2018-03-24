@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActionSheetController, NavController, ToastController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
 
 import { StorageFormMode, StorageFormPage } from './storage-form/storage-form';
-import { StorageService } from '../../../services/storage';
-import { StorageRead, StorageWrite } from '../../../models/storage';
 import { StorageChildPage } from './storage-child/storage-child';
 import { StorageSharedPage } from './storage-shared/storage-shared';
-import { Subscription } from 'rxjs/Subscription';
+import { StorageRead, StorageWrite } from '../../../models/storage';
+import { StorageService } from '../../../services/storage';
 
 @Component({
   selector: 'page-storage',

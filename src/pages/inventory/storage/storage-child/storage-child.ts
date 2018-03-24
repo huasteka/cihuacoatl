@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActionSheetController, NavController, NavParams, ToastController } from 'ionic-angular';
-import { StorageRead, StorageWrite } from '../../../../models/storage';
-import { StorageFormMode, StorageFormPage } from '../storage-form/storage-form';
-import { StorageService } from '../../../../services/storage';
-import { StorageSharedPage } from '../storage-shared/storage-shared';
 import { Subscription } from 'rxjs/Subscription';
+
+import { StorageFormMode, StorageFormPage } from '../storage-form/storage-form';
+import { StorageSharedPage } from '../storage-shared/storage-shared';
+import { StorageRead, StorageWrite } from '../../../../models/storage';
+import { StorageService } from '../../../../services/storage';
 
 @Component({
   selector: 'page-storage-child',
@@ -22,7 +23,6 @@ export class StorageChildPage extends StorageSharedPage implements OnInit, OnDes
     super(storageService, navCtrl, actionSheetCtrl, toastCtrl);
     this.storage = navParams.get('storage');
     this.subscription = this.storageService.storageListener.subscribe((storage: StorageRead) => {
-      console.log(storage);
       this.storage = StorageWrite.createStorage(storage);
     });
   }

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{mode}} Measurement Unit</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="measureUnitForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Acronym</ion-label>
+        <ion-input type="text" formControlName="acronym"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button type="submit" [disabled]="!measureUnitForm.valid" ion-button icon-left block>
+      <ion-icon name="check"></ion-icon>
+      Submit
+    </button>
+  </form>
+</ion-content>

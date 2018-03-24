@@ -22,6 +22,8 @@ import { ChangeNamePage } from '../pages/user/change-name/change-name';
 import { ChangePasswordPage } from '../pages/user/change-password/change-password';
 import { StorageChildPage } from '../pages/inventory/storage/storage-child/storage-child';
 import { LongPressDirective } from '../pages/directives/long-press';
+import { MeasureUnitService } from '../services/measure-unit';
+import { MeasureUnitFormPage } from '../pages/inventory/measure-unit/measure-unit-form/measure-unit-form';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { LongPressDirective } from '../pages/directives/long-press';
     StoragePage,
     StorageChildPage,
     StorageFormPage,
-    MeasureUnitPage
+    MeasureUnitPage,
+    MeasureUnitFormPage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +59,8 @@ import { LongPressDirective } from '../pages/directives/long-press';
     StoragePage,
     StorageChildPage,
     StorageFormPage,
-    MeasureUnitPage
+    MeasureUnitPage,
+    MeasureUnitFormPage
   ],
   providers: [
     StatusBar,
@@ -65,7 +69,8 @@ import { LongPressDirective } from '../pages/directives/long-press';
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     AuthService,
     UserService,
-    StorageService
+    StorageService,
+    MeasureUnitService
   ]
 })
 export class AppModule {

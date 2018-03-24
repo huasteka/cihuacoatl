@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { StorageWrite } from '../../../../models/storage';
 import { StorageService } from '../../../../services/storage';

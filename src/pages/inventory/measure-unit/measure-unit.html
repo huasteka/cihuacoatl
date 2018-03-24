@@ -1,16 +1,24 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Measurement Unit List</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onMeasureUnitCreate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <ion-list inset>
-    <button ion-item *ngFor="let storage of storageList">
-      <ion-badge item-start>
-        {{ storage.attributes.code }}
+    <button ion-item
+            *ngFor="let measureUnit of measureUnitList"
+            (long-press)="onMeasureUnitActionSheet(measureUnit)">
+      {{ measureUnit.attributes.name }}
+      <ion-badge item-end>
+        {{ measureUnit.attributes.acronym }}
       </ion-badge>
-      {{ storage.attributes.name }}
     </button>
   </ion-list>
 </ion-content>
