@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
+import { ToastController } from 'ionic-angular';
 
 export type AuthToken = { token: string };
 
@@ -11,7 +12,9 @@ export class AuthService {
   authenticated = new Subject<boolean>();
   private requestUrl = 'http://localhost:5000/api/auth';
 
-  constructor(private http: HttpClient, private storage: Storage) {
+  constructor(private http: HttpClient,
+              private toastCtrl: ToastController,
+              private storage: Storage) {
   }
 
   signIn(email, password) {
@@ -20,6 +23,20 @@ export class AuthService {
         this.authenticated.next(true);
         this.storage.set('auth-token', token);
       });
+  }
+
+  signOut() {
+    const toast = this.toastCtrl.create({
+      message: '',
+      duration: 2500
+    });
+
+    return this.storage
+      .remove('auth-token')
+      .then(() => {
+        this.authenticated.next(false);
+      })
+      .catch(() => toast.present());
   }
 
   signUp(name, email, password) {

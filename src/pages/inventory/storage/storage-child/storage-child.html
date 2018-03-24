@@ -12,7 +12,7 @@
 
 <ion-content padding>
   <ion-list inset>
-    <ion-item *ngFor="let child of storage.children">
+    <ion-item *ngFor="let child of storage.children" (long-press)="onStorageActionSheet(child)">
       {{ child.name }}
       <ion-badge item-end>
         {{ child.code }}

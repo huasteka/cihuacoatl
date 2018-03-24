@@ -13,7 +13,12 @@ export class StorageService {
 
   createStorage(code: string, name: string) {
     const storage = new StorageWrite(code, name);
-    return this.http.post(`${this.requestUrl}`, storage);
+    return this.http.post<StorageWrite>(`${this.requestUrl}`, storage);
+  }
+
+  createStorageChild(parentId: number, code: string, name: string) {
+    const storage = new StorageWrite(code, name);
+    return this.http.post<StorageWrite>(`${this.requestUrl}/${parentId}/add`, storage);
   }
 
   updateStorage(storageId: number, code: string, name: string) {
@@ -34,7 +39,11 @@ export class StorageService {
   }
 
   findStorageById(storageId: number) {
-    return this.http.get<StorageRead>(`${this.requestUrl}/${storageId}`);
+    return this.http
+      .get<StorageRead>(`${this.requestUrl}/${storageId}`)
+      .map((response: any) => {
+        return response.data;
+      });
   }
 
 }

@@ -7,7 +7,8 @@ import { StorageService } from '../../../../services/storage';
 
 export enum StorageFormMode {
   Create = 'New',
-  Update = 'Edit'
+  Update = 'Edit',
+  AddChild = 'Append'
 }
 
 @Component({
@@ -27,10 +28,8 @@ export class StorageFormPage implements OnInit {
 
   ngOnInit() {
     this.mode = this.navParams.get('mode');
-    if (this.isUpdate()) {
-      console.log(this.navParams.get('storage'));
+    if (this.isUpdate() || this.isAddChild()) {
       this.storage = this.navParams.get('storage');
-      console.log(this.storage);
     }
     this.createForm();
   }
@@ -42,6 +41,13 @@ export class StorageFormPage implements OnInit {
         .updateStorage(this.storage.id, code, name)
         .subscribe(() => {
           this.createToast('Storage was successfully updated!');
+          this.navCtrl.pop();
+        });
+    } else if (this.isAddChild()) {
+      this.storageService
+        .createStorageChild(this.storage.id, code, name)
+        .subscribe(() => {
+          this.createToast(`Storage was successfully added to ${this.storage.name}!`);
           this.navCtrl.pop();
         });
     } else {
@@ -77,6 +83,10 @@ export class StorageFormPage implements OnInit {
 
   private isUpdate() {
     return this.mode === StorageFormMode.Update;
+  }
+
+  private isAddChild() {
+    return this.mode === StorageFormMode.AddChild;
   }
 
 }

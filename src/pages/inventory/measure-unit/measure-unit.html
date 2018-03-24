@@ -1,9 +1,16 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Measurement Unit</ion-title>
+    <ion-title>Measurement Unit List</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
+  <ion-list inset>
+    <button ion-item *ngFor="let storage of storageList">
+      <ion-badge item-start>
+        {{ storage.attributes.code }}
+      </ion-badge>
+      {{ storage.attributes.name }}
+    </button>
+  </ion-list>
 </ion-content>

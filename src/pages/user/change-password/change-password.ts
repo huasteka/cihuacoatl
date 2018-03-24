@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../../services/user';
-import { LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
+import { LoadingController, NavParams, ToastController } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 import { User } from '../../../models/user';
 
