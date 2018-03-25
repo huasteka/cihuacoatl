@@ -15,7 +15,7 @@ export class MeasureUnitService {
 
   createMeasureUnit(acronym: string, name: string) {
     const measureUnit = new MeasureUnitWrite(name, acronym);
-    return this.http.post(`${this.requestUrl}`, measureUnit);
+    return this.http.post(this.requestUrl, measureUnit);
   }
 
   updateMeasureUnit(measureUnitId: number, acronym: string, name: string) {
@@ -28,11 +28,13 @@ export class MeasureUnitService {
   }
 
   findMeasureUnits() {
-    return this.http.get<MeasureUnitRead[]>(`${this.requestUrl}`)
-      .map((response: any) => {
-        this.measureUnitListener.next(response.data);
-        return response.data;
-      })
-      .subscribe();
+    return this.http.get<MeasureUnitRead[]>(this.requestUrl)
+      .map((response: any) => response.data);
+  }
+
+  sendEventToListener() {
+    this.findMeasureUnits().subscribe((measureUnitList: MeasureUnitRead[]) => {
+      this.measureUnitListener.next(measureUnitList);
+    });
   }
 }

@@ -24,6 +24,9 @@ import { StorageChildPage } from '../pages/inventory/storage/storage-child/stora
 import { LongPressDirective } from '../pages/directives/long-press';
 import { MeasureUnitService } from '../services/measure-unit';
 import { MeasureUnitFormPage } from '../pages/inventory/measure-unit/measure-unit-form/measure-unit-form';
+import { ItemPage } from '../pages/inventory/item/item';
+import { ItemFormPage } from '../pages/inventory/item/item-form/item-form';
+import { ItemService } from '../services/item';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,9 @@ import { MeasureUnitFormPage } from '../pages/inventory/measure-unit/measure-uni
     StorageChildPage,
     StorageFormPage,
     MeasureUnitPage,
-    MeasureUnitFormPage
+    MeasureUnitFormPage,
+    ItemPage,
+    ItemFormPage
   ],
   imports: [
     BrowserModule,
@@ -60,7 +65,9 @@ import { MeasureUnitFormPage } from '../pages/inventory/measure-unit/measure-uni
     StorageChildPage,
     StorageFormPage,
     MeasureUnitPage,
-    MeasureUnitFormPage
+    MeasureUnitFormPage,
+    ItemPage,
+    ItemFormPage
   ],
   providers: [
     StatusBar,
@@ -70,7 +77,8 @@ import { MeasureUnitFormPage } from '../pages/inventory/measure-unit/measure-uni
     AuthService,
     UserService,
     StorageService,
-    MeasureUnitService
+    MeasureUnitService,
+    ItemService
   ]
 })
 export class AppModule {

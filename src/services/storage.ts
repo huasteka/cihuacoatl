@@ -16,7 +16,7 @@ export class StorageService {
 
   createStorage(code: string, name: string) {
     const storage = new StorageWrite(code, name);
-    return this.http.post<StorageRead>(`${this.requestUrl}`, storage);
+    return this.http.post<StorageRead>(this.requestUrl, storage);
   }
 
   createStorageChild(parentId: number, code: string, name: string) {
@@ -34,8 +34,7 @@ export class StorageService {
   }
 
   findStorages() {
-    return this.http
-      .get<StorageRead[]>(`${this.requestUrl}`)
+    return this.http.get<StorageRead[]>(this.requestUrl)
       .map((response: any) => {
         this.storageListListener.next(response.data);
         return response.data;
@@ -44,8 +43,7 @@ export class StorageService {
   }
 
   findStorageById(storageId: number) {
-    return this.http
-      .get<StorageRead>(`${this.requestUrl}/${storageId}`)
+    return this.http.get<StorageRead>(`${this.requestUrl}/${storageId}`)
       .map((response: any) => {
         this.storageListener.next(response.data);
         return response.data;

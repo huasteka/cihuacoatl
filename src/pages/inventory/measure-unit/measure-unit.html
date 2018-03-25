@@ -14,6 +14,7 @@
   <ion-list inset>
     <button ion-item
             *ngFor="let measureUnit of measureUnitList"
+            (click)="onNavigateToForm(measureUnit)"
             (long-press)="onMeasureUnitActionSheet(measureUnit)">
       {{ measureUnit.attributes.name }}
       <ion-badge item-end>

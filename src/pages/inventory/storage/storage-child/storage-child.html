@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Storages from {{storage.name}}</ion-title>
+    <ion-title>{{storage.name}}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="onStorageCreate()">
@@ -12,11 +12,14 @@
 
 <ion-content padding>
   <ion-list inset>
-    <ion-item *ngFor="let child of storage.children" (long-press)="onStorageActionSheet(child)">
+    <button ion-item
+            *ngFor="let child of storage.children"
+            (click)="onNavigateToUpdate(child)"
+            (long-press)="onStorageActionSheet(child)">
       {{ child.name }}
       <ion-badge item-end>
         {{ child.code }}
       </ion-badge>
-    </ion-item>
+    </button>
   </ion-list>
 </ion-content>

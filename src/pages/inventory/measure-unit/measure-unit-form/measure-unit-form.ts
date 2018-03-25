@@ -40,7 +40,7 @@ export class MeasureUnitFormPage implements OnInit{
         .updateMeasureUnit(this.measureUnit.id, acronym, name)
         .subscribe(() => {
           this.createToast('A measure unit was successfully created!');
-          this.measureUnitService.findMeasureUnits();
+          this.measureUnitService.sendEventToListener();
           this.navCtrl.pop();
         });
     } else {
@@ -48,7 +48,7 @@ export class MeasureUnitFormPage implements OnInit{
         .createMeasureUnit(acronym, name)
         .subscribe(() => {
           this.createToast('Successfully updated the measure unit!');
-          this.measureUnitService.findMeasureUnits();
+          this.measureUnitService.sendEventToListener();
           this.navCtrl.pop();
         });
     }
@@ -58,8 +58,7 @@ export class MeasureUnitFormPage implements OnInit{
     let name = '';
     let acronym = '';
     if (this.isUpdate()) {
-      name = this.measureUnit.name;
-      acronym = this.measureUnit.acronym;
+      ({name, acronym} = this.measureUnit);
     }
     this.measureUnitForm = new FormGroup({
       name: new FormControl(name, Validators.required),

@@ -59,4 +59,12 @@ export class StorageChildPage extends StorageSharedPage implements OnInit, OnDes
     ];
     this.createActionSheet(buttons).present();
   }
+
+  onNavigateToUpdate(storage: StorageWrite) {
+    this.navCtrl.push(StorageFormPage, {
+      mode: StorageFormMode.Update,
+      storage: storage,
+      storageId: storage.id
+    });
+  }
 }

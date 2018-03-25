@@ -25,7 +25,7 @@ export class MeasureUnitPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.measureUnitService.findMeasureUnits();
+    this.measureUnitService.sendEventToListener();
   }
 
   ngOnDestroy(): void {
@@ -38,7 +38,7 @@ export class MeasureUnitPage implements OnInit, OnDestroy {
 
   onMeasureUnitDeleteSuccess = () => {
     this.createToast('Measure unit was successfully deleted!');
-    this.measureUnitService.findMeasureUnits();
+    this.measureUnitService.sendEventToListener();
   };
 
   onMeasureUnitDeleteError = () => {
@@ -58,18 +58,20 @@ export class MeasureUnitPage implements OnInit, OnDestroy {
     }, {
       text: 'Update',
       icon: 'create',
-      handler: () => {
-        this.navCtrl.push(MeasureUnitFormPage, {
-          measureUnit: MeasureUnitWrite.createMeasureUnit(payload),
-          mode: MeasureUnitFormMode.Update
-        })
-      }
+      handler: () => this.onNavigateToForm(payload)
     }, {
       text: 'Cancel',
       icon: 'close',
       role: 'cancel'
     }];
     this.actionSheetCtrl.create({title: 'Measure Unit Operations', buttons}).present();
+  }
+
+  onNavigateToForm(payload: MeasureUnitRead) {
+    this.navCtrl.push(MeasureUnitFormPage, {
+      measureUnit: MeasureUnitWrite.createMeasureUnit(payload),
+      mode: MeasureUnitFormMode.Update
+    });
   }
 
   private createToast(message: string) {

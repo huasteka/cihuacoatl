@@ -40,9 +40,15 @@ export class StoragePage extends StorageSharedPage implements OnInit, OnDestroy 
   }
 
   onStorageSelect(payload: StorageRead) {
+    const storage = StorageWrite.createStorage(payload);
     if (payload.attributes.children && payload.attributes.children.length > 0) {
-      const storage = StorageWrite.createStorage(payload);
       this.navCtrl.push(StorageChildPage, {storage});
+    } else {
+      this.navCtrl.push(StorageFormPage, {
+        mode: StorageFormMode.Update,
+        storageId: storage.id,
+        storage
+      })
     }
   }
 
