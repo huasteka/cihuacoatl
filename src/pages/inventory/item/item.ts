@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActionSheetButton, ActionSheetController, NavController, ToastController, ToastOptions } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
+import { ItemFormMode, ItemFormPage } from './item-form/item-form';
 import { ItemRead, ItemWrite } from '../../../models/item';
 import { ItemService } from '../../../services/item';
-import { ActionSheetButton, ActionSheetController, NavController, ToastController, ToastOptions } from 'ionic-angular';
-import { ItemFormMode, ItemFormPage } from './item-form/item-form';
 
 @Component({
   selector: 'page-item',
@@ -18,7 +18,7 @@ export class ItemPage implements OnInit, OnDestroy {
               private navCtrl: NavController,
               private actionSheetCtrl: ActionSheetController,
               private toastCtrl: ToastController) {
-    this.subscription =  itemService.itemListener
+    this.subscription = itemService.itemListener
       .subscribe((itemList: ItemRead[]) => {
         this.itemList = itemList;
       });
