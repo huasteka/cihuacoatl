@@ -8,31 +8,34 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { AuthInterceptor } from '../interceptors/auth';
-import { HomePage } from '../pages/home/home';
+import { LongPressDirective } from '../directives/long-press';
 import { SignInPage } from '../pages/sign-in/sign-in';
-import { InventoryPage } from '../pages/inventory/inventory';
-import { StoragePage } from '../pages/inventory/storage/storage';
-import { MeasureUnitPage } from '../pages/inventory/measure-unit/measure-unit';
-import { StorageFormPage } from '../pages/inventory/storage/storage-form/storage-form';
-import { DashboardPage } from '../pages/dashboard/dashboard';
-import { AuthService } from '../services/auth';
-import { StorageService } from '../services/storage';
-import { UserService } from '../services/user';
+import { SignUpPage } from '../pages/sign-up/sign-up';
+import { HomePage } from '../pages/home/home';
 import { ChangeNamePage } from '../pages/user/change-name/change-name';
 import { ChangePasswordPage } from '../pages/user/change-password/change-password';
+import { DashboardPage } from '../pages/dashboard/dashboard';
+import { InventoryPage } from '../pages/inventory/inventory';
+import { StoragePage } from '../pages/inventory/storage/storage';
+import { StorageFormPage } from '../pages/inventory/storage/storage-form/storage-form';
 import { StorageChildPage } from '../pages/inventory/storage/storage-child/storage-child';
-import { LongPressDirective } from '../pages/directives/long-press';
-import { MeasureUnitService } from '../services/measure-unit';
+import { MeasureUnitPage } from '../pages/inventory/measure-unit/measure-unit';
 import { MeasureUnitFormPage } from '../pages/inventory/measure-unit/measure-unit-form/measure-unit-form';
 import { ItemPage } from '../pages/inventory/item/item';
 import { ItemFormPage } from '../pages/inventory/item/item-form/item-form';
+import { AuthService } from '../services/auth';
+import { UserService } from '../services/user';
+import { StorageService } from '../services/storage';
+import { MeasureUnitService } from '../services/measure-unit';
 import { ItemService } from '../services/item';
+import { FinancePage } from '../pages/finance/finance';
 
 @NgModule({
   declarations: [
     MyApp,
     LongPressDirective,
     SignInPage,
+    SignUpPage,
     HomePage,
     DashboardPage,
     ChangeNamePage,
@@ -44,7 +47,8 @@ import { ItemService } from '../services/item';
     MeasureUnitPage,
     MeasureUnitFormPage,
     ItemPage,
-    ItemFormPage
+    ItemFormPage,
+    FinancePage
   ],
   imports: [
     BrowserModule,
@@ -56,6 +60,7 @@ import { ItemService } from '../services/item';
   entryComponents: [
     MyApp,
     SignInPage,
+    SignUpPage,
     HomePage,
     DashboardPage,
     ChangeNamePage,
@@ -67,7 +72,8 @@ import { ItemService } from '../services/item';
     MeasureUnitPage,
     MeasureUnitFormPage,
     ItemPage,
-    ItemFormPage
+    ItemFormPage,
+    FinancePage
   ],
   providers: [
     StatusBar,

@@ -1,6 +1,13 @@
 <ion-content padding>
-  <form #f="ngForm" (ngSubmit)="onSignIn(f)">
+  <form #f="ngForm" (ngSubmit)="onSignUp(f)">
     <ion-list>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text"
+                   name="name"
+                   ngModel></ion-input>
+      </ion-item>
+
       <ion-item>
         <ion-label floating>E-mail</ion-label>
         <ion-input type="text"
@@ -20,12 +27,12 @@
     </ion-list>
 
     <button type="submit" class="submit-button" [disabled]="!f.valid" ion-button block outline>
-      Sign in
+      Register
     </button>
   </form>
 
-  <div class="register-link">
-    <span>Don't have an account?</span>
-    <a [navPush]="registerPage">Register!</a>
+  <div class="login-link">
+    <span>Already have an account?</span>
+    <a (click)="onNavigateBack()">Sign in</a>
   </div>
 </ion-content>
