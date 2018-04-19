@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
 
+import { TEPOZTECATL_URL } from './apis';
 import { MeasureUnitRead, MeasureUnitWrite } from '../models/measure-unit';
 
 @Injectable()
 export class MeasureUnitService {
-  private requestUrl = 'http://localhost:3000/api/measure_units';
+  private requestUrl = TEPOZTECATL_URL + '/api/measure_units';
   measureUnitListener = new Subject<MeasureUnitRead[]>();
 
   constructor(private http: HttpClient) {

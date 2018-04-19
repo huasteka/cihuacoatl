@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
+import { TEPOZTECATL_URL } from './apis';
 import { StorageRead, StorageWrite } from '../models/storage';
 
 @Injectable()
 export class StorageService {
-  private requestUrl = 'http://localhost:3000/api/storages';
+  private requestUrl = TEPOZTECATL_URL + '/api/storages';
   storageListener = new Subject<StorageRead>();
   storageListListener = new Subject<StorageRead[]>();
 

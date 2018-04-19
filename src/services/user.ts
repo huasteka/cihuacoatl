@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
+import { ZACATZONTLI_URL } from './apis';
 import { User, UserCredentials } from '../models/user';
 
 @Injectable()
 export class UserService {
-  private requestUrl = 'http://localhost:5000/api/users';
+  private requestUrl = ZACATZONTLI_URL + '/api/users';
 
   public constructor(private http: HttpClient) {
   }

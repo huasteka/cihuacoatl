@@ -5,12 +5,14 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
 import { ToastController } from 'ionic-angular';
 
+import { ZACATZONTLI_URL } from './apis';
+
 export type AuthToken = { token: string };
 
 @Injectable()
 export class AuthService {
   authenticated = new Subject<boolean>();
-  private requestUrl = 'http://localhost:5000/api/auth';
+  private requestUrl = ZACATZONTLI_URL + '/api/auth';
 
   constructor(private http: HttpClient,
               private toastCtrl: ToastController,
