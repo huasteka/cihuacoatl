@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActionSheetButton, ActionSheetController, NavController, ToastController, ToastOptions } from 'ionic-angular';
+import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
 import { MeasureUnitFormMode, MeasureUnitFormPage } from './measure-unit-form/measure-unit-form';
 import { MeasureUnitRead, MeasureUnitWrite } from '../../../models/measure-unit';
-import { MeasureUnitService } from '../../../services/measure-unit';
+import { MeasureUnitService } from '../../../services/inventory/measure-unit';
+import { PresentationUtil } from '../../../utils/presentation';
 
 @Component({
   selector: 'page-measure-unit',
@@ -17,10 +18,13 @@ export class MeasureUnitPage implements OnInit, OnDestroy {
   constructor(private measureUnitService: MeasureUnitService,
               private navCtrl: NavController,
               private actionSheetCtrl: ActionSheetController,
-              private toastCtrl: ToastController) {
+              private presentationUtil: PresentationUtil) {
+    const loading = this.presentationUtil.createLoading('Now Loading...');
+    loading.present();
     this.subscription = this.measureUnitService.measureUnitListener
       .subscribe((measureUnitList: MeasureUnitRead[]) => {
         this.measureUnitList = measureUnitList;
+        loading.dismiss();
       });
   }
 
@@ -37,12 +41,12 @@ export class MeasureUnitPage implements OnInit, OnDestroy {
   }
 
   onMeasureUnitDeleteSuccess = () => {
-    this.createToast('Measure unit was successfully deleted!');
     this.measureUnitService.sendEventToListener();
+    this.presentationUtil.createToast('Measure unit was successfully deleted!');
   };
 
   onMeasureUnitDeleteError = () => {
-    this.createToast('Could not delete this measure unit!');
+    this.presentationUtil.createToast('Could not delete this measure unit!');
   };
 
   onMeasureUnitActionSheet(payload: MeasureUnitRead) {
@@ -73,13 +77,4 @@ export class MeasureUnitPage implements OnInit, OnDestroy {
       mode: MeasureUnitFormMode.Update
     });
   }
-
-  private createToast(message: string) {
-    const config: ToastOptions = {
-      message,
-      duration: 2500
-    };
-    this.toastCtrl.create(config).present();
-  }
-
 }

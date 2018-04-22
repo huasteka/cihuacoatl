@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { Loading, NavController, NavParams } from 'ionic-angular';
 
 import { StorageWrite } from '../../../../models/storage';
-import { StorageService } from '../../../../services/storage';
+import { StorageService } from '../../../../services/inventory/storage';
+import { PresentationUtil } from '../../../../utils/presentation';
 
 export enum StorageFormMode {
   Create = 'New',
@@ -23,7 +24,7 @@ export class StorageFormPage implements OnInit {
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
-              private toastCtrl: ToastController,
+              private presentationUtil: PresentationUtil,
               private storageService: StorageService) {
   }
 
@@ -48,33 +49,37 @@ export class StorageFormPage implements OnInit {
   }
 
   private onStorageCreate(code: string, name: string) {
+    const loading = this.presentationUtil.createLoading('Creating storage...');
+    loading.present();
     this.storageService
       .createStorage(code, name)
-      .subscribe(() => {
-        this.createToast('Storage was successfully created!');
-        this.storageService.findStorages();
-        this.navCtrl.pop();
-      });
+      .subscribe(() => this.onFinishStorageOperation('Storage was successfully created!', loading));
   }
 
   private onStorageUpdate(code: string, name: string) {
+    const loading = this.presentationUtil.createLoading('Updating storage...');
+    loading.present();
     this.storageService
       .updateStorage(this.storage.id, code, name)
-      .subscribe(() => {
-        this.createToast('Storage was successfully updated!');
-        this.onStorageReload();
-        this.navCtrl.pop();
-      });
+      .subscribe(() => this.onFinishStorageOperation('Storage was successfully updated!', loading));
   }
 
   private onStorageAddChild(code: string, name: string) {
+    const loading = this.presentationUtil.createLoading('Appending storage...');
+    loading.present();
     this.storageService
       .createStorageChild(this.storage.id, code, name)
       .subscribe(() => {
-        this.createToast(`Storage was successfully added to ${this.storage.name}!`);
-        this.onStorageReload();
-        this.navCtrl.pop();
+        const toastMessage = `Storage was successfully appended to ${this.storage.name}!`;
+        this.onFinishStorageOperation(toastMessage, loading);
       });
+  }
+
+  private onFinishStorageOperation(message: string, loading: Loading) {
+    loading.dismiss();
+    this.presentationUtil.createToast(message);
+    this.onStorageReload();
+    this.navCtrl.pop();
   }
 
   private onStorageReload() {
@@ -96,14 +101,6 @@ export class StorageFormPage implements OnInit {
       code: new FormControl(code, Validators.required),
       name: new FormControl(name, Validators.required)
     });
-  }
-
-  private createToast(message: string) {
-    const toast = this.toastCtrl.create({
-      message,
-      duration: 1500
-    });
-    toast.present();
   }
 
   private isCreate() {

@@ -5,7 +5,7 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/switchMap';
 
-import { AuthService, AuthToken } from '../services/auth';
+import { AuthService, AuthToken } from '../services/auth/auth';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActionSheetButton, ActionSheetController, NavController, ToastController, ToastOptions } from 'ionic-angular';
+import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ItemFormMode, ItemFormPage } from './item-form/item-form';
 import { ItemRead, ItemWrite } from '../../../models/item';
-import { ItemService } from '../../../services/item';
+import { ItemService } from '../../../services/inventory/item';
+import { PresentationUtil } from '../../../utils/presentation';
 
 @Component({
   selector: 'page-item',
@@ -17,10 +18,12 @@ export class ItemPage implements OnInit, OnDestroy {
   constructor(private itemService: ItemService,
               private navCtrl: NavController,
               private actionSheetCtrl: ActionSheetController,
-              private toastCtrl: ToastController) {
+              private presentationUtil: PresentationUtil) {
+    const loading = this.presentationUtil.createLoading('Now Loading...');
     this.subscription = itemService.itemListener
       .subscribe((itemList: ItemRead[]) => {
         this.itemList = itemList;
+        loading.dismiss();
       });
   }
 
@@ -37,11 +40,11 @@ export class ItemPage implements OnInit, OnDestroy {
   }
 
   onItemDeleteSuccess = () => {
-    this.createToast('The selected item was successfully deleted!');
+    this.presentationUtil.createToast('The selected item was successfully deleted!');
   };
 
   onItemDeleteError = () => {
-
+    this.presentationUtil.createToast('Could not delete this item!');
   };
 
   onNavigateToUpdate(payload: ItemRead): void {
@@ -59,7 +62,8 @@ export class ItemPage implements OnInit, OnDestroy {
       icon: 'trash',
       role: 'destructive',
       handler: () => {
-        this.itemService.deleteItem(item.id)
+        this.itemService
+          .deleteItem(item.id)
           .subscribe(this.onItemDeleteSuccess, this.onItemDeleteError);
       }
     }, {
@@ -72,13 +76,5 @@ export class ItemPage implements OnInit, OnDestroy {
       role: 'cancel'
     }];
     this.actionSheetCtrl.create({title: 'Item Operations', buttons}).present();
-  }
-
-  private createToast(message: string) {
-    const options: ToastOptions = {
-      message,
-      duration: 2500
-    };
-    this.toastCtrl.create(options).present();
   }
 }

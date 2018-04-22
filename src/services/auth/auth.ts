@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
 import { ToastController } from 'ionic-angular';
 
-import { ZACATZONTLI_URL } from './apis';
+import { ZACATZONTLI_URL } from '../apis';
 
 export type AuthToken = { token: string };
 

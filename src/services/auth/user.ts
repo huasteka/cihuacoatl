@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ZACATZONTLI_URL } from './apis';
-import { User, UserCredentials } from '../models/user';
+import { ZACATZONTLI_URL } from '../apis';
+import { User, UserCredentials } from '../../models/user';
 
 @Injectable()
 export class UserService {

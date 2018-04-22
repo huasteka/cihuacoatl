@@ -1,14 +1,13 @@
-import { ActionSheetButton, ActionSheetController, NavController, ToastController, ToastOptions } from 'ionic-angular';
+import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-angular';
 
 import { StorageFormMode, StorageFormPage } from '../storage-form/storage-form';
 import { StorageWrite } from '../../../../models/storage';
-import { StorageService } from '../../../../services/storage';
+import { StorageService } from '../../../../services/inventory/storage';
 
 export class StorageSharedPage {
   constructor(protected storageService: StorageService,
               protected navCtrl: NavController,
-              protected actionSheetCtrl: ActionSheetController,
-              protected toastCtrl: ToastController) {
+              protected actionSheetCtrl: ActionSheetController) {
   }
 
   createDeleteButton(storage: StorageWrite,
@@ -63,13 +62,5 @@ export class StorageSharedPage {
       title: 'Storage Operations',
       buttons: buttons
     });
-  }
-
-  createToast(message: string) {
-    const options: ToastOptions = {
-      message,
-      duration: 2500
-    };
-    this.toastCtrl.create(options).present();
   }
 }

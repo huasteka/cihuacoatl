@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/do';
 
-import { TEPOZTECATL_URL } from './apis';
-import { MeasureUnitRead, MeasureUnitWrite } from '../models/measure-unit';
+import { TEPOZTECATL_URL } from '../apis';
+import { MeasureUnitRead, MeasureUnitWrite } from '../../models/measure-unit';
 
 @Injectable()
 export class MeasureUnitService {

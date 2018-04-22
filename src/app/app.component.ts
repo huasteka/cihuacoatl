@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { HomePage } from '../pages/home/home';
 import { SignInPage } from '../pages/sign-in/sign-in';
-import { AuthService } from '../services/auth';
+import { AuthService } from '../services/auth/auth';
 
 @Component({
   templateUrl: 'app.html'

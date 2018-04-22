@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import { TEPOZTECATL_URL } from './apis';
-import { ItemRead, ItemWrite } from '../models/item';
+import { TEPOZTECATL_URL } from '../apis';
+import { ItemRead, ItemWrite } from '../../models/item';
 
 @Injectable()
 export class ItemService {

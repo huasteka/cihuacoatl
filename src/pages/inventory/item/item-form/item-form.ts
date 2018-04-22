@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavController, NavParams, ToastController, ToastOptions } from 'ionic-angular';
+import { Loading, NavController, NavParams } from 'ionic-angular';
 
 import { ItemWrite } from '../../../../models/item';
 import { MeasureUnitRead } from '../../../../models/measure-unit';
-import { ItemService } from '../../../../services/item';
-import { MeasureUnitService } from '../../../../services/measure-unit';
+import { ItemService } from '../../../../services/inventory/item';
+import { MeasureUnitService } from '../../../../services/inventory/measure-unit';
+import { PresentationUtil } from '../../../../utils/presentation';
 
 export enum ItemFormMode {
   Create = 'New',
@@ -24,7 +25,7 @@ export class ItemFormPage implements OnInit {
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
-              private toastCtrl: ToastController,
+              private presentationUtil: PresentationUtil,
               private itemService: ItemService,
               measureUnitService: MeasureUnitService) {
     measureUnitService.findMeasureUnits()
@@ -60,20 +61,21 @@ export class ItemFormPage implements OnInit {
     };
     const item = new ItemWrite(name, code, input, output);
     if (this.isUpdate()) {
+      const loading = this.presentationUtil.createLoading('Updating item...');
       this.itemService.updateItem(this.item.id, item)
-        .subscribe(() => {
-          this.createToast('The item was successfully updated!');
-          this.itemService.sendEventToListener();
-          this.navCtrl.pop();
-        });
+        .subscribe(() => this.onFinishItemOperation('The item was successfully updated!', loading));
     } else {
+      const loading = this.presentationUtil.createLoading('Creating item...');
       this.itemService.createItem(item)
-        .subscribe(() => {
-          this.createToast('An item was successfully created!');
-          this.itemService.sendEventToListener();
-          this.navCtrl.pop();
-        });
+        .subscribe(() => this.onFinishItemOperation('An item was successfully created!', loading));
     }
+  }
+
+  private onFinishItemOperation(message: string, loading: Loading) {
+    loading.dismiss();
+    this.presentationUtil.createToast(message);
+    this.itemService.sendEventToListener();
+    this.navCtrl.pop();
   }
 
   private createForm() {
@@ -84,7 +86,6 @@ export class ItemFormPage implements OnInit {
     let output_quantity = null;
     let output_measure_unit_id = null;
     if (this.isUpdate()) {
-      console.log(this.item);
       ({
         name,
         code,
@@ -108,14 +109,6 @@ export class ItemFormPage implements OnInit {
         Validators.min(1)
       ])
     });
-  }
-
-  private createToast(message: string) {
-    const options: ToastOptions = {
-      message,
-      duration: 2500
-    };
-    this.toastCtrl.create(options).present();
   }
 
   private isUpdate() {

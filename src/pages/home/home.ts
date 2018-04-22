@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { DashboardPage } from '../dashboard/dashboard';
-import { UserService } from '../../services/user';
+import { UserService } from '../../services/auth/user';
 import { User } from '../../models/user';
 import { ChangeNamePage } from '../user/change-name/change-name';
 import { ChangePasswordPage } from '../user/change-password/change-password';
 import { NavController } from 'ionic-angular';
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../services/auth/auth';
 
 @Component({
   selector: 'page-home',

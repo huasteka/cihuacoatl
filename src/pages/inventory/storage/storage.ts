@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActionSheetController, NavController, ToastController } from 'ionic-angular';
+import { ActionSheetController, NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
 import { StorageFormMode, StorageFormPage } from './storage-form/storage-form';
 import { StorageChildPage } from './storage-child/storage-child';
 import { StorageSharedPage } from './storage-shared/storage-shared';
 import { StorageRead, StorageWrite } from '../../../models/storage';
-import { StorageService } from '../../../services/storage';
+import { StorageService } from '../../../services/inventory/storage';
+import { PresentationUtil } from '../../../utils/presentation';
 
 @Component({
   selector: 'page-storage',
@@ -19,11 +20,14 @@ export class StoragePage extends StorageSharedPage implements OnInit, OnDestroy 
   constructor(storageService: StorageService,
               navCtrl: NavController,
               actionSheetCtrl: ActionSheetController,
-              toastCtrl: ToastController) {
-    super(storageService, navCtrl, actionSheetCtrl, toastCtrl);
+              private presentationUtil: PresentationUtil) {
+    super(storageService, navCtrl, actionSheetCtrl);
+    const loading = this.presentationUtil.createLoading('Now Loading...');
+    loading.present();
     this.subscription = this.storageService.storageListListener
       .subscribe((storageList: StorageRead[]) => {
         this.storageList = storageList;
+        loading.dismiss();
       });
   }
 
@@ -53,12 +57,12 @@ export class StoragePage extends StorageSharedPage implements OnInit, OnDestroy 
   }
 
   onStorageDeleteSuccess = (storage: StorageWrite) => {
-    this.createToast(`Successfully deleted the storage: ${storage.name} (${storage.code})!`);
+    this.presentationUtil.createToast(`Successfully deleted the storage: ${storage.name} (${storage.code})!`);
     this.storageService.findStorages();
   };
 
   onStorageDeleteError = (storage: StorageWrite) => {
-    this.createToast(`Could not delete the storage: ${storage.name} (${storage.code})!`);
+    this.presentationUtil.createToast(`Could not delete the storage: ${storage.name} (${storage.code})!`);
   };
 
   onStorageActionSheet(payload: StorageRead) {

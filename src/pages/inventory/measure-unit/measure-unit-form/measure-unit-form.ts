@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NavController, NavParams, ToastController, ToastOptions } from 'ionic-angular';
+import { Loading, NavController, NavParams } from 'ionic-angular';
 
 import { MeasureUnitWrite } from '../../../../models/measure-unit';
-import { MeasureUnitService } from '../../../../services/measure-unit';
+import { MeasureUnitService } from '../../../../services/inventory/measure-unit';
+import { PresentationUtil } from '../../../../utils/presentation';
 
 export enum MeasureUnitFormMode {
   Create = 'New',
@@ -14,14 +15,14 @@ export enum MeasureUnitFormMode {
   selector: 'page-measure-unit-form',
   templateUrl: './measure-unit-form.html'
 })
-export class MeasureUnitFormPage implements OnInit{
+export class MeasureUnitFormPage implements OnInit {
   mode: string = MeasureUnitFormMode.Create;
   measureUnit: MeasureUnitWrite;
   measureUnitForm: FormGroup;
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
-              private toastCtrl: ToastController,
+              private presentationUtil: PresentationUtil,
               private measureUnitService: MeasureUnitService) {
   }
 
@@ -36,22 +37,29 @@ export class MeasureUnitFormPage implements OnInit{
   onSubmit() {
     const {name, acronym} = this.measureUnitForm.value;
     if (this.isUpdate()) {
+      const loading = this.presentationUtil.createLoading('Updating measure unit...');
       this.measureUnitService
         .updateMeasureUnit(this.measureUnit.id, acronym, name)
-        .subscribe(() => {
-          this.createToast('A measure unit was successfully created!');
-          this.measureUnitService.sendEventToListener();
-          this.navCtrl.pop();
-        });
+        .subscribe(() => this.onFinishMeasureUnitOperation(
+          'A measure unit was successfully created!',
+          loading
+        ));
     } else {
+      const loading = this.presentationUtil.createLoading('Creating measure unit...');
       this.measureUnitService
         .createMeasureUnit(acronym, name)
-        .subscribe(() => {
-          this.createToast('Successfully updated the measure unit!');
-          this.measureUnitService.sendEventToListener();
-          this.navCtrl.pop();
-        });
+        .subscribe(() => this.onFinishMeasureUnitOperation(
+          'Successfully updated the measure unit!',
+          loading
+        ));
     }
+  }
+
+  private onFinishMeasureUnitOperation(message: string, loading: Loading) {
+    loading.dismiss();
+    this.presentationUtil.createToast(message);
+    this.measureUnitService.sendEventToListener();
+    this.navCtrl.pop();
   }
 
   private createForm() {
@@ -68,13 +76,5 @@ export class MeasureUnitFormPage implements OnInit{
 
   private isUpdate(): boolean {
     return this.mode === MeasureUnitFormMode.Update;
-  }
-
-  private createToast(message: string) {
-    const config: ToastOptions = {
-      message,
-      duration: 2500
-    };
-    this.toastCtrl.create(config).present();
   }
 }

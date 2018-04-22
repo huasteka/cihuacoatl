@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { LoadingController, ToastController } from 'ionic-angular';
 
 import { SignUpPage } from '../sign-up/sign-up';
-import { AuthService } from '../../services/auth';
+import { AuthService } from '../../services/auth/auth';
+import { PresentationUtil } from '../../utils/presentation';
 
 @Component({
   selector: 'page-sign-in',
@@ -13,28 +13,19 @@ export class SignInPage {
   registerPage = SignUpPage;
 
   constructor(private authService: AuthService,
-              private loadingCtrl: LoadingController,
-              private toastCtrl: ToastController) {
+              private presentationUtil: PresentationUtil) {
   }
 
   onSignIn(form: NgForm) {
-    const loading = this.loadingCtrl.create({content: 'Signing you in...'});
+    const loading = this.presentationUtil.createLoading('Signing you in...');
     loading.present();
     const {email, password} = form.value;
     this.authService.signIn(email, password)
       .subscribe(
         () => loading.dismiss(),
         () => {
-          this.createToast('Incorrect e-mail or password');
+          this.presentationUtil.createToast('Incorrect e-mail or password');
           loading.dismiss();
         });
-  }
-
-  private createToast(message: string) {
-    const toast = this.toastCtrl.create({
-      message: message,
-      duration: 1500
-    });
-    toast.present();
   }
 }

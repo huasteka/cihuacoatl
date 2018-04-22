@@ -23,12 +23,13 @@ import { MeasureUnitPage } from '../pages/inventory/measure-unit/measure-unit';
 import { MeasureUnitFormPage } from '../pages/inventory/measure-unit/measure-unit-form/measure-unit-form';
 import { ItemPage } from '../pages/inventory/item/item';
 import { ItemFormPage } from '../pages/inventory/item/item-form/item-form';
-import { AuthService } from '../services/auth';
-import { UserService } from '../services/user';
-import { StorageService } from '../services/storage';
-import { MeasureUnitService } from '../services/measure-unit';
-import { ItemService } from '../services/item';
 import { FinancePage } from '../pages/finance/finance';
+import { AuthService } from '../services/auth/auth';
+import { UserService } from '../services/auth/user';
+import { StorageService } from '../services/inventory/storage';
+import { MeasureUnitService } from '../services/inventory/measure-unit';
+import { ItemService } from '../services/inventory/item';
+import { PresentationUtil } from '../utils/presentation';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { FinancePage } from '../pages/finance/finance';
     UserService,
     StorageService,
     MeasureUnitService,
-    ItemService
+    ItemService,
+    PresentationUtil
   ]
 })
 export class AppModule {
