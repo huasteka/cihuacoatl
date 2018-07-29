@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{mode}} Account</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Code</ion-label>
+        <ion-input type="text" formControlName="code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button type="submit" [disabled]="!accountForm.valid" ion-button icon-left block>
+      <ion-icon name="check"></ion-icon>
+      Submit
+    </button>
+  </form>
+</ion-content>

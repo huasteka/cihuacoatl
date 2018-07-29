@@ -30,6 +30,9 @@ import { StorageService } from '../services/inventory/storage';
 import { MeasureUnitService } from '../services/inventory/measure-unit';
 import { ItemService } from '../services/inventory/item';
 import { PresentationUtil } from '../utils/presentation';
+import { AccountPage } from '../pages/finance/account/account';
+import { AccountFormPage } from '../pages/finance/account/account-form/account-form';
+import { AccountService } from '../services/finance/account';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import { PresentationUtil } from '../utils/presentation';
     MeasureUnitFormPage,
     ItemPage,
     ItemFormPage,
-    FinancePage
+    FinancePage,
+    AccountPage,
+    AccountFormPage
   ],
   imports: [
     BrowserModule,
@@ -74,7 +79,9 @@ import { PresentationUtil } from '../utils/presentation';
     MeasureUnitFormPage,
     ItemPage,
     ItemFormPage,
-    FinancePage
+    FinancePage,
+    AccountPage,
+    AccountFormPage
   ],
   providers: [
     StatusBar,
@@ -86,6 +93,7 @@ import { PresentationUtil } from '../utils/presentation';
     StorageService,
     MeasureUnitService,
     ItemService,
+    AccountService,
     PresentationUtil
   ]
 })

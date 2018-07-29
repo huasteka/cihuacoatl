@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Account List</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onAccountCreate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <button ion-item
+            *ngFor="let account of accountList"
+            (click)="onNavigateToForm(account)"
+            (long-press)="onAccountActionSheet(account)">
+      {{ account.attributes.name }}
+      <ion-badge item-end>
+        {{ account.attributes.code }}
+      </ion-badge>
+    </button>
+  </ion-list>
+</ion-content>

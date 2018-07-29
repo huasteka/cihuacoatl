@@ -41,7 +41,7 @@ export class MeasureUnitFormPage implements OnInit {
       this.measureUnitService
         .updateMeasureUnit(this.measureUnit.id, acronym, name)
         .subscribe(() => this.onFinishMeasureUnitOperation(
-          'A measure unit was successfully created!',
+          'Successfully updated the measure unit!',
           loading
         ));
     } else {
@@ -49,7 +49,7 @@ export class MeasureUnitFormPage implements OnInit {
       this.measureUnitService
         .createMeasureUnit(acronym, name)
         .subscribe(() => this.onFinishMeasureUnitOperation(
-          'Successfully updated the measure unit!',
+          'A measure unit was successfully created!',
           loading
         ));
     }
