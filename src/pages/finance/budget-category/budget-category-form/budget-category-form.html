@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{mode}} Budget Category</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="budgetCategoryForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button type="submit" [disabled]="!budgetCategoryForm.valid" ion-button icon-left block>
+      <ion-icon name="check"></ion-icon>
+      Submit
+    </button>
+  </form>
+</ion-content>

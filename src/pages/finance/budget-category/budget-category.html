@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Budget Categories List</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onBudgetCategoryCreate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <button ion-item
+            *ngFor="let budgetCategory of budgetCategoryList"
+            (click)="onNavigateToForm(budgetCategory)"
+            (long-press)="onBudgetCategoryActionSheet(budgetCategory)">
+      {{ budgetCategory.attributes.name }}
+    </button>
+  </ion-list>
+</ion-content>
