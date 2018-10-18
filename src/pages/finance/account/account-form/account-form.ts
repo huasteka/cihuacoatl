@@ -41,7 +41,7 @@ export class AccountFormPage implements OnInit {
       this.accountService
         .updateAccount(this.account.id, code, name)
         .subscribe(() => this.onFinishMeasureUnitOperation(
-          'Successfully updated the measure unit!',
+          'Successfully updated the account!',
           loading
         ));
     } else {
