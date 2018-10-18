@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Budget Groups List</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onBudgetGroupCreate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <button ion-item
+            *ngFor="let budgetGroup of budgetGroupList"
+            (click)="onNavigateToForm(budgetGroup)"
+            (long-press)="onBudgetGroupActionSheet(budgetGroup)">
+      {{ budgetGroup.attributes.name }}
+    </button>
+  </ion-list>
+</ion-content>
