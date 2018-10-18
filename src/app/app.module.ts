@@ -33,6 +33,15 @@ import { PresentationUtil } from '../utils/presentation';
 import { AccountPage } from '../pages/finance/account/account';
 import { AccountFormPage } from '../pages/finance/account/account-form/account-form';
 import { AccountService } from '../services/finance/account';
+import { BudgetGroupFormPage } from '../pages/finance/budget-group/budget-group-form/budget-group-form';
+import { BudgetGroupPage } from '../pages/finance/budget-group/budget-group';
+import { BudgetCategoryPage } from '../pages/finance/budget-category/budget-category';
+import { BudgetCategoryFormPage } from '../pages/finance/budget-category/budget-category-form/budget-category-form';
+import { BudgetGroupService } from '../services/finance/budget-group';
+import { BudgetCategoryService } from '../services/finance/budget-category';
+import { PaymentTypePage } from '../pages/finance/payment-type/payment-type';
+import { PaymentTypeFormPage } from '../pages/finance/payment-type/payment-type-form/payment-type-form';
+import { PaymentTypeService } from '../services/finance/payment-type';
 
 @NgModule({
   declarations: [
@@ -54,7 +63,13 @@ import { AccountService } from '../services/finance/account';
     ItemFormPage,
     FinancePage,
     AccountPage,
-    AccountFormPage
+    AccountFormPage,
+    BudgetGroupPage,
+    BudgetGroupFormPage,
+    BudgetCategoryPage,
+    BudgetCategoryFormPage,
+    PaymentTypePage,
+    PaymentTypeFormPage
   ],
   imports: [
     BrowserModule,
@@ -81,7 +96,13 @@ import { AccountService } from '../services/finance/account';
     ItemFormPage,
     FinancePage,
     AccountPage,
-    AccountFormPage
+    AccountFormPage,
+    BudgetGroupPage,
+    BudgetGroupFormPage,
+    BudgetCategoryPage,
+    BudgetCategoryFormPage,
+    PaymentTypePage,
+    PaymentTypeFormPage
   ],
   providers: [
     StatusBar,
@@ -94,6 +115,9 @@ import { AccountService } from '../services/finance/account';
     MeasureUnitService,
     ItemService,
     AccountService,
+    BudgetGroupService,
+    BudgetCategoryService,
+    PaymentTypeService,
     PresentationUtil
   ]
 })

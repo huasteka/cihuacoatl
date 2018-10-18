@@ -14,17 +14,22 @@
   <ion-list inset>
     <button ion-item [navPush]="accountPage">
       <ion-icon name="briefcase" item-start></ion-icon>
-      Account
+      Accounts
     </button>
 
-    <button ion-item>
+    <button ion-item [navPush]="budgetGroupPage">
       <ion-icon name="albums" item-start></ion-icon>
-      Budget Group
+      Budget Groups
     </button>
 
-    <button ion-item>
+    <button ion-item [navPush]="budgetCategoryPage">
+      <ion-icon name="albums" item-start></ion-icon>
+      Budget Categories
+    </button>
+
+    <button ion-item [navPush]="paymentTypePage">
       <ion-icon name="cash" item-start></ion-icon>
-      Payment Type
+      Payment Types
     </button>
   </ion-list>
 </ion-content>
