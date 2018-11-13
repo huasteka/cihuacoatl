@@ -8,14 +8,47 @@
   <form [formGroup]="paymentTypeForm" (ngSubmit)="onSubmit()">
     <ion-list>
       <ion-item>
-        <ion-label floating>Code</ion-label>
-        <ion-input type="text" formControlName="code"></ion-input>
-      </ion-item>
-
-      <ion-item>
         <ion-label floating>Name</ion-label>
         <ion-input type="text" formControlName="name"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-label floating>Payment Account</ion-label>
+        <ion-select formControlName="accountId">
+          <ion-option *ngFor="let accountKey of getAccountKeys()" [value]="accountKey">
+            {{ getAccount(accountKey).name }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list formGroupName="terms">
+      <ion-item>
+        <ion-label>Is staged?</ion-label>
+        <ion-toggle formControlName="stagedPayment"></ion-toggle>
+      </ion-item>
+
+      <ng-container *ngIf="paymentTypeForm.value.terms.stagedPayment">
+        <ion-item>
+          <ion-label floating>Tax</ion-label>
+          <ion-input type="number" min="0" formControlName="tax"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>First installment</ion-label>
+          <ion-input type="number" min="0" formControlName="firstInstallmentTerm"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Quantity</ion-label>
+          <ion-input type="number" min="0" formControlName="installmentQuantity"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Term</ion-label>
+          <ion-input type="number" min="0" formControlName="installmentTerm"></ion-input>
+        </ion-item>
+      </ng-container>
     </ion-list>
 
     <button type="submit" [disabled]="!paymentTypeForm.valid" ion-button icon-left block>

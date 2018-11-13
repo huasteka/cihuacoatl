@@ -1,7 +1,18 @@
 import { SerializedModel } from './serialized-model';
+import { AccountWrite } from './account';
+
+export type PaymentTermsWrite = {
+  stagedPayment: boolean,
+  tax: number,
+  firstInstallmentTerm: number,
+  installmentQuantity: number,
+  installmentTerm: number
+}
 
 export class PaymentTypeWrite extends SerializedModel {
-  constructor(public code: string, public name: string) {
+  constructor(public name: string,
+              public paymentAccount: AccountWrite,
+              public terms?: PaymentTermsWrite) {
     super();
   }
 

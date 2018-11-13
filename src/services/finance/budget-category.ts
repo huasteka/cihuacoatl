@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 
 import { YACATECUHTLI_URL } from '../apis';
 import { BudgetCategoryRead, BudgetCategoryWrite, transformBudgetCategoryRequest } from '../../models/budget-category';
+import { BudgetGroupWrite } from '../../models/budget-group';
 
 @Injectable()
 export class BudgetCategoryService {
@@ -14,13 +15,13 @@ export class BudgetCategoryService {
   constructor(private http: HttpClient) {
   }
 
-  createBudgetCategory(name: string,) {
-    const budgetCategory = new BudgetCategoryWrite(name);
+  createBudgetCategory(name: string, group: BudgetGroupWrite) {
+    const budgetCategory = new BudgetCategoryWrite(name, group);
     return this.http.post(`${this.requestUrl}`, budgetCategory);
   }
 
-  updateBudgetCategory(budgetCategoryId: number, name: string) {
-    const budgetCategory = new BudgetCategoryWrite(name);
+  updateBudgetCategory(budgetCategoryId: number, name: string, group: BudgetGroupWrite) {
+    const budgetCategory = new BudgetCategoryWrite(name, group);
     return this.http.put(`${this.requestUrl}/${budgetCategoryId}`, {id: budgetCategoryId, ...budgetCategory});
   }
 

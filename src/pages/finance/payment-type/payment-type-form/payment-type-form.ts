@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
+import { AccountRead, AccountWrite } from '../../../../models/account';
 import { PaymentTypeWrite } from '../../../../models/payment-type';
+import { AccountService } from '../../../../services/finance/account';
 import { PaymentTypeService } from '../../../../services/finance/payment-type';
 import { PresentationUtil } from '../../../../utils/presentation';
 
@@ -19,27 +21,37 @@ export class PaymentTypeFormPage implements OnInit {
   mode: string = PaymentTypeFormMode.Create;
   paymentType: PaymentTypeWrite;
   paymentTypeForm: FormGroup;
+  accountList: {[id: number]: AccountRead};
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private presentationUtil: PresentationUtil,
-              private paymentTypeService: PaymentTypeService) {
+              private paymentTypeService: PaymentTypeService,
+              accountService: AccountService) {
+    accountService.findAccounts()
+      .subscribe((accountList: AccountRead[]) => {
+        this.accountList = {};
+        accountList.map((account) => {
+          this.accountList[account.id] = account;
+        });
+      });
   }
 
   ngOnInit(): void {
     this.mode = this.navParams.get('mode');
     if (this.isUpdate()) {
-      this.paymentType = this.navParams.get('payment-type');
+      this.paymentType = this.navParams.get('paymentType');
     }
     this.createForm();
   }
 
   onSubmit() {
-    const {code, name} = this.paymentTypeForm.value;
+    const {name, terms, accountId} = this.paymentTypeForm.value;
+    const shouldSaveTerms = terms.stagedPayment ? terms : null;
     if (this.isUpdate()) {
       const loading = this.presentationUtil.createLoading('Updating payment type...');
       this.paymentTypeService
-        .updatePaymentType(this.paymentType.id, code, name)
+        .updatePaymentType(this.paymentType.id, name, this.getAccount(accountId), shouldSaveTerms)
         .subscribe(() => this.onFinishMeasureUnitOperation(
           'Successfully updated the payment type!',
           loading
@@ -47,12 +59,20 @@ export class PaymentTypeFormPage implements OnInit {
     } else {
       const loading = this.presentationUtil.createLoading('Creating payment type...');
       this.paymentTypeService
-        .createPaymentType(code, name)
+        .createPaymentType(name, this.getAccount(accountId), shouldSaveTerms)
         .subscribe(() => this.onFinishMeasureUnitOperation(
           'A payment type was successfully created!',
           loading
         ));
     }
+  }
+
+  getAccountKeys() {
+    return Object.keys(this.accountList || {});
+  }
+
+  getAccount(accountId: number): AccountWrite {
+    return this.accountList[accountId].attributes;
   }
 
   private onFinishMeasureUnitOperation(message: string, loading: Loading) {
@@ -63,14 +83,25 @@ export class PaymentTypeFormPage implements OnInit {
   }
 
   private createForm() {
-    let code = '';
     let name = '';
+    let paymentAccount = null;
+    let terms = null;
     if (this.isUpdate()) {
-      ({code, name} = this.paymentType);
+      ({name, paymentAccount, terms} = this.paymentType);
     }
     this.paymentTypeForm = new FormGroup({
-      code: new FormControl(code, Validators.required),
-      name: new FormControl(name, Validators.required)
+      name: new FormControl(name, Validators.required),
+      accountId: new FormControl(
+        paymentAccount ? paymentAccount.id : '',
+        Validators.required
+      ),
+      terms: new FormGroup({
+        stagedPayment: new FormControl(terms ? terms.stagedPayment : false),
+        tax: new FormControl(terms ? terms.tax : ''),
+        installmentQuantity: new FormControl(terms ? terms.installmentQuantity : ''),
+        firstInstallmentTerm: new FormControl(terms ? terms.firstInstallmentTerm : ''),
+        installmentTerm: new FormControl(terms ? terms.installmentTerm : '')
+      })
     });
   }
 

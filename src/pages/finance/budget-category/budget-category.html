@@ -16,7 +16,8 @@
             *ngFor="let budgetCategory of budgetCategoryList"
             (click)="onNavigateToForm(budgetCategory)"
             (long-press)="onBudgetCategoryActionSheet(budgetCategory)">
-      {{ budgetCategory.attributes.name }}
+      <h2>{{ budgetCategory.attributes.name }}</h2>
+      <p>{{ budgetCategory.attributes.group.name }}</p>
     </button>
   </ion-list>
 </ion-content>

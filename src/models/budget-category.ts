@@ -1,7 +1,8 @@
 import { SerializedModel } from './serialized-model';
+import { BudgetGroupWrite } from './budget-group';
 
 export class BudgetCategoryWrite extends SerializedModel {
-  constructor(public name: string) {
+  constructor(public name: string, public group: BudgetGroupWrite) {
     super();
   }
 

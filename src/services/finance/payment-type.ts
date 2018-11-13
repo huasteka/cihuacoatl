@@ -4,7 +4,11 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
 import { YACATECUHTLI_URL } from '../apis';
-import { PaymentTypeRead, PaymentTypeWrite, transformPaymentTypeRequest } from '../../models/payment-type';
+import {
+  PaymentTermsWrite, PaymentTypeRead, PaymentTypeWrite,
+  transformPaymentTypeRequest
+} from '../../models/payment-type';
+import { AccountWrite } from '../../models/account';
 
 @Injectable()
 export class PaymentTypeService {
@@ -14,13 +18,18 @@ export class PaymentTypeService {
   constructor(private http: HttpClient) {
   }
 
-  createPaymentType(code: string, name: string,) {
-    const paymentType = new PaymentTypeWrite(code, name);
+  createPaymentType(name: string,
+                    paymentAccount: AccountWrite,
+                    terms: PaymentTermsWrite) {
+    const paymentType = new PaymentTypeWrite(name, paymentAccount, terms);
     return this.http.post(`${this.requestUrl}`, paymentType);
   }
 
-  updatePaymentType(paymentTypeId: number, code: string, name: string) {
-    const paymentType = new PaymentTypeWrite(code, name);
+  updatePaymentType(paymentTypeId: number,
+                    name: string,
+                    paymentAccount: AccountWrite,
+                    terms: PaymentTermsWrite) {
+    const paymentType = new PaymentTypeWrite(name, paymentAccount, terms);
     return this.http.put(`${this.requestUrl}/${paymentTypeId}`, {id: paymentTypeId, ...paymentType});
   }
 

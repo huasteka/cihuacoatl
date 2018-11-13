@@ -16,10 +16,8 @@
             *ngFor="let paymentType of paymentTypeList"
             (click)="onNavigateToForm(paymentType)"
             (long-press)="onPaymentTypeActionSheet(paymentType)">
-      {{ paymentType.attributes.name }}
-      <ion-badge item-end>
-        {{ paymentType.attributes.code }}
-      </ion-badge>
+      <h2>{{ paymentType.attributes.name }}</h2>
+      <p>{{ paymentType.attributes.paymentAccount.name }}</p>
     </button>
   </ion-list>
 </ion-content>
