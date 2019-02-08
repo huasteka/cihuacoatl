@@ -1,20 +1,57 @@
 <ion-menu [content]="sideMenu">
   <ion-content>
-    <ion-list>
-      <ion-list-header>{{getProperUserName()}}</ion-list-header>
+    <ion-item>
+      <ion-avatar item-start>
+        <img [src]="getProperUserAvatar()">
+      </ion-avatar>
+
+      <ion-label>
+        {{getProperUserName()}}
+      </ion-label>
+    </ion-item>
+
+    <ion-item-group>
+      <ion-item-divider>Finances</ion-item-divider>
+
+      <button ion-item menuClose>
+        <ion-icon name="arrow-forward" item-start></ion-icon>
+        Deposit
+      </button>
+
+      <button ion-item menuClose>
+        <ion-icon name="arrow-back" item-start></ion-icon>
+        Withdraw
+      </button>
+
+      <ion-item-divider>Inventory</ion-item-divider>
+
+      <button ion-item menuClose>
+          <ion-icon name="arrow-forward" item-start></ion-icon>
+          Purchase Order
+        </button>
+  
+        <button ion-item menuClose>
+          <ion-icon name="arrow-back" item-start></ion-icon>
+          Sales Order
+        </button>
+
+      <ion-item-divider>User Area</ion-item-divider>
+
       <button ion-item menuClose [navPush]="changeNamePage" [navParams]="user">
         <ion-icon name="person" item-start></ion-icon>
         Change Name
       </button>
+
       <button ion-item menuClose [navPush]="changePasswordPage" [navParams]="user">
         <ion-icon name="lock" item-start></ion-icon>
         Change Password
       </button>
+
       <button ion-item menuClose (click)="onSignOut()">
         <ion-icon name="log-out" item-start></ion-icon>
         Log Out
       </button>
-    </ion-list>
+    </ion-item-group>
   </ion-content>
 </ion-menu>
 

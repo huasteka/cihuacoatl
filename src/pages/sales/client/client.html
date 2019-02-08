@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Client List</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onClientCreate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <button ion-item
+            *ngFor="let client of clientList"
+            (click)="onNavigateToForm(client)"
+            (long-press)="onClientActionSheet(client)">
+      <h2>{{ client.attributes.name }}</h2>
+      <p>{{ client.attributes.legal_document_code }}</p>
+    </button>
+  </ion-list>
+</ion-content>

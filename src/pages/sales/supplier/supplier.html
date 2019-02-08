@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Supplier List</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onSupplierCreate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <button ion-item
+            *ngFor="let supplier of supplierList"
+            (click)="onNavigateToForm(supplier)"
+            (long-press)="onSupplierActionSheet(supplier)">
+      <h2>{{ supplier.attributes.trade_name }}</h2>
+      <h3>{{ supplier.attributes.name }}</h3>
+      <p>{{ supplier.attributes.legal_document_code }}</p>
+    </button>
+  </ion-list>
+</ion-content>

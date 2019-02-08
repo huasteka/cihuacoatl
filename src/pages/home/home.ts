@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import md5 from 'md5';
 import { DashboardPage } from '../dashboard/dashboard';
 import { UserService } from '../../services/auth/user';
 import { User } from '../../models/user';
@@ -39,5 +40,11 @@ export class HomePage {
       return this.user.name ? this.user.name : this.user.email;
     }
     return '';
+  }
+
+  getProperUserAvatar() {
+    const userEmail = this.user ? this.user.email : '';
+    const avatarHash = md5(userEmail);
+    return `https://www.gravatar.com/avatar/${avatarHash}.jpg`;
   }
 }

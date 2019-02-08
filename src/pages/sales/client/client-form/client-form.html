@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{mode}} Client</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Legal Document</ion-label>
+        <ion-input type="text" formControlName="legal_document_code"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button type="submit" [disabled]="!clientForm.valid" ion-button icon-left block>
+      <ion-icon name="check"></ion-icon>
+      Submit
+    </button>
+  </form>
+</ion-content>

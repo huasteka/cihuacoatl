@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Merchandise List</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onMerchandiseCreate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <button ion-item
+            *ngFor="let merchandise of merchandiseList"
+            (click)="onNavigateToUpdate(merchandise)"
+            (long-press)="onMerchandiseActionSheet(merchandise)">
+      <ion-label>
+        {{ merchandise.relationships.product.attributes.name }}
+      </ion-label>
+      
+      <ion-badge class="merchandise-badge" item-end>
+        <div>
+          <span class="merchandise-flow">IN:</span>
+          <span>{{ getPurchasePrice(merchandise.attributes) }}</span>
+        </div>
+
+        <div>
+          <span class="merchandise-flow">OUT:</span>
+          <span>{{ getRetailPrice(merchandise.attributes) }}</span>
+        </div>
+      </ion-badge>
+    </button>
+  </ion-list>
+</ion-content>

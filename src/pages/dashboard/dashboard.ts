@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InventoryPage } from '../inventory/inventory';
 import { FinancePage } from '../finance/finance';
+import { SalesPage } from '../sales/sales';
 
 @Component({
   selector: 'page-dashboard',
@@ -9,4 +10,5 @@ import { FinancePage } from '../finance/finance';
 export class DashboardPage {
   inventoryPage = InventoryPage;
   financePage = FinancePage;
+  salesPage = SalesPage;
 }
