@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Create Entry</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="entryForm" (ngSubmit)="onSubmit()">
+    <ion-list formControlName="type" radio-group>
+      <ion-list-header>Operation</ion-list-header>
+
+      <ion-item>
+        <ion-label>Deposit</ion-label>
+        <ion-radio value="DEPOSIT" checked></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Withdraw</ion-label>
+        <ion-radio value="WITHDRAW"></ion-radio>
+      </ion-item>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header>Detail</ion-list-header>
+
+      <ion-item>
+        <ion-label floating>Code</ion-label>
+        <ion-input type="text" formControlName="code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+          <ion-label floating>Value</ion-label>
+          <ion-input type="number" formControlName="grossValue"></ion-input>
+        </ion-item>
+
+      <ion-item>
+        <ion-label floating>Description</ion-label>
+        <ion-input type="text" formControlName="description"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Category</ion-label>
+        <ion-select formControlName="categoryId">
+          <ion-option *ngFor="let key of getHashMapKeys(budgetCategoryList)" [value]="key">
+            {{ getHashMapObject(key, budgetCategoryList).name }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Payment Type</ion-label>
+        <ion-select formControlName="paymentTypeId">
+          <ion-option *ngFor="let key of getHashMapKeys(paymentTypeList)" [value]="key">
+            {{ getHashMapObject(key, paymentTypeList).name }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Account</ion-label>
+        <ion-select formControlName="accountId">
+          <ion-option *ngFor="let key of getHashMapKeys(accountList)" [value]="key">
+            {{ getHashMapObject(key, accountList).name }}
+          </ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <button type="submit" [disabled]="!entryForm.valid" ion-button icon-left block>
+      <ion-icon name="check"></ion-icon>
+      Submit
+    </button>
+  </form>
+</ion-content>

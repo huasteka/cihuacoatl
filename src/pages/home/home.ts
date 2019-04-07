@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import md5 from 'md5';
+
 import { DashboardPage } from '../dashboard/dashboard';
 import { UserService } from '../../services/auth/user';
 import { User } from '../../models/user';
@@ -7,6 +8,7 @@ import { ChangeNamePage } from '../user/change-name/change-name';
 import { ChangePasswordPage } from '../user/change-password/change-password';
 import { NavController } from 'ionic-angular';
 import { AuthService } from '../../services/auth/auth';
+import { EntryPage } from '../finance/entry/entry';
 
 @Component({
   selector: 'page-home',
@@ -16,6 +18,7 @@ export class HomePage {
   dashboardPage = DashboardPage;
   changeNamePage = ChangeNamePage;
   changePasswordPage = ChangePasswordPage;
+  entryPage = EntryPage;
   user: User;
 
   constructor(private userService: UserService,

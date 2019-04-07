@@ -21,7 +21,7 @@ export class BudgetCategoryFormPage implements OnInit {
   mode: string = BudgetCategoryFormMode.Create;
   budgetCategory: BudgetCategoryWrite;
   budgetCategoryForm: FormGroup;
-  budgetGroupList: {[groupId: number]: BudgetGroupRead};
+  budgetGroupList: { [groupId: number]: BudgetGroupRead };
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams,

@@ -13,27 +13,17 @@
     <ion-item-group>
       <ion-item-divider>Finances</ion-item-divider>
 
-      <button ion-item menuClose>
-        <ion-icon name="arrow-forward" item-start></ion-icon>
-        Deposit
-      </button>
-
-      <button ion-item menuClose>
-        <ion-icon name="arrow-back" item-start></ion-icon>
-        Withdraw
+      <button ion-item menuClose [navPush]="entryPage">
+        <ion-icon name="list-box" item-start></ion-icon>
+        Account Operations
       </button>
 
       <ion-item-divider>Inventory</ion-item-divider>
 
       <button ion-item menuClose>
-          <ion-icon name="arrow-forward" item-start></ion-icon>
-          Purchase Order
-        </button>
-  
-        <button ion-item menuClose>
-          <ion-icon name="arrow-back" item-start></ion-icon>
-          Sales Order
-        </button>
+        <ion-icon name="square" item-start></ion-icon>
+        Stock Operations
+      </button>
 
       <ion-item-divider>User Area</ion-item-divider>
 

@@ -4,11 +4,13 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
 import { YACATECUHTLI_URL } from '../apis';
+import { AccountWrite } from '../../models/account';
 import {
-  PaymentTermsWrite, PaymentTypeRead, PaymentTypeWrite,
+  PaymentTermsWrite, 
+  PaymentTypeRead, 
+  PaymentTypeWrite,
   transformPaymentTypeRequest
 } from '../../models/payment-type';
-import { AccountWrite } from '../../models/account';
 
 @Injectable()
 export class PaymentTypeService {

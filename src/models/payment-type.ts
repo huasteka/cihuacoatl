@@ -31,9 +31,5 @@ export class PaymentTypeRead extends SerializedModel {
 }
 
 export function transformPaymentTypeRequest(request: any): PaymentTypeRead[] {
-  return request.attributes.map((object) => new PaymentTypeRead(
-    'payment-type',
-    {...object},
-    object.id
-  ));
+  return request.attributes.map((object) => new PaymentTypeRead('payment-type', { ...object }, object.id));
 }

@@ -20,9 +20,5 @@ export class AccountRead extends SerializedModel {
 }
 
 export function transformAccountRequest(request: any): AccountRead[] {
-  return request.attributes.map((object) => new AccountRead(
-    'account',
-    {...object},
-    object.id
-  ));
+  return request.attributes.map((object) => new AccountRead('account', { ...object }, object.id));
 }

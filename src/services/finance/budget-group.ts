@@ -14,7 +14,7 @@ export class BudgetGroupService {
   constructor(private http: HttpClient) {
   }
 
-  createBudgetGroup(name: string,) {
+  createBudgetGroup(name: string) {
     const budgetGroup = new BudgetGroupWrite(name);
     return this.http.post(`${this.requestUrl}`, budgetGroup);
   }

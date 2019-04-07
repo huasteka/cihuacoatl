@@ -42,6 +42,8 @@ import { ProductPage } from '../pages/sales/product/product';
 import { ProductFormPage } from '../pages/sales/product/product-form/product-form';
 import { MerchandisePage } from '../pages/sales/merchandise/merchandise';
 import { MerchandiseFormPage } from '../pages/sales/merchandise/merchandise-form/merchandise-form';
+import { EntryPage } from '../pages/finance/entry/entry';
+import { OperationPage } from '../pages/finance/entry/operation/operation';
 
 import { AuthService } from '../services/auth/auth';
 import { UserService } from '../services/auth/user';
@@ -56,7 +58,9 @@ import { ClientService } from '../services/sales/client';
 import { SupplierService } from '../services/sales/supplier';
 import { ProductService } from '../services/sales/product';
 import { MerchandiseService } from '../services/sales/merchandise';
+import { EntryService } from '../services/finance/entry';
 import { PresentationUtil } from '../utils/presentation';
+import { EntryDetailPage } from '../pages/finance/entry/entry-detail/entry-detail';
 
 @NgModule({
   declarations: [
@@ -93,7 +97,10 @@ import { PresentationUtil } from '../utils/presentation';
     ProductPage,
     ProductFormPage,
     MerchandisePage,
-    MerchandiseFormPage
+    MerchandiseFormPage,
+    EntryPage,
+    EntryDetailPage,
+    OperationPage
   ],
   imports: [
     BrowserModule,
@@ -135,7 +142,10 @@ import { PresentationUtil } from '../utils/presentation';
     ProductPage,
     ProductFormPage,
     MerchandisePage,
-    MerchandiseFormPage
+    MerchandiseFormPage,
+    EntryPage,
+    EntryDetailPage,
+    OperationPage
   ],
   providers: [
     StatusBar,
@@ -155,6 +165,7 @@ import { PresentationUtil } from '../utils/presentation';
     SupplierService,
     ProductService,
     MerchandiseService,
+    EntryService,
     PresentationUtil
   ]
 })
