@@ -1,8 +1,7 @@
 {
   "name": "cihuacoatl",
   "integrations": {
-    "cordova": {}
+    "capacitor": {}
   },
-  "type": "ionic-angular",
-  "id": "b9ae009a"
+  "type": "angular"
 }
