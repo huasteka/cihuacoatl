@@ -1,42 +1,47 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { YACATECUHTLI_URL } from '../apis';
-import { AccountRead, AccountWrite, transformAccountRequest } from '../../models/account';
+import { environment } from 'src/environments/environment';
+import {
+  AccountRead,
+  AccountWrite,
+  transformAccountRequest
+} from 'src/models/finance/account';
 
 @Injectable()
 export class AccountService {
-  private requestUrl = YACATECUHTLI_URL + '/api/accounts';
-  accountListListener = new Subject<AccountRead[]>();
+  public accountListListener = new Subject<AccountRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/accounts`;
 
-  createAccount(code: string, name: string,) {
+  constructor(private http: HttpClient) { }
+
+  public createAccount(code: string, name: string,) {
     const account = new AccountWrite(code, name);
     return this.http.post(`${this.requestUrl}`, account);
   }
 
-  updateAccount(accountId: number, code: string, name: string) {
+  public updateAccount(accountId: number, code: string, name: string) {
     const account = new AccountWrite(code, name);
-    return this.http.put(`${this.requestUrl}/${accountId}`, {id: accountId, ...account});
+    return this.http.put(`${this.requestUrl}/${accountId}`, { id: accountId, ...account });
   }
 
-  deleteAccount(accountId: number) {
+  public deleteAccount(accountId: number) {
     return this.http.delete(`${this.requestUrl}/${accountId}`);
   }
 
-  findAccounts() {
+  public findAccounts() {
     return this.http
       .get<AccountRead[]>(this.requestUrl)
-      .map(transformAccountRequest);
+      .pipe(map(transformAccountRequest));
   }
 
-  sendEventToListener() {
-    this.findAccounts().subscribe((accounts: AccountRead[]) => {
-      this.accountListListener.next(accounts);
-    });
+  public sendEventToListener() {
+    return this.findAccounts()
+      .subscribe((accounts: AccountRead[]) =>
+        this.accountListListener.next(accounts)
+      );
   }
 }

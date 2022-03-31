@@ -1,42 +1,47 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { YACATECUHTLI_URL } from '../apis';
-import { BudgetGroupRead, BudgetGroupWrite, transformBudgetGroupRequest } from '../../models/budget-group';
+import { environment } from 'src/environments/environment';
+import {
+  BudgetGroupRead,
+  BudgetGroupWrite,
+  transformBudgetGroupRequest
+} from 'src/models/finance/budget-group';
 
 @Injectable()
 export class BudgetGroupService {
-  private requestUrl = YACATECUHTLI_URL + '/api/budget-groups';
-  budgetGroupListListener = new Subject<BudgetGroupRead[]>();
+  public budgetGroupListListener = new Subject<BudgetGroupRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/budget-groups`;
 
-  createBudgetGroup(name: string) {
+  constructor(private http: HttpClient) { }
+
+  public createBudgetGroup(name: string) {
     const budgetGroup = new BudgetGroupWrite(name);
     return this.http.post(`${this.requestUrl}`, budgetGroup);
   }
 
-  updateBudgetGroup(budgetGroupId: number, name: string) {
+  public updateBudgetGroup(budgetGroupId: number, name: string) {
     const budgetGroup = new BudgetGroupWrite(name);
-    return this.http.put(`${this.requestUrl}/${budgetGroupId}`, {id: budgetGroupId, ...budgetGroup});
+    return this.http.put(`${this.requestUrl}/${budgetGroupId}`, { id: budgetGroupId, ...budgetGroup });
   }
 
-  deleteBudgetGroup(budgetGroupId: number) {
+  public deleteBudgetGroup(budgetGroupId: number) {
     return this.http.delete(`${this.requestUrl}/${budgetGroupId}`);
   }
 
-  findBudgetGroups() {
+  public findBudgetGroups() {
     return this.http
       .get<BudgetGroupRead[]>(this.requestUrl)
-      .map(transformBudgetGroupRequest);
+      .pipe(map(transformBudgetGroupRequest));
   }
 
-  sendEventToListener() {
-    this.findBudgetGroups().subscribe((budgetGroups: BudgetGroupRead[]) => {
-      this.budgetGroupListListener.next(budgetGroups);
-    });
+  public sendEventToListener() {
+    return this.findBudgetGroups()
+      .subscribe((budgetGroups: BudgetGroupRead[]) =>
+        this.budgetGroupListListener.next(budgetGroups)
+      );
   }
 }

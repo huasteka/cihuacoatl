@@ -1,41 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/do';
+import { Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { TEPOZTECATL_URL } from '../apis';
-import { MeasureUnitRead, MeasureUnitWrite } from '../../models/measure-unit';
+import { environment } from 'src/environments/environment';
+import { MeasureUnitRead, MeasureUnitWrite } from 'src/models/inventory/measure-unit';
 
 @Injectable()
 export class MeasureUnitService {
-  private requestUrl = TEPOZTECATL_URL + '/api/measure_units';
-  measureUnitListener = new Subject<MeasureUnitRead[]>();
+  public measureUnitListener = new Subject<MeasureUnitRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.storage}/api/measure_units`;
 
-  createMeasureUnit(acronym: string, name: string) {
+  constructor(private http: HttpClient) { }
+
+  public createMeasureUnit(acronym: string, name: string) {
     const measureUnit = new MeasureUnitWrite(name, acronym);
     return this.http.post(this.requestUrl, measureUnit);
   }
 
-  updateMeasureUnit(measureUnitId: number, acronym: string, name: string) {
+  public updateMeasureUnit(measureUnitId: number, acronym: string, name: string) {
     const measureUnit = new MeasureUnitWrite(name, acronym);
     return this.http.put(`${this.requestUrl}/${measureUnitId}`, measureUnit);
   }
 
-  deleteMeasureUnit(measureUnitId: number) {
+  public deleteMeasureUnit(measureUnitId: number) {
     return this.http.delete(`${this.requestUrl}/${measureUnitId}`);
   }
 
-  findMeasureUnits() {
-    return this.http.get<MeasureUnitRead[]>(this.requestUrl)
-      .map((response: any) => response.data);
+  public findMeasureUnits() {
+    return this.http
+      .get<MeasureUnitRead[]>(this.requestUrl)
+      .pipe(switchMap((response: any) => response.data));
   }
 
-  sendEventToListener() {
-    this.findMeasureUnits().subscribe((measureUnitList: MeasureUnitRead[]) => {
-      this.measureUnitListener.next(measureUnitList);
-    });
+  public sendEventToListener() {
+    return this.findMeasureUnits()
+      .subscribe((measureUnitList: MeasureUnitRead[]) =>
+        this.measureUnitListener.next(measureUnitList)
+      );
   }
 }

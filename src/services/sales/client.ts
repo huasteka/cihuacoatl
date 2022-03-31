@@ -1,41 +1,45 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/do';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { HUITZILOPOCHTLI_URL } from '../apis';
-import { ClientRead, ClientWrite } from '../../models/client';
+import { environment } from 'src/environments/environment';
+import { ClientRead, ClientWrite } from 'src/models/sales/client';
 
 @Injectable()
 export class ClientService {
-  private requestUrl = HUITZILOPOCHTLI_URL + '/api/clients';
-  clientListener = new Subject<ClientRead[]>();
+  public clientListener = new Subject<ClientRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/clients`;
 
-  createClient(name: string, legal_document_code: string) {
+  constructor(private http: HttpClient) { }
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  public createClient(name: string, legal_document_code: string) {
     const client = new ClientWrite(name, legal_document_code);
     return this.http.post(this.requestUrl, client);
   }
 
-  updateClient(clientId: number, name: string, legal_document_code: string) {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  public updateClient(clientId: number, name: string, legal_document_code: string) {
     const client = new ClientWrite(name, legal_document_code);
     return this.http.put(`${this.requestUrl}/${clientId}`, client);
   }
 
-  deleteClient(clientId: number) {
+  public deleteClient(clientId: number) {
     return this.http.delete(`${this.requestUrl}/${clientId}`);
   }
 
-  findClients() {
-    return this.http.get<ClientRead[]>(this.requestUrl)
-      .map((response: any) => response.data);
+  public findClients() {
+    return this.http
+      .get<ClientRead[]>(this.requestUrl)
+      .pipe(map((response: any) => response.data));
   }
 
-  sendEventToListener() {
-    this.findClients().subscribe((clientList: ClientRead[]) => {
-      this.clientListener.next(clientList);
-    });
+  public sendEventToListener() {
+    return this.findClients()
+      .subscribe((clientList: ClientRead[]) => {
+        this.clientListener.next(clientList);
+      });
   }
 }

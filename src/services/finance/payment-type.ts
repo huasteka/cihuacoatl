@@ -1,53 +1,58 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { YACATECUHTLI_URL } from '../apis';
-import { AccountWrite } from '../../models/account';
+import { environment } from 'src/environments/environment';
+import { AccountWrite } from 'src/models/finance/account';
 import {
-  PaymentTermsWrite, 
-  PaymentTypeRead, 
+  PaymentTermsWrite,
+  PaymentTypeRead,
   PaymentTypeWrite,
   transformPaymentTypeRequest
-} from '../../models/payment-type';
+} from 'src/models/finance/payment-type';
 
 @Injectable()
 export class PaymentTypeService {
-  private requestUrl = YACATECUHTLI_URL + '/api/payment-types';
-  paymentTypeListListener = new Subject<PaymentTypeRead[]>();
+  public paymentTypeListListener = new Subject<PaymentTypeRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/payment-types`;
 
-  createPaymentType(name: string,
-                    paymentAccount: AccountWrite,
-                    terms: PaymentTermsWrite) {
+  constructor(private http: HttpClient) { }
+
+  public createPaymentType(
+    name: string,
+    paymentAccount: AccountWrite,
+    terms: PaymentTermsWrite
+  ) {
     const paymentType = new PaymentTypeWrite(name, paymentAccount, terms);
     return this.http.post(`${this.requestUrl}`, paymentType);
   }
 
-  updatePaymentType(paymentTypeId: number,
-                    name: string,
-                    paymentAccount: AccountWrite,
-                    terms: PaymentTermsWrite) {
+  public updatePaymentType(
+    paymentTypeId: number,
+    name: string,
+    paymentAccount: AccountWrite,
+    terms: PaymentTermsWrite
+  ) {
     const paymentType = new PaymentTypeWrite(name, paymentAccount, terms);
-    return this.http.put(`${this.requestUrl}/${paymentTypeId}`, {id: paymentTypeId, ...paymentType});
+    return this.http.put(`${this.requestUrl}/${paymentTypeId}`, { id: paymentTypeId, ...paymentType });
   }
 
-  deletePaymentType(paymentTypeId: number) {
+  public deletePaymentType(paymentTypeId: number) {
     return this.http.delete(`${this.requestUrl}/${paymentTypeId}`);
   }
 
-  findPaymentTypes() {
+  public findPaymentTypes() {
     return this.http
       .get<PaymentTypeRead[]>(this.requestUrl)
-      .map(transformPaymentTypeRequest);
+      .pipe(map(transformPaymentTypeRequest));
   }
 
-  sendEventToListener() {
-    this.findPaymentTypes().subscribe((paymentTypes: PaymentTypeRead[]) => {
-      this.paymentTypeListListener.next(paymentTypes);
-    });
+  public sendEventToListener() {
+    return this.findPaymentTypes()
+      .subscribe((paymentTypes: PaymentTypeRead[]) =>
+        this.paymentTypeListListener.next(paymentTypes)
+      );
   }
 }

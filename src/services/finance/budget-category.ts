@@ -1,43 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { YACATECUHTLI_URL } from '../apis';
-import { BudgetCategoryRead, BudgetCategoryWrite, transformBudgetCategoryRequest } from '../../models/budget-category';
-import { BudgetGroupWrite } from '../../models/budget-group';
+import { environment } from 'src/environments/environment';
+import { BudgetGroupWrite } from 'src/models/finance/budget-group';
+import {
+  BudgetCategoryRead,
+  BudgetCategoryWrite,
+  transformBudgetCategoryRequest
+} from 'src/models/finance/budget-category';
 
 @Injectable()
 export class BudgetCategoryService {
-  private requestUrl = YACATECUHTLI_URL + '/api/budget-categories';
-  budgetCategoryListListener = new Subject<BudgetCategoryRead[]>();
+  public budgetCategoryListListener = new Subject<BudgetCategoryRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/budget-categories`;
 
-  createBudgetCategory(name: string, group: BudgetGroupWrite) {
+  constructor(private http: HttpClient) { }
+
+  public createBudgetCategory(name: string, group: BudgetGroupWrite) {
     const budgetCategory = new BudgetCategoryWrite(name, group);
     return this.http.post(`${this.requestUrl}`, budgetCategory);
   }
 
-  updateBudgetCategory(budgetCategoryId: number, name: string, group: BudgetGroupWrite) {
+  public updateBudgetCategory(budgetCategoryId: number, name: string, group: BudgetGroupWrite) {
     const budgetCategory = new BudgetCategoryWrite(name, group);
-    return this.http.put(`${this.requestUrl}/${budgetCategoryId}`, {id: budgetCategoryId, ...budgetCategory});
+    return this.http.put(`${this.requestUrl}/${budgetCategoryId}`, { id: budgetCategoryId, ...budgetCategory });
   }
 
-  deleteBudgetCategory(budgetCategoryId: number) {
+  public deleteBudgetCategory(budgetCategoryId: number) {
     return this.http.delete(`${this.requestUrl}/${budgetCategoryId}`);
   }
 
-  findBudgetCategories() {
+  public findBudgetCategories() {
     return this.http
       .get<BudgetCategoryRead[]>(this.requestUrl)
-      .map(transformBudgetCategoryRequest);
+      .pipe(map(transformBudgetCategoryRequest));
   }
 
-  sendEventToListener() {
-    this.findBudgetCategories().subscribe((budgetCategories: BudgetCategoryRead[]) => {
-      this.budgetCategoryListListener.next(budgetCategories);
-    });
+  public sendEventToListener() {
+    return this.findBudgetCategories()
+      .subscribe((budgetCategories: BudgetCategoryRead[]) =>
+        this.budgetCategoryListListener.next(budgetCategories)
+      );
   }
 }

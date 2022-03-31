@@ -1,38 +1,44 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Subject } from "rxjs/Subject";
-import 'rxjs/add/operator/map';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { YACATECUHTLI_URL } from '../apis';
-import { EntryRead, transformEntryRequest, EntryWrite, EntryType } from "../../models/entry";
+import { environment } from 'src/environments/environment';
+import {
+  EntryRead,
+  EntryWrite,
+  EntryType,
+  transformEntryRequest,
+} from 'src/models/finance/entry';
 
 @Injectable()
 export class EntryService {
-  private requestUrl = YACATECUHTLI_URL + '/api/entries';
-  entryListListener = new Subject<EntryRead[]>();
+  public entryListListener = new Subject<EntryRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/entries`;
 
-  deposit(entry: EntryWrite) {
-    entry.type = EntryType.DEPOSIT;
+  constructor(private http: HttpClient) { }
+
+  public deposit(entry: EntryWrite) {
+    entry.type = EntryType.accountDeposit;
     return this.http.post(`${this.requestUrl}/deposit`, entry);
   }
 
-  withdraw(entry: EntryWrite) {
-    entry.type = EntryType.WITHDRAW;
+  public withdraw(entry: EntryWrite) {
+    entry.type = EntryType.accountWithdraw;
     return this.http.post(`${this.requestUrl}/withdraw`, entry);
   }
 
-  findEntries(accountId: number) {
+  public findEntries(accountId: number) {
     return this.http
       .get<EntryRead[]>(`${this.requestUrl}/accounts/${accountId}`)
-      .map(transformEntryRequest);
+      .pipe(map(transformEntryRequest));
   }
 
-  sendEventToListener(accountId: number) {
-    this.findEntries(accountId).subscribe((entries: EntryRead[]) => {
-      this.entryListListener.next(entries);
-    });
+  public sendEventToListener(accountId: number) {
+    return this.findEntries(accountId)
+      .subscribe((entries: EntryRead[]) =>
+        this.entryListListener.next(entries)
+      );
   }
 }
