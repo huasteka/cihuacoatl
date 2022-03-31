@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { ClientWrite } from '../../../../models/client';
+import { ClientWrite } from '../../../../models/sales/clientclient';
 import { ClientService } from '../../../../services/sales/client';
 import { PresentationUtil } from '../../../../utils/presentation';
 

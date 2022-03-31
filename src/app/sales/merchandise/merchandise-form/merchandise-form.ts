@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { MerchandiseWrite } from '../../../../models/merchandise';
-import { ProductRead } from '../../../../models/product';
+import { MerchandiseWrite } from '../../../../models/sales/merchandiseandise';
+import { ProductRead } from '../../../../models/sales/product';
 import { MerchandiseService } from '../../../../services/sales/merchandise';
 import { ProductService } from '../../../../services/sales/product';
 import { PresentationUtil } from '../../../../utils/presentation';

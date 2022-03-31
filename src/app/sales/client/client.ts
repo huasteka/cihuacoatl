@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { ClientFormMode, ClientFormPage } from './client-form/client-form';
-import { ClientRead, ClientWrite } from '../../../models/client';
+import { ClientRead, ClientWrite } from '../../../models/sales/clientclient';
 import { ClientService } from '../../../services/sales/client';
 import { PresentationUtil } from '../../../utils/presentation';
 

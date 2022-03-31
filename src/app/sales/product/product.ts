@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { ProductFormMode, ProductFormPage } from './product-form/product-form';
-import { ProductRead, ProductWrite } from '../../../models/product';
+import { ProductRead, ProductWrite } from '../../../models/sales/product';
 import { ProductService } from '../../../services/sales/product';
 import { PresentationUtil } from '../../../utils/presentation';
 

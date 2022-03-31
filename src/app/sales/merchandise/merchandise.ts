@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import padStart from 'lodash/padStart';
 
 import { MerchandiseFormMode, MerchandiseFormPage } from './merchandise-form/merchandise-form';
-import { MerchandiseRead, MerchandiseWrite } from '../../../models/merchandise';
+import { MerchandiseRead, MerchandiseWrite } from '../../../models/sales/merchandiseandise';
 import { MerchandiseService } from '../../../services/sales/merchandise';
 import { PresentationUtil } from '../../../utils/presentation';
 

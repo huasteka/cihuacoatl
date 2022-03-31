@@ -8,6 +8,15 @@
   <form [formGroup]="merchandiseForm" (ngSubmit)="onSubmit()">
     <ion-list>
       <ion-item>
+        <ion-label floating>Product</ion-label>
+        <ion-select formControlName="product_id">
+          <ion-option *ngFor="let input of productList" [value]="input.id">
+            {{input.attributes.name}} ({{input.attributes.code}})
+          </ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
         <ion-label floating>Retail Price</ion-label>
         <ion-input type="number" formControlName="retail_price"></ion-input>
       </ion-item>
@@ -15,15 +24,6 @@
       <ion-item>
         <ion-label floating>Purchase Price</ion-label>
         <ion-input type="number" formControlName="purchase_price"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label floating>Product</ion-label>
-        <ion-select formControlName="product_id">
-          <ion-option *ngFor="let input of productList" [value]="input.id">
-            {{input.attributes.name}} ({{input.attributes.code}})
-          </ion-option>
-        </ion-select>
       </ion-item>
     </ion-list>
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { SupplierWrite } from '../../../../models/supplier';
+import { SupplierWrite } from '../../../../models/sales/supplierpplier';
 import { SupplierService } from '../../../../services/sales/supplier';
 import { PresentationUtil } from '../../../../utils/presentation';
 
