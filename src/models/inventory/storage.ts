@@ -1,20 +1,20 @@
-import { SerializedModel } from './serialized-model';
+import { SerializedModel } from '../serialized-model';
 
 export class StorageWrite extends SerializedModel {
-  children: StorageWrite[] = [];
+  public children: StorageWrite[] = [];
 
   constructor(public code: string, public name: string) {
     super();
   }
 
-  addChild(storage: StorageWrite) {
-    this.children.push(storage);
-  }
-
-  static createStorage(source: StorageRead) {
-    let target = source.attributes;
+  public static createStorage(source: StorageRead): StorageWrite {
+    const target = source.attributes;
     target.id = source.id;
     return target;
+  }
+
+  public addChild(storage: StorageWrite): void {
+    this.children.push(storage);
   }
 }
 

@@ -1,11 +1,11 @@
-import { SerializedModel } from './serialized-model';
+import { SerializedModel } from '../serialized-model';
 
 export class MeasureUnitWrite extends SerializedModel {
   constructor(public name: string, public acronym: string) {
     super();
   }
 
-  static createMeasureUnit(source: MeasureUnitRead) {
+  public static createMeasureUnit(source: MeasureUnitRead): MeasureUnitWrite {
     const target = source.attributes;
     target.id = source.id;
     return target;

@@ -1,13 +1,16 @@
-import { SerializedModel } from './serialized-model';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { SerializedModel } from '../serialized-model';
 
 export class SupplierWrite extends SerializedModel {
-  constructor(public name: string,
-              public trade_name: string,
-              public legal_document_code: string) {
+  constructor(
+    public name: string,
+    public trade_name: string,
+    public legal_document_code: string
+  ) {
     super();
   }
 
-  static createSupplier(source: SupplierRead) {
+  public static createSupplier(source: SupplierRead): SupplierWrite {
     const target = source.attributes;
     target.id = source.id;
     return target;

@@ -1,4 +1,4 @@
-import { SerializedModel } from './serialized-model';
+import { SerializedModel } from '../serialized-model';
 import { BudgetGroupWrite } from './budget-group';
 
 export class BudgetCategoryWrite extends SerializedModel {
@@ -6,7 +6,7 @@ export class BudgetCategoryWrite extends SerializedModel {
     super();
   }
 
-  static createBudgetCategory(source: BudgetCategoryRead) {
+  public static createBudgetCategory(source: BudgetCategoryRead): BudgetCategoryWrite {
     const target = source.attributes;
     target.id = source.id;
     return target;
@@ -16,14 +16,11 @@ export class BudgetCategoryWrite extends SerializedModel {
 export class BudgetCategoryRead extends SerializedModel {
   constructor(public type: string, public attributes: BudgetCategoryWrite, id?: number) {
     super();
-    this._id = id;
+    this.serializedID = id;
   }
 }
 
-export function transformBudgetCategoryRequest(request: any): BudgetCategoryRead[] {
-  return request.attributes.map((object) => new BudgetCategoryRead(
-    'budget-category',
-    {...object},
-    object.id
-  ));
-}
+export const transformBudgetCategoryRequest = (request: any): BudgetCategoryRead[] => request.attributes.map(
+  ({ id, ...object }: any) => new BudgetCategoryRead('budget-category', { ...object }, id)
+);
+
