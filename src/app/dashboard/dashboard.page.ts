@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { InventoryPage } from '../inventory/inventory';
+import { InventoryPage } from '../inventory/inventory.page';
 import { FinancePage } from '../finance/finance';
 import { SalesPage } from '../sales/sales';
 
 @Component({
-  selector: 'page-dashboard',
+  selector: 'app-page-dashboard',
   templateUrl: './dashboard.html'
 })
 export class DashboardPage {
