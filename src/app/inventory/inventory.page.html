@@ -12,17 +12,17 @@
 
 <ion-content padding>
   <ion-list inset>
-    <button ion-item [navPush]="storagePage">
+    <button ion-item [routerLink]="['/storages']">
       <ion-icon name="archive" item-start></ion-icon>
       Storages
     </button>
 
-    <button ion-item [navPush]="measureUnitPage">
+    <button ion-item [navPush]="['/measure-units']">
       <ion-icon name="pricetag" item-start></ion-icon>
       Measure Units
     </button>
 
-    <button ion-item [navPush]="itemPage">
+    <button ion-item [navPush]="['/items']">
       <ion-icon name="document" item-start></ion-icon>
       Items
     </button>

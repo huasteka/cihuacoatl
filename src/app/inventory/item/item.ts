@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { ItemFormMode, ItemFormPage } from './item-form/item-form';
-import { ItemRead, ItemWrite } from '../../../models/item';
+import { ItemRead, ItemWrite } from '../../../models/inventory/itemntory/item';
 import { ItemService } from '../../../services/inventory/item';
 import { PresentationUtil } from '../../../utils/presentation';
 

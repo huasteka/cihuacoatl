@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { MeasureUnitWrite } from '../../../../models/measure-unit';
+import { MeasureUnitWrite } from '../../../../models/inventory/measure-unitasure-unit';
 import { MeasureUnitService } from '../../../../services/inventory/measure-unit';
 import { PresentationUtil } from '../../../../utils/presentation';
 

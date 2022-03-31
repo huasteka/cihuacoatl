@@ -12,10 +12,8 @@
 
 <ion-content padding>
   <ion-list inset>
-    <button ion-item
-            *ngFor="let child of storage.children"
-            (click)="onNavigateToUpdate(child)"
-            (long-press)="onStorageActionSheet(child)">
+    <button ion-item *ngFor="let child of storage.children" (click)="onNavigateToUpdate(child)"
+      (long-press)="onStorageActionSheet(child)">
       {{ child.name }}
       <ion-badge item-end>
         {{ child.code }}

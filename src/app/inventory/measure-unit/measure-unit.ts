@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { MeasureUnitFormMode, MeasureUnitFormPage } from './measure-unit-form/measure-unit-form';
-import { MeasureUnitRead, MeasureUnitWrite } from '../../../models/measure-unit';
+import { MeasureUnitRead, MeasureUnitWrite } from '../../../models/inventory/measure-unitasure-unit';
 import { MeasureUnitService } from '../../../services/inventory/measure-unit';
 import { PresentationUtil } from '../../../utils/presentation';
 
