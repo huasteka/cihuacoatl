@@ -4,10 +4,10 @@ import { NavController } from "ionic-angular";
 import { OperationPage } from "./operation/operation";
 import { EntryService } from "../../../services/finance/entry";
 import { Subscription } from "rxjs/Subscription";
-import { EntryRead, EntryWrite, EntryType } from "../../../models/entry";
+import { EntryRead, EntryWrite, EntryType } from "../../../models/finance/entryce/entry";
 import { PresentationUtil } from "../../../utils/presentation";
 import { AccountService } from "../../../services/finance/account";
-import { AccountRead } from "../../../models/account";
+import { AccountRead } from "../../../models/finance/account/account";
 import { EntryDetailPage } from "./entry-detail/entry-detail";
 
 @Component({

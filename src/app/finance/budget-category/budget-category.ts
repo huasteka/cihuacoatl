@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { BudgetCategoryFormMode, BudgetCategoryFormPage } from './budget-category-form/budget-category-form';
-import { BudgetCategoryRead, BudgetCategoryWrite } from '../../../models/budget-category';
+import { BudgetCategoryRead, BudgetCategoryWrite } from '../../../models/finance/budget-categorycategory';
 import { BudgetCategoryService } from '../../../services/finance/budget-category';
 import { PresentationUtil } from '../../../utils/presentation';
 

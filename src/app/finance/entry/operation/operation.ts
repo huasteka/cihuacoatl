@@ -2,10 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NavController } from "ionic-angular";
 
-import { AccountRead } from "../../../../models/account";
-import { PaymentTypeRead } from "../../../../models/payment-type";
-import { BudgetCategoryRead } from "../../../../models/budget-category";
-import { EntryWrite, EntryType } from "../../../../models/entry";
+import { AccountRead } from "../../../../models/finance/account/account";
+import { PaymentTypeRead } from "../../../../models/finance/payment-type";
+import { BudgetCategoryRead } from "../../../../models/finance/budget-categorycategory";
+import { EntryWrite, EntryType } from "../../../../models/finance/entryce/entry";
 import { AccountService } from "../../../../services/finance/account";
 import { PaymentTypeService } from "../../../../services/finance/payment-type";
 import { BudgetCategoryService } from "../../../../services/finance/budget-category";
@@ -62,6 +62,14 @@ export class OperationPage implements OnInit {
 
   getHashMapObject(key: number, hashMap: any) {
     return hashMap[key].attributes;
+  }
+
+  onPaymentTypeSelect() {
+    const paymentTypeId = this.entryForm.get('paymentTypeId').value;
+    const payment = this.paymentTypeList[paymentTypeId];
+    if (payment) {
+      this.entryForm.get('accountId').setValue(payment.attributes.paymentAccount.id);
+    }
   }
 
   onSubmit() {

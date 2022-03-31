@@ -8,17 +8,17 @@
   <form [formGroup]="budgetCategoryForm" (ngSubmit)="onSubmit()">
     <ion-list>
       <ion-item>
-        <ion-label floating>Name</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
-      </ion-item>
-
-      <ion-item>
         <ion-label floating>Budget Group</ion-label>
         <ion-select formControlName="budgetGroupId">
           <ion-option *ngFor="let budgetGroupKey of getBudgetGroupKeys()" [value]="budgetGroupKey">
             {{ getBudgetGroup(budgetGroupKey).name }}
           </ion-option>
         </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
       </ion-item>
     </ion-list>
 

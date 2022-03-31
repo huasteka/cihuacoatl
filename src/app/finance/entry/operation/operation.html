@@ -21,8 +21,6 @@
     </ion-list>
 
     <ion-list>
-      <ion-list-header>Detail</ion-list-header>
-
       <ion-item>
         <ion-label floating>Code</ion-label>
         <ion-input type="text" formControlName="code"></ion-input>
@@ -42,14 +40,14 @@
         <ion-label floating>Category</ion-label>
         <ion-select formControlName="categoryId">
           <ion-option *ngFor="let key of getHashMapKeys(budgetCategoryList)" [value]="key">
-            {{ getHashMapObject(key, budgetCategoryList).name }}
+            {{ budgetCategoryList[key].group.name }} - {{ budgetCategoryList[key].name }}
           </ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label floating>Payment Type</ion-label>
-        <ion-select formControlName="paymentTypeId">
+        <ion-select formControlName="paymentTypeId" (ionChange)="onPaymentTypeSelect()">
           <ion-option *ngFor="let key of getHashMapKeys(paymentTypeList)" [value]="key">
             {{ getHashMapObject(key, paymentTypeList).name }}
           </ion-option>

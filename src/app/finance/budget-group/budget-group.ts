@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { BudgetGroupFormMode, BudgetGroupFormPage } from './budget-group-form/budget-group-form';
-import { BudgetGroupRead, BudgetGroupWrite } from '../../../models/budget-group';
+import { BudgetGroupRead, BudgetGroupWrite } from '../../../models/finance/budget-group';
 import { BudgetGroupService } from '../../../services/finance/budget-group';
 import { PresentationUtil } from '../../../utils/presentation';
 

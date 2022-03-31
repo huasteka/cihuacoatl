@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { BudgetGroupRead, BudgetGroupWrite } from '../../../../models/budget-group';
-import { BudgetCategoryWrite } from '../../../../models/budget-category';
+import { BudgetGroupRead, BudgetGroupWrite } from '../../../../models/finance/budget-group';
+import { BudgetCategoryWrite } from '../../../../models/finance/budget-categorycategory';
 import { BudgetGroupService } from '../../../../services/finance/budget-group';
 import { BudgetCategoryService } from '../../../../services/finance/budget-category';
 import { PresentationUtil } from '../../../../utils/presentation';

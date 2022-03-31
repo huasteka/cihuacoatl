@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NavParams } from "ionic-angular";
-import { EntryWrite } from "../../../../models/entry";
+import { EntryWrite } from "../../../../models/finance/entryce/entry";
 
 @Component({
   selector: 'page-entry-detail',

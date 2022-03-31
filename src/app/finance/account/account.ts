@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { AccountFormMode, AccountFormPage } from './account-form/account-form';
-import { AccountRead, AccountWrite } from '../../../models/account';
+import { AccountRead, AccountWrite } from '../../../models/finance/account/account';
 import { AccountService } from '../../../services/finance/account';
 import { PresentationUtil } from '../../../utils/presentation';
 

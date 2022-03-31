@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { AccountWrite } from '../../../../models/account';
+import { AccountWrite } from '../../../../models/finance/account/account';
 import { AccountService } from '../../../../services/finance/account';
 import { PresentationUtil } from '../../../../utils/presentation';
 

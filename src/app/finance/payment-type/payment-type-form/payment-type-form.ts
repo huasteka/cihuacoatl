@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { AccountRead, AccountWrite } from '../../../../models/account';
-import { PaymentTypeWrite } from '../../../../models/payment-type';
+import { AccountRead, AccountWrite } from '../../../../models/finance/account/account';
+import { PaymentTypeWrite } from '../../../../models/finance/payment-type';
 import { AccountService } from '../../../../services/finance/account';
 import { PaymentTypeService } from '../../../../services/finance/payment-type';
 import { PresentationUtil } from '../../../../utils/presentation';

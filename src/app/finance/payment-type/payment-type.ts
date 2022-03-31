@@ -3,7 +3,7 @@ import { ActionSheetButton, ActionSheetController, NavController } from 'ionic-a
 import { Subscription } from 'rxjs/Subscription';
 
 import { PaymentTypeFormMode, PaymentTypeFormPage } from './payment-type-form/payment-type-form';
-import { PaymentTypeRead, PaymentTypeWrite } from '../../../models/payment-type';
+import { PaymentTypeRead, PaymentTypeWrite } from '../../../models/finance/payment-type';
 import { PaymentTypeService } from '../../../services/finance/payment-type';
 import { PresentationUtil } from '../../../utils/presentation';
 

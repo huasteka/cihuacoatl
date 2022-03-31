@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Loading, NavController, NavParams } from 'ionic-angular';
 
-import { BudgetGroupWrite } from '../../../../models/budget-group';
+import { BudgetGroupWrite } from '../../../../models/finance/budget-group';
 import { BudgetGroupService } from '../../../../services/finance/budget-group';
 import { PresentationUtil } from '../../../../utils/presentation';
 
