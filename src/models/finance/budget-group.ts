@@ -15,7 +15,7 @@ export class BudgetGroupWrite extends SerializedModel {
 export class BudgetGroupRead extends SerializedModel {
   constructor(public type: string, public attributes: BudgetGroupWrite, id?: number) {
     super();
-    this.serializedID = id;
+    this.serializedIdentity = id;
   }
 }
 

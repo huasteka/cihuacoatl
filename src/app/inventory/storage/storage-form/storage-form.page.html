@@ -1,26 +1,31 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>{{ mode }} Storage</ion-title>
-  </ion-navbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/inventory/storages"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Storage</ion-title>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <form [formGroup]="storageForm" (ngSubmit)="onSubmit()">
+<ion-content [fullscreen]="true">
+  <form *ngIf="storageForm" [formGroup]="storageForm" (ngSubmit)="handleSubmit()">
     <ion-list>
       <ion-item>
-        <ion-label floating>Code</ion-label>
+        <ion-label position="floating">Code</ion-label>
         <ion-input type="text" formControlName="code"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label floating>Name</ion-label>
+        <ion-label position="floating">Name</ion-label>
         <ion-input type="text" formControlName="name"></ion-input>
       </ion-item>
     </ion-list>
 
-    <button type="submit" [disabled]="!storageForm.valid" ion-button icon-left block>
-      <ion-icon name="check"></ion-icon>
-      Submit
-    </button>
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!storageForm.valid">
+      <span>Submit</span>
+    </ion-button>
   </form>
 </ion-content>

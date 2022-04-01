@@ -1,23 +1,50 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Storage List</ion-title>
-
-    <ion-buttons end>
-      <button ion-button icon-only (click)="handleStorageCreate()">
-        <ion-icon name="add"></ion-icon>
-      </button>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/inventory"></ion-back-button>
     </ion-buttons>
-  </ion-navbar>
+
+    <ion-title>Storages</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['create']">
+        <ion-icon name="add-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-list inset>
-    <button ion-item *ngFor="let storage of storageList" (click)="handleStorageSelect(storage)"
-      (long-press)="handleStorageActionSheet(storage)">
-      {{ storage.attributes.name }}
-      <ion-badge item-end>
-        {{ storage.attributes.code }}
-      </ion-badge>
-    </button>
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <div *ngIf="storageList.length < 1">
+      <ion-item *ngFor="let _ of [].constructor(5)">
+        <ion-label>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </ion-label>
+  
+        <ion-skeleton-text animated style="width: 27px; height: 27px" slot="end"></ion-skeleton-text>
+      </ion-item>
+    </div>
+
+    <ion-item-sliding *ngFor="let storage of storageList">
+      <ion-item (click)="handleSelectClick(storage)">
+        <ion-label>
+          <h1>{{ storage.attributes.name }}</h1>
+        </ion-label>
+
+        <div slot="end">
+          <ion-icon *ngIf="storage.attributes.children.length > 0" name="layers-outline"></ion-icon>
+          <ion-badge>
+            {{ storage.attributes.code }}
+          </ion-badge>
+        </div>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option (click)="handleActionSheetClick(storage)">
+          <ion-icon name="settings-outline" size="large"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

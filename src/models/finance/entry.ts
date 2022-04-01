@@ -38,7 +38,7 @@ export class EntryWrite extends SerializedModel {
 export class EntryRead extends SerializedModel {
   constructor(public type: string, public attributes: EntryWrite, id?: number) {
     super();
-    this.serializedID = id;
+    this.serializedIdentity = id;
   }
 }
 

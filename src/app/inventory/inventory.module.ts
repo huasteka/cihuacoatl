@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ItemService } from 'src/services/inventory/item';
@@ -18,6 +18,7 @@ import { StorageActionSheetService } from './storage/storage-action-sheet.servic
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     InventoryPageRoutingModule,
   ],

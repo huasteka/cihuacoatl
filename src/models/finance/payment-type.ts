@@ -28,7 +28,7 @@ export class PaymentTypeWrite extends SerializedModel {
 export class PaymentTypeRead extends SerializedModel {
   constructor(public type: string, public attributes: PaymentTypeWrite, id?: number) {
     super();
-    this.serializedID = id;
+    this.serializedIdentity = id;
   }
 }
 

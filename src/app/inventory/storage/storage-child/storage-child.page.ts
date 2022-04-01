@@ -1,7 +1,6 @@
-import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LoadingController, NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { StorageRead, StorageWrite } from 'src/models/inventory/storage';
@@ -11,7 +10,7 @@ import { StorageActionSheetService } from '../storage-action-sheet.service';
 
 @Component({
   selector: 'app-page-storage-child',
-  templateUrl: './storage-child.html'
+  templateUrl: './storage-child.page.html'
 })
 export class StorageChildPage implements OnInit, OnDestroy {
   public storage: StorageWrite;
@@ -19,32 +18,20 @@ export class StorageChildPage implements OnInit, OnDestroy {
   private subscription$: Subscription;
 
   constructor(
-    private navigationCtrl: NavController,
     private route: ActivatedRoute,
-    private location: Location,
-    private loadingCtrl: LoadingController,
+    private navigationCtrl: NavController,
     private toastCtrl: ToastController,
     private actionSheetService: StorageActionSheetService,
     private storageService: StorageService,
   ) { }
 
-  public async ngOnInit(): Promise<void> {
-    const loading = await this.loadingCtrl.create({ message: 'Now Loading...' });
-    await loading.present();
+  public ngOnInit(): void {
+    this.subscription$ = this.storageService.listenFindStorageById(
+      async (storage: StorageRead) => this.storage = StorageWrite.createStorage(storage)
+    );
 
-    this.subscription$ = this.storageService.listenFindStorageById(async (storage: StorageRead) => {
-      await loading.dismiss();
-      this.storage = StorageWrite.createStorage(storage);
-    });
-
-    this.storage = this.location.getState() as StorageWrite;
-    if (this.storage) {
-      await loading.dismiss();
-    } else {
-      const routeParams = await this.route.paramMap.toPromise();
-      const storageId = parseInt(routeParams.get('storageId'), 10);
-      this.storageService.emitFindStorageById(storageId);
-    }
+    const storageId = parseInt(this.route.snapshot.params.storageId, 10);
+    this.storageService.emitFindStorageById(storageId);
   }
 
   public ngOnDestroy(): void {
@@ -52,17 +39,19 @@ export class StorageChildPage implements OnInit, OnDestroy {
   }
 
   public handleAppendClick() {
-    this.navigationCtrl.navigateForward(`/storages/${this.storage.id}/append`, { state: this.storage });
+    const targetUrl = `/home/modules/inventory/storages/${this.storage.id}/append`;
+    this.navigationCtrl.navigateForward(targetUrl);
   }
 
-  public handleUpdateClick(storage: StorageWrite) {
-    this.navigationCtrl.navigateForward(`/storages/${this.storage.id}/update`, { state: storage });
+  public handleUpdateClick(selectedStorage: StorageWrite) {
+    const targetUrl = `/home/modules/inventory/storages/${selectedStorage.id}/update`;
+    this.navigationCtrl.navigateForward(targetUrl);
   }
 
   public async handleActionSheetClick(storage: StorageWrite) {
     const buttons = [
       this.actionSheetService.buildDeleteButton(storage, this.handleDeleteSuccess, this.handleDeleteError),
-      this.actionSheetService.buildUpdateButton(this.storage.id, storage)
+      this.actionSheetService.buildUpdateButton(storage.id),
     ];
 
     const actionSheet = await this.actionSheetService.buildActionSheet(buttons);
@@ -71,16 +60,16 @@ export class StorageChildPage implements OnInit, OnDestroy {
 
   private handleDeleteSuccess = async (storage: StorageWrite) => {
     const message = `Successfully deleted the storage: ${storage.name} (${storage.code})!`;
-    const toast = await this.toastCtrl.create({ message, duration: 4000, position: 'top' });
+    const toast = await this.toastCtrl.create({ message, duration: 3000, position: 'top' });
     await toast.present();
 
     this.storageService.emitFindStorageList();
-    this.navigationCtrl.back();
+    this.navigationCtrl.navigateBack(`/home/modules/inventory/storages`);
   };
 
   private handleDeleteError = async (storage: StorageWrite) => {
     const message = `Could not delete the storage: ${storage.name} (${storage.code})!`;
-    const toast = await this.toastCtrl.create({ message, duration: 4000, position: 'top' });
+    const toast = await this.toastCtrl.create({ message, duration: 3000, position: 'top' });
     await toast.present();
   };
 }

@@ -1,10 +1,9 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
 
-import { StorageWrite } from 'src/models/inventory/storage';
+import { StorageRead } from 'src/models/inventory/storage';
 import { StorageService } from 'src/services/inventory/storage';
 
 export enum StorageFormMode {
@@ -15,34 +14,38 @@ export enum StorageFormMode {
 
 @Component({
   selector: 'app-storage-form',
-  templateUrl: 'storage-form.html'
+  templateUrl: 'storage-form.page.html',
+  styleUrls: ['storage-form.page.scss'],
 })
 export class StorageFormPage implements OnInit {
+  public formMode: string;
   public storageForm: FormGroup;
 
-  private formMode: string;
   private storageId?: number;
 
   constructor(
-    private navigationCtrl: NavController,
     private route: ActivatedRoute,
-    private location: Location,
+    private navigationCtrl: NavController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private storageService: StorageService
   ) { }
 
   public async ngOnInit() {
-    const routeData = await this.route.data.toPromise();
-    this.formMode = routeData.formMode;
+    this.formMode = this.route.snapshot.data.formMode;
 
-    const routeParams = await this.route.paramMap.toPromise();
-    this.storageId = parseInt(routeParams.get('storageId'), 10);
+    if (!this.isCreate()) {
+      this.storageId = parseInt(this.route.snapshot.params?.storageId, 10);
+    }
 
-    const { code = '', name = '' } = this.location.getState() as StorageWrite;
+    if (this.isUpdate()) {
+      await this.loadStorageForm();
+      return;
+    }
+
     this.storageForm = new FormGroup({
-      code: new FormControl(code, Validators.required),
-      name: new FormControl(name, Validators.required)
+      code: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required)
     });
   }
 
@@ -57,15 +60,28 @@ export class StorageFormPage implements OnInit {
     }
   }
 
+  private async loadStorageForm(): Promise<void> {
+    this.storageService.findStorageById(this.storageId).subscribe(async (storage: StorageRead) => {
+      const { code, name } = storage.attributes;
+      this.storageForm = new FormGroup({
+        code: new FormControl(code, Validators.required),
+        name: new FormControl(name, Validators.required)
+      });
+    });
+  }
+
   private async handleCreate(code: string, name: string) {
     const loading = await this.loadingCtrl.create({ message: 'Creating storage...' });
     await loading.present();
     this.storageService
       .createStorage(code, name)
-      .subscribe(async () => {
-        await loading.dismiss();
-        this.handleSubscribe('Storage was successfully created!');
-      });
+      .subscribe(
+        async () => {
+          await loading.dismiss();
+          await this.handleSubscribe('Storage was successfully created!');
+        },
+        async () => await this.presentToast('It was not possible to create the storage!')
+      );
   }
 
   private async handleUpdate(code: string, name: string) {
@@ -73,10 +89,13 @@ export class StorageFormPage implements OnInit {
     await loading.present();
     this.storageService
       .updateStorage(this.storageId, code, name)
-      .subscribe(async () => {
-        await loading.dismiss();
-        this.handleSubscribe('Storage was successfully updated!');
-      });
+      .subscribe(
+        async () => {
+          await loading.dismiss();
+          await this.handleSubscribe('Storage was successfully updated!');
+        },
+        async () => await this.presentToast('It was not possible to update the storage!')
+      );
   }
 
   private async handleAppend(code: string, name: string) {
@@ -84,23 +103,24 @@ export class StorageFormPage implements OnInit {
     await loading.present();
     this.storageService
       .createStorageChild(this.storageId, code, name)
-      .subscribe(async () => {
-        await loading.dismiss();
-        this.handleSubscribe(`Storage was successfully appended to ${name}!`);
-      });
+      .subscribe(
+        async () => {
+          await loading.dismiss();
+          await this.handleSubscribe(`Storage was successfully appended to ${name}!`);
+        },
+        async () => await this.presentToast('It was not possible to append the storage!')
+      );
   }
 
   private async handleSubscribe(message: string) {
-    const toast = await this.toastCtrl.create({ message, duration: 4000, position: 'top' });
+    await this.presentToast(message);
+    this.storageService.emitFindStorageList();
+    this.navigationCtrl.navigateBack('/home/modules/inventory/storages');
+  }
+
+  private async presentToast(message: string) {
+    const toast = await this.toastCtrl.create({ message, duration: 3000, position: 'top', keyboardClose: true });
     await toast.present();
-
-    if (this.storageId) {
-      this.storageService.emitFindStorageById(this.storageId);
-    } else {
-      this.storageService.emitFindStorageList();
-    }
-
-    this.navigationCtrl.back();
   }
 
   private isCreate() {

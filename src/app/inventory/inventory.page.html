@@ -1,30 +1,34 @@
-<ion-header>
-  <ion-navbar>
-    <ion-buttons start>
-      <button ion-button icon-only menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
     <ion-title>Inventory Manager</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-list inset>
-    <button ion-item [routerLink]="['/storages']">
-      <ion-icon name="archive" item-start></ion-icon>
-      Storages
-    </button>
+<ion-content>
+  <ion-list lines="full">
+    <ion-item button [routerLink]="['storages']">
+      <ion-icon name="archive" slot="start"></ion-icon>
+      <ion-label>
+        <h1>Storages</h1>
+      </ion-label>
+    </ion-item>
 
-    <button ion-item [navPush]="['/measure-units']">
-      <ion-icon name="pricetag" item-start></ion-icon>
-      Measure Units
-    </button>
+    <ion-item button [routerLink]="['measure-units']">
+      <ion-icon name="pricetag" slot="start"></ion-icon>
+      <ion-label>
+        <h1>Measure Units</h1>
+      </ion-label>
+    </ion-item>
 
-    <button ion-item [navPush]="['/items']">
-      <ion-icon name="document" item-start></ion-icon>
-      Items
-    </button>
+    <ion-item button [routerLink]="['items']">
+      <ion-icon name="document" slot="start"></ion-icon>
+      <ion-label>
+        <h1>Items</h1>
+      </ion-label>
+    </ion-item>
   </ion-list>
 </ion-content>

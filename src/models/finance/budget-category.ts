@@ -16,7 +16,7 @@ export class BudgetCategoryWrite extends SerializedModel {
 export class BudgetCategoryRead extends SerializedModel {
   constructor(public type: string, public attributes: BudgetCategoryWrite, id?: number) {
     super();
-    this.serializedID = id;
+    this.serializedIdentity = id;
   }
 }
 

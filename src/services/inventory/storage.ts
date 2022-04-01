@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject as Subject, Observable, PartialObserver, Subscription, throwError } from 'rxjs';
-import { catchError, map, single } from 'rxjs/operators';
+import { catchError, filter, map, single } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import { StorageRead, StorageWrite } from 'src/models/inventory/storage';
@@ -53,15 +53,20 @@ export class StorageService {
     );
   }
 
+  public findStorageById(storageId: number): Observable<StorageRead> {
+    return this.http
+      .get<R<StorageRead>>(`${this.requestUrl}/${storageId}`)
+      .pipe(single(), map(r => r.data));
+  }
+
   public emitFindStorageById(storageId: number): void {
-    const requestUrl = `${this.requestUrl}/${storageId}`;
-    this.http.get<R<StorageRead>>(requestUrl)
-      .pipe(single(), map(r => r.data))
-      .subscribe(s => this.storageListener.next(s));
+    this.findStorageById(storageId).subscribe(s => this.storageListener.next(s));
   }
 
   public listenFindStorageById(callback: StorageCallback): Subscription {
-    return this.storageListener.subscribe(callback);
+    const subscription = this.storageListener.pipe(filter(s => s !== null)).subscribe(callback);
+    subscription.add(() => this.storageListener.next(null));
+    return subscription;
   }
 
   public emitFindStorageList(): void {

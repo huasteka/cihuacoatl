@@ -15,7 +15,7 @@ export class AccountWrite extends SerializedModel {
 export class AccountRead extends SerializedModel {
   constructor(public type: string, public attributes: AccountWrite, id?: number) {
     super();
-    this.serializedID = id;
+    this.serializedIdentity = id;
   }
 }
 

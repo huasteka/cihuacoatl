@@ -18,37 +18,34 @@ export class StorageActionSheetService {
     errorCallback: (storage: StorageWrite) => void
   ): ActionSheetButton {
     const observable = this.storageService.deleteStorage(storage.id);
+
     const handler = () => observable.toPromise()
       .then(() => successCallback(storage))
       .catch(() => errorCallback(storage));
 
     return {
       text: 'Delete',
-      icon: 'trash',
+      icon: 'trash-outline',
       role: 'destructive',
       handler,
     };
   }
 
-  public buildUpdateButton(storageId: number, storage: StorageWrite): ActionSheetButton {
+  public buildUpdateButton(storageId: number): ActionSheetButton {
+    const targetUrl = `/home/modules/inventory/storages/${storageId}/update`;
     return {
       text: 'Update',
-      icon: 'create',
-      handler: () => this.navigationCtrl.navigateForward(
-        `/storages/${storageId}/update`,
-        { state: storage },
-      ),
+      icon: 'pencil-outline',
+      handler: () => this.navigationCtrl.navigateForward(targetUrl),
     };
   }
 
-  public buildAddChildButton(storageId: number, storage: StorageWrite): ActionSheetButton {
+  public buildAddChildButton(storageId: number): ActionSheetButton {
+    const targetUrl = `/home/modules/inventory/storages/${storageId}/append`;
     return {
       text: 'Append',
       icon: 'add',
-      handler: () => this.navigationCtrl.navigateForward(
-        `/storages/${storageId}/append`,
-        { state: storage },
-      ),
+      handler: () => this.navigationCtrl.navigateForward(targetUrl),
     };
   }
 
