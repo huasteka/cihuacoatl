@@ -24,8 +24,9 @@ export class RegistrationPage {
     try {
       const { name, email, password } = form.value;
       await this.authService.signUp(name, email, password);
+      this.navigationCtrl.navigateRoot('/');
     } catch (e: unknown) {
-      const toastOptions = { message: 'It was not possible to create your account', duration: 4000 };
+      const toastOptions = { message: 'It was not possible to create your account', duration: 3000 };
       const toast = await this.toastCtrl.create({ ...toastOptions, position: 'top' });
       await toast.present();
     } finally {

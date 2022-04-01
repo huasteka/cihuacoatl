@@ -26,7 +26,7 @@ export class HomePage {
   }
 
   public handleSignOut(): void {
-    this.authService.signOut().then(() => this.navCtrl.navigateRoot('root'));
+    this.authService.signOut().then(() => this.navCtrl.navigateRoot('/auth/login'));
   }
 
   public getUserName(): string {

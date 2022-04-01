@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
     const result: boolean = await this.authService.isAuthenticated();
 
     if (result === false) {
-      return this.router.parseUrl('/login');
+      return this.router.parseUrl('/auth/login');
     }
 
     return result;

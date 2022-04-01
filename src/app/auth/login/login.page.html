@@ -1,31 +1,28 @@
-<ion-content padding>
-  <form #f="ngForm" (ngSubmit)="onSignIn(f)">
+<ion-content [fullscreen]="true">
+  <form #f="ngForm" (ngSubmit)="handleLogin(f)">
+    <ion-img class="logo-image" src="/assets/logo.svg"></ion-img>
+
     <ion-list>
       <ion-item>
-        <ion-label floating>E-mail</ion-label>
-        <ion-input type="text"
-                   name="email"
-                   required
-                   ngModel></ion-input>
+        <ion-label position="floating">E-mail</ion-label>
+        <ion-input ngModel required type="email" name="email"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input type="password"
-                   name="password"
-                   [minlength]="5"
-                   required
-                   ngModel></ion-input>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input ngModel required type="password" name="password" [minlength]="6"></ion-input>
       </ion-item>
     </ion-list>
 
-    <button type="submit" class="submit-button" [disabled]="!f.valid" ion-button block outline>
-      Sign in
-    </button>
-  </form>
+    <br>
 
-  <div class="register-link">
-    <span>Don't have an account?</span>
-    <a [navPush]="registerPage">Register!</a>
-  </div>
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!f.valid">Login</ion-button>
+
+    <div class="register-link">
+      <span>Don't have an account?&nbsp;</span>
+      <strong>
+        <a [routerLink]="['/auth/registration']">Register here</a>
+      </strong>
+    </div>
+  </form>
 </ion-content>

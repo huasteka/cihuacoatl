@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, NavController, ToastController } from '@ionic/angular';
 
 import { AuthService } from 'src/services/auth/auth';
 
@@ -11,6 +11,7 @@ import { AuthService } from 'src/services/auth/auth';
 })
 export class LoginPage {
   constructor(
+    private navigationCtrl: NavController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private authService: AuthService,
@@ -23,8 +24,9 @@ export class LoginPage {
     try {
       const { email, password } = form.value;
       await this.authService.signIn(email, password);
+      this.navigationCtrl.navigateRoot('/');
     } catch (e: unknown) {
-      const toastOptions = { message: 'Incorrect e-mail or password', duration: 4000 };
+      const toastOptions = { message: 'Incorrect e-mail or password', duration: 3000 };
       const toast = await this.toastCtrl.create({ ...toastOptions, position: 'top' });
       await toast.present();
     } finally {

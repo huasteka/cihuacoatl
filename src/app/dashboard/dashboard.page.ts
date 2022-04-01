@@ -1,14 +1,7 @@
 import { Component } from '@angular/core';
-import { InventoryPage } from '../inventory/inventory.page';
-import { FinancePage } from '../finance/finance';
-import { SalesPage } from '../sales/sales';
 
 @Component({
-  selector: 'app-page-dashboard',
-  templateUrl: './dashboard.html'
+  selector: 'app-page-dashbaord',
+  templateUrl: 'dashboard.page.html',
 })
-export class DashboardPage {
-  inventoryPage = InventoryPage;
-  financePage = FinancePage;
-  salesPage = SalesPage;
-}
+export class DashboardPage { }
