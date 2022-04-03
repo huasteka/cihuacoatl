@@ -37,7 +37,7 @@ export class StoragePage implements OnInit, OnDestroy {
 
   public handleSelectClick(payload: StorageRead) {
     const storage = StorageWrite.createStorage(payload);
-    const targetUrl = `/home/modules/inventory/storages/${storage.id}/details`;
+    const targetUrl = `/home/modules/inventory/storages/details/${storage.id}`;
     this.navigationCtrl.navigateForward(targetUrl, { state: storage },);
   }
 

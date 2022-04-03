@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { InventoryPage } from './inventory.page';
-import { StorageChildPage } from './storage/storage-child/storage-child.page';
-import { StorageFormMode, StorageFormPage } from './storage/storage-form/storage-form.page';
-import { StoragePage } from './storage/storage.page';
 
 const routes: Routes = [
   {
@@ -13,26 +10,15 @@ const routes: Routes = [
   },
   {
     path: 'storages',
-    component: StoragePage,
+    loadChildren: () => import('./storage/storage.module').then(m => m.UserModule),
   },
   {
-    path: 'storages/create',
-    component: StorageFormPage,
-    data: { formMode: StorageFormMode.create },
+    path: 'measure-units',
+    loadChildren: () => import('./measure-unit/measure-unit.module').then(m => m.MeasureUnitModule),
   },
   {
-    path: 'storages/:storageId/details',
-    component: StorageChildPage,
-  },
-  {
-    path: 'storages/:storageId/update',
-    component: StorageFormPage,
-    data: { formMode: StorageFormMode.update },
-  },
-  {
-    path: 'storages/:storageId/append',
-    component: StorageFormPage,
-    data: { formMode: StorageFormMode.append },
+    path: 'items',
+    loadChildren: () => import('./item/item.module').then(m => m.ItemModule),
   },
 ];
 

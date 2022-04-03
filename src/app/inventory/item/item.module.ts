@@ -1,13 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ItemService } from 'src/services/inventory/item';
 import { MeasureUnitService } from 'src/services/inventory/measure-unit';
 
-import { InventoryPageRoutingModule } from './inventory-routing.module';
-import { InventoryPage } from './inventory.page';
+import { ItemPage } from './item.page';
+import { ItemFormPage } from './item-form/item-form.page';
+import { ItemRoutingModule } from './item-routing.module';
 
 @NgModule({
   imports: [
@@ -15,14 +16,15 @@ import { InventoryPage } from './inventory.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    InventoryPageRoutingModule,
+    ItemRoutingModule,
   ],
   declarations: [
-    InventoryPage,
+    ItemPage,
+    ItemFormPage,
   ],
   providers: [
-    MeasureUnitService,
     ItemService,
+    MeasureUnitService,
   ]
 })
-export class InventoryPageModule { }
+export class ItemModule { }

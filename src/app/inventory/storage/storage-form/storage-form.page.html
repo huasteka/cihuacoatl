@@ -12,13 +12,13 @@
   <form *ngIf="storageForm" [formGroup]="storageForm" (ngSubmit)="handleSubmit()">
     <ion-list>
       <ion-item>
-        <ion-label position="floating">Code</ion-label>
-        <ion-input type="text" formControlName="code"></ion-input>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Name</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
+        <ion-label position="floating">Code</ion-label>
+        <ion-input type="text" formControlName="code"></ion-input>
       </ion-item>
     </ion-list>
 

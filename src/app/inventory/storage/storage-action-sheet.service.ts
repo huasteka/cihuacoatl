@@ -32,7 +32,7 @@ export class StorageActionSheetService {
   }
 
   public buildUpdateButton(storageId: number): ActionSheetButton {
-    const targetUrl = `/home/modules/inventory/storages/${storageId}/update`;
+    const targetUrl = `/home/modules/inventory/storages/update/${storageId}`;
     return {
       text: 'Update',
       icon: 'pencil-outline',
@@ -41,7 +41,7 @@ export class StorageActionSheetService {
   }
 
   public buildAddChildButton(storageId: number): ActionSheetButton {
-    const targetUrl = `/home/modules/inventory/storages/${storageId}/append`;
+    const targetUrl = `/home/modules/inventory/storages/append/${storageId}`;
     return {
       text: 'Append',
       icon: 'add',

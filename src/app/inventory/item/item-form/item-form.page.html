@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/inventory/items"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Item</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form *ngIf="itemForm" [formGroup]="itemForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Code</ion-label>
+        <ion-input type="text" formControlName="code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Input Measure Unit</ion-label>
+        <ion-select formControlName="input_measure_unit">
+          <ion-select-option *ngFor="let input of measureUnitList" [value]="+input.id">
+            {{input.attributes.name}} ({{input.attributes.acronym}})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Input Quantity</ion-label>
+        <ion-input type="number" formControlName="input_quantity" inputmode="numeric"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Output Measure Unit</ion-label>
+        <ion-select formControlName="output_measure_unit">
+          <ion-select-option *ngFor="let output of measureUnitList" [value]="+output.id">
+            {{output.attributes.name}} ({{output.attributes.acronym}})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Output Quantity</ion-label>
+        <ion-input type="number" formControlName="output_quantity" inputmode="numeric"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!itemForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

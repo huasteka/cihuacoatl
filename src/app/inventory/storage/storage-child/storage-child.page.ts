@@ -39,12 +39,12 @@ export class StorageChildPage implements OnInit, OnDestroy {
   }
 
   public handleAppendClick() {
-    const targetUrl = `/home/modules/inventory/storages/${this.storage.id}/append`;
+    const targetUrl = `/home/modules/inventory/storages/append/${this.storage.id}`;
     this.navigationCtrl.navigateForward(targetUrl);
   }
 
   public handleUpdateClick(selectedStorage: StorageWrite) {
-    const targetUrl = `/home/modules/inventory/storages/${selectedStorage.id}/update`;
+    const targetUrl = `/home/modules/inventory/storages/update/${selectedStorage.id}`;
     this.navigationCtrl.navigateForward(targetUrl);
   }
 
