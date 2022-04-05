@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { InventoryPageRoutingModule } from './inventory-routing.module';
-import { InventoryPage } from './inventory.page';
+import { FinancePageRoutingModule } from './finance-routing.module';
+import { FinancePage } from './finance.page';
 
 @NgModule({
   imports: [
@@ -12,10 +12,10 @@ import { InventoryPage } from './inventory.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    InventoryPageRoutingModule,
+    FinancePageRoutingModule,
   ],
   declarations: [
-    InventoryPage,
+    FinancePage,
   ]
 })
-export class InventoryPageModule { }
+export class FinancePageModule { }

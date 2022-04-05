@@ -1,47 +1,65 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject as Subject, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, single } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
 import {
   BudgetGroupRead,
   BudgetGroupWrite,
-  transformBudgetGroupRequest
+  transformOne,
+  transformMany,
 } from 'src/models/finance/budget-group';
+import { FinanceResponse as R } from 'src/models/finance/response';
+
+export type BudgetGroupListCallback = (result: BudgetGroupRead[]) => void;
 
 @Injectable()
 export class BudgetGroupService {
-  public budgetGroupListListener = new Subject<BudgetGroupRead[]>();
+  public budgetGroupListListener = new Subject<BudgetGroupRead[]>([]);
 
   private readonly requestUrl = `${environment.services.finance}/api/budget-groups`;
 
   constructor(private http: HttpClient) { }
 
-  public createBudgetGroup(name: string) {
+  public createBudgetGroup(name: string): Observable<BudgetGroupRead> {
     const budgetGroup = new BudgetGroupWrite(name);
-    return this.http.post(`${this.requestUrl}`, budgetGroup);
+    return this.http.post<R<BudgetGroupWrite>>(this.requestUrl, budgetGroup).pipe(
+      single(),
+      map(transformOne),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public updateBudgetGroup(budgetGroupId: number, name: string) {
+  public updateBudgetGroup(budgetGroupId: number, name: string): Observable<void> {
     const budgetGroup = new BudgetGroupWrite(name);
-    return this.http.put(`${this.requestUrl}/${budgetGroupId}`, { id: budgetGroupId, ...budgetGroup });
+    const requestUrl = `${this.requestUrl}/${budgetGroupId}`;
+    return this.http.put<void>(requestUrl, { ...budgetGroup, id: budgetGroupId }).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public deleteBudgetGroup(budgetGroupId: number) {
-    return this.http.delete(`${this.requestUrl}/${budgetGroupId}`);
+  public deleteBudgetGroup(budgetGroupId: number): Observable<void> {
+    return this.http.delete<void>(`${this.requestUrl}/${budgetGroupId}`).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public findBudgetGroups() {
+  public findBudgetGroupById(budgetGroupId: number): Observable<BudgetGroupRead> {
     return this.http
-      .get<BudgetGroupRead[]>(this.requestUrl)
-      .pipe(map(transformBudgetGroupRequest));
+      .get<R<BudgetGroupWrite>>(`${this.requestUrl}/${budgetGroupId}`)
+      .pipe(single(), map(transformOne));
   }
 
-  public sendEventToListener() {
-    return this.findBudgetGroups()
-      .subscribe((budgetGroups: BudgetGroupRead[]) =>
-        this.budgetGroupListListener.next(budgetGroups)
-      );
+  public emitFindBudgetGroupList(): void {
+    this.http.get<R<BudgetGroupWrite[]>>(this.requestUrl)
+      .pipe(single(), map(transformMany))
+      .subscribe(m => this.budgetGroupListListener.next(m));
+  }
+
+  public listenFindBudgetGroupList(callback: BudgetGroupListCallback): Subscription {
+    return this.budgetGroupListListener.subscribe(callback);
   }
 }

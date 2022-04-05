@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject as Subject, Observable, PartialObserver, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject as Subject, Observable, Subscription, throwError } from 'rxjs';
 import { catchError, filter, map, single } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
@@ -63,16 +63,16 @@ export class StorageService {
     this.findStorageById(storageId).subscribe(s => this.storageListener.next(s));
   }
 
-  public listenFindStorageById(callback: StorageCallback): Subscription {
-    const subscription = this.storageListener.pipe(filter(s => s !== null)).subscribe(callback);
-    subscription.add(() => this.storageListener.next(null));
-    return subscription;
-  }
-
   public emitFindStorageList(): void {
     this.http.get<R<StorageRead[]>>(this.requestUrl)
       .pipe(single(), map(r => r.data))
       .subscribe(s => this.storageListListener.next(s));
+  }
+
+  public listenFindStorageById(callback: StorageCallback): Subscription {
+    const subscription = this.storageListener.pipe(filter(s => s !== null)).subscribe(callback);
+    subscription.add(() => this.storageListener.next(null));
+    return subscription;
   }
 
   public listenFindStorageList(callback: StorageListCallback): Subscription {

@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home/modules/inventory"></ion-back-button>
+      <ion-back-button defaultHref="/home/modules/finance"></ion-back-button>
     </ion-buttons>
 
-    <ion-title>Storages</ion-title>
+    <ion-title>Account List</ion-title>
 
     <ion-buttons slot="end">
       <ion-button [routerLink]="['create']">
@@ -16,7 +16,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <div *ngIf="storageList.length < 1">
+    <div *ngIf="accountList.length < 1">
       <ion-item *ngFor="let _ of [].constructor(5)">
         <ion-label>
           <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
@@ -26,30 +26,21 @@
       </ion-item>
     </div>
 
-    <ion-item-sliding *ngFor="let storage of storageList">
-      <ion-item lines="full" (click)="handleSelectClick(storage)">
-        <div slot="start">
-          <div *ngIf="storage.attributes.children.length > 0; else noStorageAppended">
-            <ion-icon name="layers-outline"></ion-icon>
-          </div>
-          <ng-template #noStorageAppended>
-            <ion-icon name="remove-outline"></ion-icon>
-          </ng-template>
-        </div>
-
+    <ion-item-sliding *ngFor="let account of accountList">
+      <ion-item (click)="handleUpdateClick(account)">
         <ion-label>
-          <h1>{{ storage.attributes.name }}</h1>
+          <h1>{{ account.attributes.name }}</h1>
         </ion-label>
 
         <div slot="end">
           <ion-badge>
-            {{ storage.attributes.code }}
+            {{ account.attributes.code }}
           </ion-badge>
         </div>
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option (click)="handleActionSheetClick(storage)">
+        <ion-item-option (click)="handleActionSheetClick(account)">
           <ion-icon name="settings-outline" size="large"></ion-icon>
         </ion-item-option>
       </ion-item-options>

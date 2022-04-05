@@ -1,48 +1,65 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject as Subject, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, single } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { BudgetGroupWrite } from 'src/models/finance/budget-group';
 import {
   BudgetCategoryRead,
   BudgetCategoryWrite,
-  transformBudgetCategoryRequest
+  transformOne,
+  transformMany,
 } from 'src/models/finance/budget-category';
+import { FinanceResponse as R } from 'src/models/finance/response';
+
+export type BudgetCategoryListCallback = (result: BudgetCategoryRead[]) => void;
 
 @Injectable()
 export class BudgetCategoryService {
-  public budgetCategoryListListener = new Subject<BudgetCategoryRead[]>();
+  public budgetCategoryListListener = new Subject<BudgetCategoryRead[]>([]);
 
   private readonly requestUrl = `${environment.services.finance}/api/budget-categories`;
 
   constructor(private http: HttpClient) { }
 
-  public createBudgetCategory(name: string, group: BudgetGroupWrite) {
-    const budgetCategory = new BudgetCategoryWrite(name, group);
-    return this.http.post(`${this.requestUrl}`, budgetCategory);
+  public createBudgetCategory(budgetGroupId: number, name: string) {
+    const budgetCategory = new BudgetCategoryWrite(name, { id: budgetGroupId });
+    return this.http.post<R<BudgetCategoryWrite>>(this.requestUrl, budgetCategory).pipe(
+      single(),
+      map(transformOne),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public updateBudgetCategory(budgetCategoryId: number, name: string, group: BudgetGroupWrite) {
-    const budgetCategory = new BudgetCategoryWrite(name, group);
-    return this.http.put(`${this.requestUrl}/${budgetCategoryId}`, { id: budgetCategoryId, ...budgetCategory });
+  public updateBudgetCategory(budgetCategoryId: number, budgetGroupId: number, name: string) {
+    const budgetCategory = new BudgetCategoryWrite(name, { id: budgetGroupId });
+    const requestUrl = `${this.requestUrl}/${budgetCategoryId}`;
+    return this.http.put<void>(requestUrl, { ...budgetCategory, id: budgetCategoryId }).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
   public deleteBudgetCategory(budgetCategoryId: number) {
-    return this.http.delete(`${this.requestUrl}/${budgetCategoryId}`);
+    return this.http.delete<void>(`${this.requestUrl}/${budgetCategoryId}`).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public findBudgetCategories() {
+  public findBudgetCategoryById(budgetCategoryId: number): Observable<BudgetCategoryRead> {
     return this.http
-      .get<BudgetCategoryRead[]>(this.requestUrl)
-      .pipe(map(transformBudgetCategoryRequest));
+      .get<R<BudgetCategoryWrite>>(`${this.requestUrl}/${budgetCategoryId}`)
+      .pipe(single(), map(transformOne));
   }
 
-  public sendEventToListener() {
-    return this.findBudgetCategories()
-      .subscribe((budgetCategories: BudgetCategoryRead[]) =>
-        this.budgetCategoryListListener.next(budgetCategories)
-      );
+  public emitFindBudgetCategoryList(): void {
+    this.http.get<R<BudgetCategoryWrite[]>>(this.requestUrl)
+      .pipe(single(), map(transformMany))
+      .subscribe(m => this.budgetCategoryListListener.next(m));
+  }
+
+  public listenFindBudgetCategoryList(callback: BudgetCategoryListCallback): Subscription {
+    return this.budgetCategoryListListener.subscribe(callback);
   }
 }

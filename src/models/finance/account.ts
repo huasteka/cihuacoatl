@@ -1,4 +1,5 @@
 import { SerializedModel } from '../serialized-model';
+import { FinanceResponse as R } from './response';
 
 export class AccountWrite extends SerializedModel {
   constructor(public code: string, public name: string) {
@@ -19,6 +20,9 @@ export class AccountRead extends SerializedModel {
   }
 }
 
-export const transformAccountRequest = (request: any): AccountRead[] => request.attributes.map(
-  ({ id, ...object }: any) => new AccountRead('account', { ...object }, id)
+export const transformOne = (request: R<AccountWrite>): AccountRead =>
+  new AccountRead('account', request.attributes, request.attributes.id);
+
+export const transformMany = (request: R<AccountWrite[]>): AccountRead[] => request.attributes.map(
+  (budgetGroup: AccountWrite) => new AccountRead('account', budgetGroup, budgetGroup.id),
 );

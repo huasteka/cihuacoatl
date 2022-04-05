@@ -1,19 +1,34 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { SerializedModel } from '../serialized-model';
+import { MeasureUnitRead } from './measure-unit';
+
+export interface ItemStockRelationship {
+  data: { id: number; type: string }[];
+}
+
+export interface ItemRelationship {
+  stocks: ItemStockRelationship;
+};
+
+export class ItemReadAttributes {
+  code: string;
+  name: string;
+  input_measure_unit: MeasureUnitRead;
+  input_quantity: number;
+  output_measure_unit: MeasureUnitRead;
+  output_quantity: number;
+}
+
+export class ItemRead extends SerializedModel {
+  constructor(public attributes: ItemReadAttributes, public relationships: ItemRelationship) {
+    super();
+  }
+}
 
 export interface ItemMeasureUnit {
   measure_unit_id: number;
   quantity: number;
 }
-
-export interface ItemMeasureUnitRelationship {
-  data: { id: number; type: string };
-}
-
-export interface ItemRelationship {
-  input_measure_unit: ItemMeasureUnitRelationship;
-  output_measure_unit: ItemMeasureUnitRelationship;
-};
 
 export class ItemWrite extends SerializedModel {
   public input_measure_unit_id: number;
@@ -30,18 +45,12 @@ export class ItemWrite extends SerializedModel {
   }
 
   public static createItem(source: ItemRead): ItemWrite {
-    const target = source.attributes;
-    target.id = source.id;
-    if (source.relationships) {
-      target.input_measure_unit_id = source.relationships.input_measure_unit.data.id;
-      target.output_measure_unit_id = source.relationships.output_measure_unit.data.id;
-    }
-    return target;
-  }
-}
+    const { input_measure_unit, output_measure_unit, ...item } = source.attributes;
+    const input = { measure_unit_id: input_measure_unit.id, quantity: item.input_quantity };
+    const output = { measure_unit_id: output_measure_unit.id, quantity: item.output_quantity };
 
-export class ItemRead extends SerializedModel {
-  constructor(public attributes: ItemWrite, public relationships: ItemRelationship) {
-    super();
+    const target = new ItemWrite(item.name, item.code, input, output);
+    target.id = source.id;
+    return target;
   }
 }

@@ -1,8 +1,13 @@
 import { SerializedModel } from '../serialized-model';
-import { BudgetGroupWrite } from './budget-group';
+import { FinanceResponse as R } from './response';
+
+export class BudgetCategoryGroup {
+  public id: number;
+  public name?: string;
+}
 
 export class BudgetCategoryWrite extends SerializedModel {
-  constructor(public name: string, public group: BudgetGroupWrite) {
+  constructor(public name: string, public group: BudgetCategoryGroup) {
     super();
   }
 
@@ -20,7 +25,10 @@ export class BudgetCategoryRead extends SerializedModel {
   }
 }
 
-export const transformBudgetCategoryRequest = (request: any): BudgetCategoryRead[] => request.attributes.map(
-  ({ id, ...object }: any) => new BudgetCategoryRead('budget-category', { ...object }, id)
+export const transformOne = (request: R<BudgetCategoryWrite>): BudgetCategoryRead =>
+  new BudgetCategoryRead('budget-group', request.attributes, request.attributes.id);
+
+export const transformMany = (request: R<BudgetCategoryWrite[]>): BudgetCategoryRead[] => request.attributes.map(
+  (budgetCategory: BudgetCategoryWrite) => new BudgetCategoryRead('budget-group', budgetCategory, budgetCategory.id),
 );
 
