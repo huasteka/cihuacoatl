@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/finance/payment-types"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Payment Type</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form *ngIf="paymentTypeForm" [formGroup]="paymentTypeForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Payment Account</ion-label>
+        <ion-select formControlName="accountId">
+          <ion-select-option *ngFor="let account of accountList" [value]="+account.id">
+            {{account.attributes.name}} ({{account.attributes.code}})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item-group formGroupName="terms">
+        <ion-item-divider>
+          <ion-label color="dark">Staged Payment?</ion-label>
+          <ion-toggle formControlName="stagedPayment" slot="end"></ion-toggle>
+        </ion-item-divider>
+
+        <ng-container *ngIf="paymentTypeForm.value.terms.stagedPayment">
+          <ion-item>
+            <ion-label position="stacked">Tax</ion-label>
+            <ion-input type="number" min="0" formControlName="tax"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">First installment</ion-label>
+            <ion-input type="number" min="0" formControlName="firstInstallmentTerm"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Quantity</ion-label>
+            <ion-input type="number" min="0" formControlName="installmentQuantity"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Term</ion-label>
+            <ion-select formControlName="installmentTerm">
+              <ion-select-option *ngFor="let frequency of paymentTermFrequency" [value]="+frequency.value">
+                {{frequency.label}}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ng-container>
+      </ion-item-group>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!paymentTypeForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

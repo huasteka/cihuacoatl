@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { BudgetCategoryRead, BudgetCategoryWrite } from 'src/models/finance/budget-category';
 import { BudgetGroupRead } from 'src/models/finance/budget-group';
@@ -18,12 +19,13 @@ export enum BudgetCategoryFormMode {
   templateUrl: 'budget-category-form.page.html',
   styleUrls: ['budget-category-form.page.scss'],
 })
-export class BudgetCategoryFormPage implements OnInit {
+export class BudgetCategoryFormPage implements OnInit, OnDestroy {
   public formMode: string;
   public budgetGroupList: BudgetGroupRead[];
   public budgetCategoryForm: FormGroup;
 
   private budgetCategoryId: number;
+  private subscriptionBudgetGroup$: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,6 +45,10 @@ export class BudgetCategoryFormPage implements OnInit {
     }
 
     this.buildForm();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionBudgetGroup$?.unsubscribe();
   }
 
   public async handleSubmit(): Promise<void> {
@@ -67,7 +73,7 @@ export class BudgetCategoryFormPage implements OnInit {
   }
 
   private loadBudgetGroupList(): void {
-    this.budgetGroupService.listenFindBudgetGroupList(
+    this.subscriptionBudgetGroup$ = this.budgetGroupService.listenFindBudgetGroupList(
       (budgetGroupList: BudgetGroupRead[]) => this.budgetGroupList = budgetGroupList
     );
 

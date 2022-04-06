@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'accounts',
     loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
   },
+  {
+    path: 'payment-types',
+    loadChildren: () => import('./payment-type/payment-type.module').then(m => m.PaymentTypeModule),
+  },
 ];
 
 @NgModule({

@@ -1,11 +1,34 @@
 import { SerializedModel } from '../serialized-model';
-import { AccountWrite } from './account';
-import { BudgetCategoryWrite } from './budget-category';
-import { PaymentTypeWrite } from './payment-type';
+import { PaymentTermsWrite, PaymentTypeAccount } from './payment-type';
+import { FinanceResponse as R } from './response';
 
 export enum EntryType {
   accountDeposit = 'DEPOSIT',
   accountWithdraw = 'WITHDRAW',
+}
+
+export interface EntryAccount {
+  id: number;
+  name?: string;
+  code?: string;
+}
+
+export interface EntryBudgetGroup {
+  id: number;
+  name?: string;
+}
+
+export interface EntryBudgetCategory {
+  id: number;
+  name?: string;
+  group?: EntryBudgetGroup;
+}
+
+export interface EntryPaymentType {
+  id: number;
+  name?: string;
+  paymentAccount?: PaymentTypeAccount;
+  terms?: PaymentTermsWrite;
 }
 
 export class EntryWrite extends SerializedModel {
@@ -13,6 +36,7 @@ export class EntryWrite extends SerializedModel {
   public discount: number;
   public tax: number;
   public netValue: number;
+  public description: string;
   public issuedAt: Date;
   public executedAt: Date;
 
@@ -20,10 +44,9 @@ export class EntryWrite extends SerializedModel {
     public type: EntryType,
     public code: string,
     public grossValue: number,
-    public description: string,
-    public account: AccountWrite,
-    public paymentType: PaymentTypeWrite,
-    public category: BudgetCategoryWrite
+    public account: EntryAccount,
+    public category: EntryBudgetCategory,
+    public paymentType: EntryPaymentType,
   ) {
     super();
   }
@@ -42,6 +65,9 @@ export class EntryRead extends SerializedModel {
   }
 }
 
-export const transformEntryRequest = (request: any): EntryRead[] => request.attributes.map(
-  ({ id, ...object }: any) => new EntryRead('entry', { ...object }, id)
+export const transformOne = (request: R<EntryWrite>): EntryRead =>
+  new EntryRead('entry', request.attributes, request.attributes.id);
+
+export const transformMany = (request: R<EntryWrite[]>): EntryRead[] => request.attributes.map(
+  (entry: EntryWrite) => new EntryRead('entry', entry, entry.id),
 );

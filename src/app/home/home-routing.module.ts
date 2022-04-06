@@ -23,6 +23,15 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'operations',
+    children: [
+      {
+        path: 'account',
+        loadChildren: () => import('../finance/entry/entry.module').then(m => m.EntryPageModule),
+      }
+    ]
+  },
+  {
     path: 'settings',
     loadChildren: () => import('../user/user.module').then(m => m.UserModule),
   },
