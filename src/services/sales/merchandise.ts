@@ -1,59 +1,65 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject as Subject, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, single } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { MerchandiseRead, MerchandiseWrite } from 'src/models/sales/merchandise';
+import {
+  buildMerchandise,
+  buildMerchandiseList,
+  MerchandiseDecoded,
+  MerchandiseResponse,
+  MerchandiseWrite,
+} from 'src/models/sales/merchandise';
+
+export type MerchandiseListCallback = (result: MerchandiseDecoded[]) => void;
 
 @Injectable()
 export class MerchandiseService {
-  public merchandiseListener = new Subject<MerchandiseRead[]>();
+  public merchandiseListListener = new Subject<MerchandiseDecoded[]>([]);
 
-  private readonly requestUrl = `${environment.services.finance}/api/merchandises`;
+  private readonly requestUrl = `${environment.services.sales}/api/merchandises`;
 
   constructor(private http: HttpClient) { }
 
-  public createMerchandise(merchandise: MerchandiseWrite) {
-    return this.http.post(this.requestUrl, merchandise);
+  public createMerchandise(product_id: number, retail_price: number, purchase_price: number) {
+    const merchandise: MerchandiseWrite = { product_id, retail_price, purchase_price };
+    return this.http.post<MerchandiseResponse>(this.requestUrl, merchandise).pipe(
+      single(),
+      map(buildMerchandise),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public updateMerchandise(merchandiseId: number, merchandise: MerchandiseWrite) {
-    return this.http.put(`${this.requestUrl}/${merchandiseId}`, merchandise);
+  public updateMerchandise(merchandise_id: number, product_id: number, retail_price: number, purchase_price: number) {
+    const merchandise: MerchandiseWrite = { product_id, retail_price, purchase_price };
+    return this.http.put<void>(`${this.requestUrl}/${merchandise_id}`, merchandise).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public deleteMerchandise(merchandiseId: number) {
-    return this.http.delete(`${this.requestUrl}/${merchandiseId}`);
+  public deleteMerchandise(merchandise_id: number) {
+    return this.http.delete<void>(`${this.requestUrl}/${merchandise_id}`).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public findMerchandises() {
+  public findMerchandiseById(merchandise_id: number): Observable<MerchandiseDecoded> {
     return this.http
-      .get<MerchandiseRead[]>(this.requestUrl)
-      .pipe(map((response: any) => this.buildMerchandiseList(response)));
+      .get<MerchandiseResponse>(`${this.requestUrl}/${merchandise_id}`)
+      .pipe(single(), map(buildMerchandise));
   }
 
-  public findMerchandiseById(merchandiseId: number) {
-    return this.http
-      .get<MerchandiseRead>(`${this.requestUrl}/${merchandiseId}`)
-      .pipe(map((response: any) => this.buildMerchandise(response)));
+  public emitFindMerchandiseList(): void {
+    this.http.get<MerchandiseResponse>(this.requestUrl)
+      .pipe(single(), map(buildMerchandiseList))
+      .subscribe(m => this.merchandiseListListener.next(m));
   }
 
-  public sendEventToListener() {
-    return this.findMerchandises()
-      .subscribe((merchandiseList: MerchandiseRead[]) =>
-        this.merchandiseListener.next(merchandiseList)
-      );
-  }
-
-  private buildMerchandiseList(response) {
-    return (response.data || []).map((merchandise) => {
-      const productId = merchandise.relationships.product.data.shift().id;
-      const product = response.included.find((p: any) => p.id === productId);
-      return { ...merchandise, relationships: { product } };
-    });
-  }
-
-  private buildMerchandise(response) {
-    return { ...response.data, relationships: { product: { ...response.included.shift() } } };
+  public listenFindMerchandiseList(callback: MerchandiseListCallback): Subscription {
+    return this.merchandiseListListener.subscribe(callback);
   }
 }
