@@ -1,45 +1,65 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject as Subject, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, single } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { ClientRead, ClientWrite } from 'src/models/sales/client';
+import {
+  buildClient,
+  buildClientList,
+  ClientDecoded,
+  ClientResponse,
+  ClientWrite,
+} from 'src/models/sales/client';
+
+export type ClientListCallback = (result: ClientDecoded[]) => void;
 
 @Injectable()
 export class ClientService {
-  public clientListener = new Subject<ClientRead[]>();
+  public clientListListener = new Subject<ClientDecoded[]>([]);
 
-  private readonly requestUrl = `${environment.services.finance}/api/clients`;
+  private readonly requestUrl = `${environment.services.sales}/api/clients`;
 
   constructor(private http: HttpClient) { }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   public createClient(name: string, legal_document_code: string) {
-    const client = new ClientWrite(name, legal_document_code);
-    return this.http.post(this.requestUrl, client);
+    const client: ClientWrite = { name, legal_document_code };
+    return this.http.post<ClientResponse>(this.requestUrl, client).pipe(
+      single(),
+      map(buildClient),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  public updateClient(clientId: number, name: string, legal_document_code: string) {
-    const client = new ClientWrite(name, legal_document_code);
-    return this.http.put(`${this.requestUrl}/${clientId}`, client);
+  public updateClient(client_id: number, name: string, legal_document_code: string) {
+    const client: ClientWrite = { name, legal_document_code };
+    return this.http.put<void>(`${this.requestUrl}/${client_id}`, client).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public deleteClient(clientId: number) {
-    return this.http.delete(`${this.requestUrl}/${clientId}`);
+  public deleteClient(client_id: number) {
+    return this.http.delete<void>(`${this.requestUrl}/${client_id}`).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  public findClients() {
+  public findClientById(clientId: number): Observable<ClientDecoded> {
     return this.http
-      .get<ClientRead[]>(this.requestUrl)
-      .pipe(map((response: any) => response.data));
+      .get<ClientResponse>(`${this.requestUrl}/${clientId}`)
+      .pipe(single(), map(buildClient));
   }
 
-  public sendEventToListener() {
-    return this.findClients()
-      .subscribe((clientList: ClientRead[]) => {
-        this.clientListener.next(clientList);
-      });
+  public emitFindClientList(): void {
+    this.http.get<ClientResponse>(this.requestUrl)
+      .pipe(single(), map(buildClientList))
+      .subscribe(m => this.clientListListener.next(m));
+  }
+
+  public listenFindClientList(callback: ClientListCallback): Subscription {
+    return this.clientListListener.subscribe(callback);
   }
 }
