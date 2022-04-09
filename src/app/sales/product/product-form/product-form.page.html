@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/sales/products"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-progress-bar *ngIf="!productForm" type="indeterminate"></ion-progress-bar>
+
+  <form *ngIf="productForm" [formGroup]="productForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Code</ion-label>
+        <ion-input type="text" formControlName="code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-input type="text" formControlName="description"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!productForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

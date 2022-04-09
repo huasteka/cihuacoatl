@@ -47,6 +47,7 @@ export class PaymentTypeFormPage implements OnInit, OnDestroy {
 
     if (this.isUpdate()) {
       this.buildUpdateForm();
+      return;
     }
     this.buildForm();
   }

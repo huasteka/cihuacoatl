@@ -156,7 +156,7 @@ export class EntryOperationPage implements OnInit, OnDestroy {
     this.entryForm = new FormGroup({
       type: new FormControl(this.entryType, Validators.required),
       code: new FormControl('', Validators.required),
-      grossValue: new FormControl(0, Validators.required),
+      grossValue: new FormControl(0, [Validators.required, Validators.min(1)]),
       addition: new FormControl(0, Validators.nullValidator),
       discount: new FormControl(0, Validators.nullValidator),
       netValue: new FormControl(0, Validators.nullValidator),
