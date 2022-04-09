@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <form #f="ngForm" (ngSubmit)="handleRegistration(f)">
+    <ion-img class="logo-image" src="/assets/logo.svg"></ion-img>
+
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input ngModel type="text" name="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">E-mail</ion-label>
+        <ion-input ngModel required type="email" name="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input ngModel required type="password" name="password" [minlength]="6"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!f.valid">
+      Register
+    </ion-button>
+
+    <div class="register-link">
+      <span>Already have an account?&nbsp;</span>
+      <strong>
+        <a (click)="handleNavigateBack()">Login</a>
+      </strong>
+    </div>
+  </form>
+</ion-content>

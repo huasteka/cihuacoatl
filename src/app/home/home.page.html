@@ -1,0 +1,70 @@
+<ion-menu side="start" menuId="navigation" contentId="home-content">
+  <ion-content>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="getUserAvatar()">
+        </ion-avatar>
+
+        <ion-label>{{ getUserName() }}</ion-label>
+      </ion-item>
+
+      <ion-item-divider>Inventory</ion-item-divider>
+
+      <ion-item button [routerLink]="['/home/operations/stock']">
+        <ion-icon name="cube-outline" slot="start"></ion-icon>
+        <ion-label>Stock Operations</ion-label>
+      </ion-item>
+
+      <ion-item-divider>Finances</ion-item-divider>
+
+      <ion-item button [routerLink]="['/home/operations/account']">
+        <ion-icon name="list-outline" slot="start"></ion-icon>
+        <ion-label>Account Operations</ion-label>
+      </ion-item>
+
+      <ion-item-divider>User Area</ion-item-divider>
+
+      <ion-item button [routerLink]="['/home/settings']">
+        <ion-icon name="person-outline" slot="start"></ion-icon>
+        <ion-label>Change Name</ion-label>
+      </ion-item>
+
+      <ion-item button [routerLink]="['/home/settings/security']">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-label>Change Password</ion-label>
+      </ion-item>
+
+      <ion-item button (click)="handleSignOut()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        <ion-label>Log Out</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-content id="home-content"></ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="dashboard">
+      <ion-icon name="speedometer-outline"></ion-icon>
+      <ion-label>Dashboard</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="inventory">
+      <ion-icon name="list-outline"></ion-icon>
+      <ion-label>Inventory</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="finance">
+      <ion-icon name="card"></ion-icon>
+      <ion-label>Finance</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="sales">
+      <ion-icon name="trending-up"></ion-icon>
+      <ion-label>Sales</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

@@ -1,31 +1,49 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Storage } from '@ionic/storage';
 
-import { ZACATZONTLI_URL } from '../apis';
-import { User, UserCredentials } from '../../models/user';
+import { environment } from 'src/environments/environment';
+import { User, UserCredentials } from 'src/models/auth/user';
+import { catchError, single } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
-  private requestUrl = ZACATZONTLI_URL + '/api/users';
+  private readonly requestUrl = `${environment.services.authentication}/api/users`;
 
-  public constructor(private http: HttpClient) {
+  public constructor(private http: HttpClient, private storage: Storage) { }
+
+  public updatePassword(userId: number, password: string, passwordConfirmation: string): Observable<User> {
+    const userCredentials = new UserCredentials(password, passwordConfirmation);
+    const requestUrl = `${this.requestUrl}/${userId}/change-password`;
+    return this.http.post<User>(requestUrl, userCredentials).pipe(
+      single(),
+      catchError((e) => throwError(e.errors)),
+    );
   }
 
-  updatePassword(userId: number, newPassword: string, newPasswordConfirmation: string) {
-    const userCredentials = new UserCredentials(newPassword, newPasswordConfirmation);
-    return this.http.post<UserCredentials>(`${this.requestUrl}/${userId}/change-password`, userCredentials);
+  public updateUserName(userId: number, name: string): Observable<User> {
+    return this.http.put<User>(`${this.requestUrl}/${userId}`, { name }).pipe(
+      single(),
+      catchError((e) => throwError(e.errors)),
+    );
   }
 
-  updateUserName(userId: number, name: string) {
-    return this.http.put(`${this.requestUrl}/${userId}`, {name});
+  public findUserById(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.requestUrl}/${userId}`).pipe(single());
   }
 
-  findUserById(userId: number) {
-    return this.http.get<User>(`${this.requestUrl}/${userId}`);
-  }
+  public async findUserProfile(): Promise<User> {
+    let userProfile: User = await this.storage.get('user-profile');
 
-  findUserProfile() {
-    return this.http.get<User>(`${this.requestUrl}/profile`);
-  }
+    if (userProfile === null) {
+      const observable = this.http.get<User>(`${this.requestUrl}/profile`);
+      userProfile = await observable.toPromise();
+      await this.storage.set('user-profile', userProfile);
+    }
 
+    return userProfile;
+  }
 }

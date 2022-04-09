@@ -1,61 +1,52 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/do';
-import { ToastController } from 'ionic-angular';
+import { BehaviorSubject } from 'rxjs';
 
-import { ZACATZONTLI_URL } from '../apis';
+import { environment } from 'src/environments/environment';
 
-export type AuthToken = { token: string };
+export interface AuthToken {
+  token: string;
+}
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
-  authenticated = new Subject<boolean>();
-  private requestUrl = ZACATZONTLI_URL + '/api/auth';
+  public authenticated = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient,
-              private toastCtrl: ToastController,
-              private storage: Storage) {
+  private readonly requestUrl = `${environment.services.authentication}/api/auth`;
+
+  constructor(private http: HttpClient, private storage: Storage) { }
+
+  public async signIn(email: string, password: string): Promise<void> {
+    const observable = this.http.post<AuthToken>(`${this.requestUrl}/sign-in`, { email, password });
+    const token: AuthToken = await observable.toPromise();
+    await this.storage.set('auth-token', token);
+    this.authenticated.next(true);
   }
 
-  signIn(email, password) {
-    return this.http.post(`${this.requestUrl}/sign-in`, {email, password})
-      .do((token: AuthToken) => {
-        this.authenticated.next(true);
-        this.storage.set('auth-token', token);
-      });
+  public async signOut(): Promise<void> {
+    await this.storage.remove('auth-token');
+    await this.storage.remove('user-profile');
+    this.authenticated.next(false);
   }
 
-  signOut() {
-    const toast = this.toastCtrl.create({
-      message: '',
-      duration: 2500
-    });
-
-    return this.storage
-      .remove('auth-token')
-      .then(() => {
-        this.authenticated.next(false);
-      })
-      .catch(() => toast.present());
+  public async signUp(name: string, email: string, password: string): Promise<void> {
+    const observable = this.http.post<AuthToken>(`${this.requestUrl}/sign-up`, { name, email, password });
+    const token: AuthToken = await observable.toPromise();
+    await this.storage.set('auth-token', token);
+    this.authenticated.next(true);
   }
 
-  signUp(name, email, password) {
-    return this.http.post(`${this.requestUrl}/sign-up`, {name, email, password})
-      .do((token: AuthToken) => {
-        this.authenticated.next(true);
-        this.storage.set('auth-token', token);
-      });
+  public async isAuthenticated(): Promise<boolean> {
+    const token: AuthToken = await this.getAuthToken();
+    const isAuthenticated = token !== null;
+    this.authenticated.next(isAuthenticated);
+    return isAuthenticated;
   }
 
-  isAuthenticated() {
-    this.getAuthToken().then((token: AuthToken) => {
-      this.authenticated.next(!!token);
-    });
-  }
-
-  getAuthToken() {
-    return this.storage.get('auth-token');
+  public async getAuthToken(): Promise<AuthToken> {
+    return await this.storage.get('auth-token');
   }
 }

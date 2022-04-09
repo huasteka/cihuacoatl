@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/finance/budget-categories"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Budget Category</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form *ngIf="budgetCategoryForm" [formGroup]="budgetCategoryForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Budget Group</ion-label>
+        <ion-select formControlName="budgetGroupId">
+          <ion-select-option *ngFor="let group of budgetGroupList" [value]="+group.id">
+            {{group.attributes.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!budgetCategoryForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

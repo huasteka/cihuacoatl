@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/sales/merchandises"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Merchandise</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-progress-bar *ngIf="!merchandiseForm" type="indeterminate"></ion-progress-bar>
+
+  <form *ngIf="merchandiseForm" [formGroup]="merchandiseForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Product</ion-label>
+        <ion-select formControlName="product_id">
+          <ion-select-option *ngFor="let product of productList" [value]="+product.id"> 
+            {{ product.name }} ({{ product.code }})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Purchase Price</ion-label>
+        <ion-input type="number" formControlName="purchase_price" inputmode="number" [min]="0"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Retail Price</ion-label>
+        <ion-input type="number" formControlName="retail_price" inputmode="number" [min]="0"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!merchandiseForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

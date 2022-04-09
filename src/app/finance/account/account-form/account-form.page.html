@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/finance/accounts"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Account</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form *ngIf="accountForm" [formGroup]="accountForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Code</ion-label>
+        <ion-input type="text" formControlName="code"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!accountForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

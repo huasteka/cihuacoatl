@@ -1,41 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/do';
+import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { HUITZILOPOCHTLI_URL } from '../apis';
-import { ProductRead, ProductWrite } from '../../models/product';
+import { environment } from 'src/environments/environment';
+import { ProductRead, ProductWrite } from 'src/models/sales/product';
 
 @Injectable()
 export class ProductService {
-  private requestUrl = HUITZILOPOCHTLI_URL + '/api/products';
-  productListener = new Subject<ProductRead[]>();
+  public productListener = new Subject<ProductRead[]>();
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/products`;
 
-  createProduct(code: string, name: string, description?: string) {
+  constructor(private http: HttpClient) { }
+
+  public createProduct(code: string, name: string, description?: string) {
     const product = new ProductWrite(code, name, description);
     return this.http.post(this.requestUrl, product);
   }
 
-  updateProduct(productId: number, code: string, name: string, description?: string) {
+  public updateProduct(productId: number, code: string, name: string, description?: string) {
     const product = new ProductWrite(code, name, description);
     return this.http.put(`${this.requestUrl}/${productId}`, product);
   }
 
-  deleteProduct(productId: number) {
+  public deleteProduct(productId: number) {
     return this.http.delete(`${this.requestUrl}/${productId}`);
   }
 
-  findProducts() {
-    return this.http.get<ProductRead[]>(this.requestUrl)
-      .map((response: any) => response.data);
+  public findProducts() {
+    return this.http
+      .get<ProductRead[]>(this.requestUrl)
+      .pipe(map((response: any) => response.data));
   }
 
-  sendEventToListener() {
-    this.findProducts().subscribe((productList: ProductRead[]) => {
-      this.productListener.next(productList);
-    });
+  public sendEventToListener() {
+    return this.findProducts()
+      .subscribe((productList: ProductRead[]) =>
+        this.productListener.next(productList)
+      );
   }
 }

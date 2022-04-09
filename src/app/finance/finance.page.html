@@ -1,0 +1,61 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>Finances Manager</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-row>
+    <ion-col size="6">
+      <ion-card button class="card-item-container" [routerLink]="['budget-groups']">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="pricetags-outline" size="large"></ion-icon>
+          </ion-card-title>
+          <br>
+          <ion-card-subtitle class="card-item-header">Budget Groups</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-card button class="card-item-container" [routerLink]="['budget-categories']">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="pricetags-outline" size="large"></ion-icon>
+          </ion-card-title>
+          <br>
+          <ion-card-subtitle style="font-size: 15px;">Budget Categories</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-card button class="card-item-container" [routerLink]="['accounts']">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="wallet-outline" size="large"></ion-icon>
+          </ion-card-title>
+          <br>
+          <ion-card-subtitle class="card-item-header">Accounts</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-card button class="card-item-container" [routerLink]="['payment-types']">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="cash-outline" size="large"></ion-icon>
+          </ion-card-title>
+          <br>
+          <ion-card-subtitle class="card-item-header">Payment Types</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

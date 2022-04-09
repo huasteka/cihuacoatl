@@ -1,0 +1,28 @@
+<ion-content [fullscreen]="true">
+  <form #f="ngForm" (ngSubmit)="handleLogin(f)">
+    <ion-img class="logo-image" src="/assets/logo.svg"></ion-img>
+
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">E-mail</ion-label>
+        <ion-input ngModel required type="email" name="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input ngModel required type="password" name="password" [minlength]="6"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!f.valid">Login</ion-button>
+
+    <div class="register-link">
+      <span>Don't have an account?&nbsp;</span>
+      <strong>
+        <a [routerLink]="['/auth/registration']">Register here</a>
+      </strong>
+    </div>
+  </form>
+</ion-content>

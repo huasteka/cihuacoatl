@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/inventory/measure-units"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ formMode }} Measure Unit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form *ngIf="measureUnitForm" [formGroup]="measureUnitForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text" formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Acronym</ion-label>
+        <ion-input type="text" formControlName="acronym"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!measureUnitForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

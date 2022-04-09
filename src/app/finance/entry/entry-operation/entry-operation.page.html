@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/operations/account"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ isDeposit() ? 'Deposit Into Account' : 'Withdraw From Account' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="entryForm" (ngSubmit)="handleSubmit()">
+    <ion-list lines="full">
+      <ion-item>
+        <ion-label position="stacked">Code</ion-label>
+        <ion-input type="text" formControlName="code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Gross Value</ion-label>
+        <ion-input type="number" formControlName="grossValue" inputmode="number" [min]="1"
+          (ionChange)="calculateNetValue()">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Addition</ion-label>
+        <ion-input type="number" formControlName="addition" inputmode="number" [min]="0"
+          (ionChange)="calculateNetValue()">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Discount</ion-label>
+        <ion-input type="number" formControlName="discount" inputmode="number" [min]="0" [max]="calculateMaxDiscount()"
+          (ionChange)="calculateNetValue()">
+        </ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Net Value</ion-label>
+        <ion-input type="number" formControlName="netValue" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Description</ion-label>
+        <ion-input type="text" formControlName="description"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Category</ion-label>
+        <ion-select formControlName="categoryId">
+          <ion-select-option *ngFor="let budgetCategory of budgetCategoryList" [value]="budgetCategory.id">
+            {{ budgetCategory.attributes.group.name }} - {{ budgetCategory.attributes.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Payment Type</ion-label>
+        <ion-select formControlName="paymentTypeId" (ionChange)="handlePaymentSelect($event)">
+          <ion-select-option *ngFor="let paymentType of paymentTypeList" [value]="paymentType.id">
+            {{ paymentType.attributes.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Account</ion-label>
+        <ion-select formControlName="accountId">
+          <ion-select-option *ngFor="let account of accountList" [value]="account.id">
+            {{ account.attributes.name }} ({{ account.attributes.code }})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!entryForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

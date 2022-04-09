@@ -1,11 +1,11 @@
 export class SerializedModel {
-  protected _id: number;
+  protected serializedIdentity: number;
 
-  get id(): number {
-    return this._id
+  public get id(): number {
+    return this.serializedIdentity;
   }
 
-  set id(_id: number) {
-    this._id = _id;
+  public set id(serializedIdentity: number) {
+    this.serializedIdentity = serializedIdentity;
   }
 }

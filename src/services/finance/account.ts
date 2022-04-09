@@ -1,42 +1,65 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject as Subject, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, single } from 'rxjs/operators';
 
-import { YACATECUHTLI_URL } from '../apis';
-import { AccountRead, AccountWrite, transformAccountRequest } from '../../models/account';
+import { environment } from 'src/environments/environment';
+import {
+  AccountRead,
+  AccountWrite,
+  transformOne,
+  transformMany,
+} from 'src/models/finance/account';
+import { FinanceResponse as R } from 'src/models/finance/response';
+
+export type AccountListCallback = (result: AccountRead[]) => void;
 
 @Injectable()
 export class AccountService {
-  private requestUrl = YACATECUHTLI_URL + '/api/accounts';
-  accountListListener = new Subject<AccountRead[]>();
+  public accountListListener = new Subject<AccountRead[]>([]);
 
-  constructor(private http: HttpClient) {
-  }
+  private readonly requestUrl = `${environment.services.finance}/api/accounts`;
 
-  createAccount(code: string, name: string,) {
+  constructor(private http: HttpClient) { }
+
+  public createAccount(code: string, name: string): Observable<AccountRead> {
     const account = new AccountWrite(code, name);
-    return this.http.post(`${this.requestUrl}`, account);
+    return this.http.post<R<AccountWrite>>(this.requestUrl, account).pipe(
+      single(),
+      map(transformOne),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  updateAccount(accountId: number, code: string, name: string) {
+  public updateAccount(accountId: number, code: string, name: string): Observable<void> {
     const account = new AccountWrite(code, name);
-    return this.http.put(`${this.requestUrl}/${accountId}`, {id: accountId, ...account});
+    const requestUrl = `${this.requestUrl}/${accountId}`;
+    return this.http.put<void>(requestUrl, { ...account, id: accountId }).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  deleteAccount(accountId: number) {
-    return this.http.delete(`${this.requestUrl}/${accountId}`);
+  public deleteAccount(accountId: number): Observable<void> {
+    return this.http.delete<void>(`${this.requestUrl}/${accountId}`).pipe(
+      single(),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );
   }
 
-  findAccounts() {
+  public findAccountById(accountId: number): Observable<AccountRead> {
     return this.http
-      .get<AccountRead[]>(this.requestUrl)
-      .map(transformAccountRequest);
+      .get<R<AccountWrite>>(`${this.requestUrl}/${accountId}`)
+      .pipe(single(), map(transformOne));
   }
 
-  sendEventToListener() {
-    this.findAccounts().subscribe((accounts: AccountRead[]) => {
-      this.accountListListener.next(accounts);
-    });
+  public emitFindAccountList(): void {
+    this.http.get<R<AccountWrite[]>>(this.requestUrl)
+      .pipe(single(), map(transformMany))
+      .subscribe(m => this.accountListListener.next(m));
+  }
+
+  public listenFindAccountList(callback: AccountListCallback): Subscription {
+    return this.accountListListener.subscribe(callback);
   }
 }

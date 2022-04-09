@@ -1,0 +1,49 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>Inventory Manager</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col size="6">
+      <ion-card button class="card-item-container" [routerLink]="['storages']">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="folder-outline" size="large"></ion-icon>
+          </ion-card-title>
+          <br>
+          <ion-card-subtitle class="card-item-header">Storages</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-card button class="card-item-container" [routerLink]="['measure-units']">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="pricetags-outline" size="large"></ion-icon>
+          </ion-card-title>
+          <br>
+          <ion-card-subtitle class="card-item-header">Measure Units</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-card button class="card-item-container" [routerLink]="['items']">
+        <ion-card-header>
+          <ion-card-title>
+            <ion-icon name="documents-outline" size="large"></ion-icon>
+          </ion-card-title>
+          <br>
+          <ion-card-subtitle class="card-item-header">Items</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+</ion-content>

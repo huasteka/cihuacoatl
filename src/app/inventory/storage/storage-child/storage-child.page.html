@@ -1,0 +1,50 @@
+<div *ngIf="storage">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/home/modules/inventory/storages"></ion-back-button>
+      </ion-buttons>
+
+      <ion-title *ngIf="!storage.name">
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </ion-title>
+
+      <ion-title *ngIf="storage.name">{{storage.name}}</ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="handleAppendClick()">
+          <ion-icon name="add-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content [fullscreen]="true">
+    <ion-list lines="full">
+      <ion-item *ngIf="storage.children.length < 1">
+        <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h1>There are no storages appended</h1>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-sliding *ngFor="let child of storage.children">
+        <ion-item (click)="handleUpdateClick(child)">
+          <ion-label>
+            <h1>{{ child.name }}</h1>
+          </ion-label>
+
+          <ion-badge slot="end">
+            {{ child.code }}
+          </ion-badge>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option (click)="handleActionSheetClick(child)">
+            <ion-icon name="settings-outline" size="large"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-content>
+</div>

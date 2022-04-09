@@ -1,38 +1,59 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Subject } from "rxjs/Subject";
-import 'rxjs/add/operator/map';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject as Subject, Observable, Subscription, throwError } from 'rxjs';
+import { catchError, map, single } from 'rxjs/operators';
 
-import { YACATECUHTLI_URL } from '../apis';
-import { EntryRead, transformEntryRequest, EntryWrite, EntryType } from "../../models/entry";
+import { environment } from 'src/environments/environment';
+import {
+  EntryRead,
+  EntryWrite,
+  EntryType,
+  transformOne,
+  transformMany,
+} from 'src/models/finance/entry';
+import { FinanceResponse as R } from 'src/models/finance/response';
+
+export type EntryListCallback = (result: EntryRead[]) => void;
 
 @Injectable()
 export class EntryService {
-  private requestUrl = YACATECUHTLI_URL + '/api/entries';
-  entryListListener = new Subject<EntryRead[]>();
+  public entryListListener = new Subject<EntryRead[]>([]);
 
-  constructor(private http: HttpClient) {
+  private readonly requestUrl = `${environment.services.finance}/api/entries`;
+
+  constructor(private http: HttpClient) { }
+
+  public deposit(entry: EntryWrite): Observable<EntryRead> {
+    entry.type = EntryType.accountDeposit;
+    return this.http.post(`${this.requestUrl}/deposit`, entry).pipe(
+      single(),
+      map(transformOne),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );;
   }
 
-  deposit(entry: EntryWrite) {
-    entry.type = EntryType.DEPOSIT;
-    return this.http.post(`${this.requestUrl}/deposit`, entry);
+  public withdraw(entry: EntryWrite): Observable<EntryRead> {
+    entry.type = EntryType.accountWithdraw;
+    return this.http.post(`${this.requestUrl}/withdraw`, entry).pipe(
+      single(),
+      map(transformOne),
+      catchError(({ error }: HttpErrorResponse) => throwError(error.errors)),
+    );;
   }
 
-  withdraw(entry: EntryWrite) {
-    entry.type = EntryType.WITHDRAW;
-    return this.http.post(`${this.requestUrl}/withdraw`, entry);
-  }
-
-  findEntries(accountId: number) {
+  public findEntryById(entryId: number): Observable<EntryRead> {
     return this.http
-      .get<EntryRead[]>(`${this.requestUrl}/accounts/${accountId}`)
-      .map(transformEntryRequest);
+      .get<R<EntryWrite>>(`${this.requestUrl}/${entryId}`)
+      .pipe(single(), map(transformOne));
   }
 
-  sendEventToListener(accountId: number) {
-    this.findEntries(accountId).subscribe((entries: EntryRead[]) => {
-      this.entryListListener.next(entries);
-    });
+  public emitFindEntryList(accountId: number): void {
+    this.http.get<R<EntryWrite[]>>(`${this.requestUrl}/accounts/${accountId}`)
+      .pipe(single(), map(transformMany))
+      .subscribe(m => this.entryListListener.next(m));
+  }
+
+  public listenFindEntryList(callback: EntryListCallback): Subscription {
+    return this.entryListListener.subscribe(callback);
   }
 }
