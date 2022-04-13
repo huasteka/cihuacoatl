@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -27,6 +27,7 @@ import { EntryRoutingModule } from './entry-routing.module';
     EntryOperationPage,
   ],
   providers: [
+    CurrencyPipe,
     AccountService,
     BudgetCategoryService,
     PaymentTypeService,

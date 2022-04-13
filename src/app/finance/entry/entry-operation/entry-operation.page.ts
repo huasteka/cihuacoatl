@@ -153,6 +153,8 @@ export class EntryOperationPage implements OnInit, OnDestroy {
   }
 
   private createForm() {
+    const accountId = this.route.snapshot.queryParams.accountId;
+
     this.entryForm = new FormGroup({
       type: new FormControl(this.entryType, Validators.required),
       code: new FormControl('', Validators.required),
@@ -161,7 +163,7 @@ export class EntryOperationPage implements OnInit, OnDestroy {
       discount: new FormControl(0, Validators.nullValidator),
       netValue: new FormControl(0, Validators.nullValidator),
       description: new FormControl('', Validators.required),
-      accountId: new FormControl(null, Validators.required),
+      accountId: new FormControl(accountId, Validators.required),
       categoryId: new FormControl(null),
       paymentTypeId: new FormControl(null, Validators.required),
     });

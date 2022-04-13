@@ -9,5 +9,96 @@
 </ion-header>
 
 <ion-content>
+  <ion-card *ngIf="selectedEntry">
+    <ion-card-header>
+      <ion-card-subtitle *ngIf="selectedEntry.attributes.category.id">
+        {{ selectedEntry.attributes.category.name }} &raquo; {{ selectedEntry.attributes.category.group.name }}
+      </ion-card-subtitle>
+      <ion-card-title>{{ selectedEntry.attributes.type }}</ion-card-title>
+    </ion-card-header>
 
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label class="entry-detail-label">
+            Code
+          </ion-label>
+
+          <div slot="end">
+            {{ selectedEntry.attributes.code || '-' }}
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="entry-detail-label">
+            Gross Value
+          </ion-label>
+
+          <div slot="end">
+            {{ getCurrency(selectedEntry.attributes.grossValue) }}
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="entry-detail-label">
+            Addition
+          </ion-label>
+
+          <div slot="end">
+            {{ getCurrency(selectedEntry.attributes.addition) }}
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="entry-detail-label">
+            Discount
+          </ion-label>
+
+          <div slot="end">
+            {{ getCurrency(selectedEntry.attributes.discount) }}
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="entry-detail-label">
+            Net Value
+          </ion-label>
+
+          <div slot="end">
+            {{ getCurrency(selectedEntry.attributes.netValue) }}
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="entry-detail-label">
+            Payment Type
+          </ion-label>
+
+          <div slot="end">
+            {{ selectedEntry.attributes.paymentType.name }}
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="entry-detail-label">
+            Payment Account
+          </ion-label>
+
+          <div slot="end">
+            {{ selectedEntry.attributes.account.name }}
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label class="entry-detail-label">Description</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <ion-textarea [readonly]="true">{{ selectedEntry.attributes.description }}</ion-textarea>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -24,6 +25,7 @@ export class EntryPage implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
+    private currencyPipe: CurrencyPipe,
     private accountService: AccountService,
     private entryService: EntryService
   ) { }
@@ -54,11 +56,13 @@ export class EntryPage implements OnInit, OnDestroy {
   }
 
   public handleDepositClick(): void {
-    this.navCtrl.navigateForward(`/home/operations/account/deposit`);
+    const queryParams = this.selectedAccountId ? { accountId: this.selectedAccountId } : {};
+    this.navCtrl.navigateForward(`/home/operations/account/deposit`, { queryParams });
   }
 
   public handleWithdrawClick(): void {
-    this.navCtrl.navigateForward(`/home/operations/account/withdraw`);
+    const queryParams = this.selectedAccountId ? { accountId: this.selectedAccountId } : {};
+    this.navCtrl.navigateForward(`/home/operations/account/withdraw`, { queryParams });
   }
 
   public handleDetailClick(entry: EntryRead): void {
@@ -72,8 +76,13 @@ export class EntryPage implements OnInit, OnDestroy {
     };
   }
 
-  public getEntryValue({ type, grossValue }: EntryWrite): number {
-    return type === EntryType.accountDeposit ? grossValue : grossValue * -1;
+  public getEntryValue({ type, grossValue }: EntryWrite): string {
+    const transformedValue = type === EntryType.accountDeposit ? grossValue : grossValue * -1;
+    return this.getCurrency(transformedValue);
+  }
+
+  private getCurrency(amount: number): string {
+    return this.currencyPipe.transform(amount);
   }
 
   private loadAccountList() {
