@@ -13,6 +13,7 @@ import { MerchandiseService } from 'src/services/sales/merchandise';
 @Component({
   selector: 'app-page-merchandise',
   templateUrl: 'merchandise.page.html',
+  styleUrls: ['merchandise.page.scss'],
 })
 export class MerchandisePage implements OnInit, OnDestroy {
   public merchandiseList: MerchandiseDecoded[];
