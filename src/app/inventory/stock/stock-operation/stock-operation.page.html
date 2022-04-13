@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/operations/stock"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ isDeposit() ? 'Storage Deposit' : 'Storage Withdraw' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form *ngIf="stockForm" [formGroup]="stockForm" (ngSubmit)="handleSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Storage</ion-label>
+        <ion-select formControlName="storage_id">
+          <ion-select-option *ngFor="let storage of storageList" [value]="storage.id">
+            {{ storage.attributes.name }} ({{ storage.attributes.code }})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Item</ion-label>
+        <ion-select formControlName="item_id">
+          <ion-select-option *ngFor="let item of itemList" [value]="item.id">
+            {{ item.attributes.name }} ({{ item.attributes.code }})
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Quantity</ion-label>
+        <ion-input type="number" inputmode="number" formControlName="quantity"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <br>
+
+    <ion-button type="submit" expand="block" fill="outline" size="large" [disabled]="!stockForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>

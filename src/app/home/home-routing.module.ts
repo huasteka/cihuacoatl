@@ -32,6 +32,10 @@ const routes: Routes = [
       {
         path: 'account',
         loadChildren: () => import('../finance/entry/entry.module').then(m => m.EntryPageModule),
+      },
+      {
+        path: 'stock',
+        loadChildren: () => import('../inventory/stock/stock.module').then(m => m.StockPageModule),
       }
     ]
   },

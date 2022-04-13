@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   services: {
-    authentication: 'http://localhost:1337',
+    authentication: 'http://localhost:9701',
     storage: 'http://localhost:9702',
     finance: 'http://localhost:9703',
     sales: 'http://localhost:9704',

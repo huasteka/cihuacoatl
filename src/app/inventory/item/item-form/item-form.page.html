@@ -8,7 +8,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content [fullscreen]="true">
   <form *ngIf="itemForm" [formGroup]="itemForm" (ngSubmit)="handleSubmit()">
     <ion-list>
       <ion-item>
