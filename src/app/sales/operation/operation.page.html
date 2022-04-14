@@ -1,0 +1,46 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/modules/dashboard"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Sales Resume</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="handleSaleClick()">
+        <ion-icon slot="icon-only" name="bag-add-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="handlePurchaseClick()">
+        <ion-icon slot="icon-only" name="bag-remove-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label position="floating">Select Operation Type</ion-label>
+      <ion-select [value]="selectedOperationType" (ionChange)="handleSelectOperationTypeClick($event)">
+        <ion-select-option [value]="operationType.operationPurchase">Purchases</ion-select-option>
+        <ion-select-option [value]="operationType.operationSale">Sales</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngFor="let operation of operationList" (click)="handleDetailClick(operation)">
+      <ion-badge class="operation-type" slot="start">
+        {{ operation.code || 'N/A' }}
+      </ion-badge>
+
+      <ion-label>
+        <h2>{{ operation.description || '-' }}</h2>
+        <h3>{{ operation.created_at | date: 'short' }}</h3>
+      </ion-label>
+
+      <h1 [ngClass]="getOperationClass()" slot="end">
+        {{ getOperationValue(operation.net_value) }}
+      </h1>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,10 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-export enum OperationFormType {
-  operationPurchase = 'PURCHASE',
-  operationSale = 'SALE',
-}
-
 @Component({
   selector: 'app-operation-form-page',
   templateUrl: 'operation-form.page.html',

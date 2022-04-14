@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { PurchaseService } from 'src/services/sales/purchase';
+import { SaleService } from 'src/services/sales/sale';
 
 import { OperationPage } from './operation.page';
 import { OperationDetailPage } from './operation-detail/operation-detail.page';
@@ -24,7 +25,9 @@ import { OperationRoutingModule } from './operation-routing.module';
     OperationFormPage,
   ],
   providers: [
+    CurrencyPipe,
     PurchaseService,
+    SaleService,
   ]
 })
-export class OperationModule { }
+export class OperationPageModule { }

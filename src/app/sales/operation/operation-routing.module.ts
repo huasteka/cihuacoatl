@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { OperationType } from 'src/models/sales/response';
+
 import { OperationPage } from './operation.page';
 import { OperationDetailPage } from './operation-detail/operation-detail.page';
-import { OperationFormPage, OperationFormType } from './operation-form/operation-form.page';
+import { OperationFormPage } from './operation-form/operation-form.page';
 
 const routes: Routes = [
   {
@@ -13,15 +15,15 @@ const routes: Routes = [
   {
     path: 'purchase',
     component: OperationFormPage,
-    data: { formMode: OperationFormType.operationPurchase },
+    data: { operationType: OperationType.operationPurchase },
   },
   {
     path: 'sale',
     component: OperationFormPage,
-    data: { formMode: OperationFormType.operationSale },
+    data: { operationType: OperationType.operationSale },
   },
   {
-    path: 'detail/:operation_id',
+    path: 'details/:operation_id',
     component: OperationDetailPage,
   },
 ];
