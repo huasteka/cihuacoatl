@@ -9,18 +9,21 @@
         <ion-label>{{ getUserName() }}</ion-label>
       </ion-item>
 
-      <ion-item-divider>Inventory</ion-item-divider>
+      <ion-item-divider>Operations</ion-item-divider>
 
       <ion-item button [routerLink]="['/home/operations/stock']">
         <ion-icon name="cube-outline" slot="start"></ion-icon>
-        <ion-label>Stock Operations</ion-label>
+        <ion-label>Stock</ion-label>
       </ion-item>
-
-      <ion-item-divider>Finances</ion-item-divider>
 
       <ion-item button [routerLink]="['/home/operations/account']">
         <ion-icon name="list-outline" slot="start"></ion-icon>
-        <ion-label>Account Operations</ion-label>
+        <ion-label>Account</ion-label>
+      </ion-item>
+
+      <ion-item button [routerLink]="['/home/operations/sales']">
+        <ion-icon name="trending-up-outline" slot="start"></ion-icon>
+        <ion-label>Sales</ion-label>
       </ion-item>
 
       <ion-item-divider>User Area</ion-item-divider>

@@ -65,7 +65,7 @@ export class StockPage implements OnInit, OnDestroy {
   }
 
   public handleDetailClick(stock: OperationStockRead): void {
-    this.navCtrl.navigateForward(`/home/operations/stock/set-minimum`, { state: stock });
+    this.navCtrl.navigateForward(`/home/operations/stock/details`, { state: stock });
   }
 
   public getStockClass({ operation_type }: StockReadAttributes) {

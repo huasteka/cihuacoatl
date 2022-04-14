@@ -4,13 +4,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { StockType } from 'src/models/inventory/stock';
 
 import { StockPage } from './stock.page';
-import { StockSetMinimumFormPage } from './stock-set-minimum/stock-set-minimum.page';
+import { StockDetailPage } from './stock-detail/stock-detail.page';
 import { StockOperationPage } from './stock-operation/stock-operation.page';
+import { StockSetMinimumFormPage } from './stock-set-minimum/stock-set-minimum.page';
 
 const routes: Routes = [
   {
     path: '',
     component: StockPage,
+  },
+  {
+    path: 'details',
+    component: StockDetailPage,
   },
   {
     path: 'deposit',
@@ -25,7 +30,7 @@ const routes: Routes = [
   {
     path: 'set-minimum',
     component: StockSetMinimumFormPage,
-  },
+  }
 ];
 
 @NgModule({
