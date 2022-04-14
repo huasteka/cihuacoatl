@@ -43,32 +43,56 @@ export class SaleRead implements SalesResponseData<SaleReadAttributes> {
 
 export type SaleResponse = R<SaleReadAttributes, SaleRead>;
 
+export interface SaleProduct {
+  code: string;
+  name: string;
+}
+
+export interface SaleMerchandise {
+  retail_price: number;
+  purchase_price: number;
+}
+
+export interface SaleClient {
+  name: string;
+  legal_document_code: string;
+}
+
+export interface MerchandiseSold {
+  retail_price: number;
+  quantity: number;
+  client?: SaleClient;
+  merchandise?: SaleMerchandise;
+  product?: SaleProduct;
+}
+
 export interface SaleDecoded extends SaleReadAttributes {
   id: number;
+  merchandises_sold: MerchandiseSold[];
 }
 
 export const buildSale = (response: SaleResponse): SaleDecoded => {
   const included = extractIncluded(response.included);
-  const purchase = transformOne(response.data as SaleRead);
+  const sale = transformOne(response.data as SaleRead);
 
-  const merchandises_sold = purchase.merchandisesSaled.map((soldMerchandiseId: number) => {
+  const merchandises_sold = sale.merchandisesSold.map((soldMerchandiseId: number) => {
     const soldMerchandise = included.merchandises_sold[soldMerchandiseId];
 
     const merchandiseId = soldMerchandise.relationships.merchandise.data.slice().pop()?.id;
     const merchandise = included.merchandises[merchandiseId];
     const productId = merchandise.relationships.product.data.slice().pop()?.id;
 
-    const supplierId = soldMerchandise.relationships.supplier.data.slice().pop()?.id;
+    const clientId = soldMerchandise.relationships.client.data.slice().pop()?.id;
 
     return {
       ...soldMerchandise,
-      supplier: { ...included.suppliers[supplierId] },
+      client: { ...included.clients[clientId] },
       merchandise: { ...merchandise },
       product: { ...included.products[productId] },
     };
   });
 
-  return { ...purchase, merchandises_sold };
+  return { ...sale, merchandises_sold };
 };
 
 export const buildSaleList = (response: SaleResponse): SaleDecoded[] => {

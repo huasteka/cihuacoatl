@@ -43,8 +43,33 @@ export class PurchaseRead implements SalesResponseData<PurchaseReadAttributes> {
 
 export type PurchaseResponse = R<PurchaseReadAttributes, PurchaseRead>;
 
+export interface PurchaseProduct {
+  code: string;
+  name: string;
+}
+
+export interface PurchaseMerchandise {
+  retail_price: number;
+  purchase_price: number;
+}
+
+export interface PurchaseSupplier {
+  name: string;
+  trade_name: string;
+  legal_document_code: string;
+}
+
+export interface MerchandisePurchased {
+  purchase_price: number;
+  quantity: number;
+  supplier?: PurchaseSupplier;
+  merchandise?: PurchaseMerchandise;
+  product?: PurchaseProduct;
+}
+
 export interface PurchaseDecoded extends PurchaseReadAttributes {
   id: number;
+  merchandises_purchased: MerchandisePurchased[];
 }
 
 export const buildPurchase = (response: PurchaseResponse): PurchaseDecoded => {
