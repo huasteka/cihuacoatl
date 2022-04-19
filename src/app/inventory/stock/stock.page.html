@@ -32,12 +32,9 @@
     <ion-item *ngFor="let stock of stockList" (click)="handleDetailClick(stock)">
       <div slot="start">
         <ion-badge class="stock-item-code">{{ stock.attributes.stock.item.code }}</ion-badge>
-        <br>
-        <ion-badge class="stock-item-code">{{ stock.attributes.stock.storage.code }}</ion-badge>
       </div>
       <ion-label>
-        <h2>{{ stock.attributes.stock.item.name }}</h2>
-        <h3>{{ stock.attributes.stock.storage.name }}</h3>
+        <h1>{{ stock.attributes.stock.item.name }}</h1>
       </ion-label>
 
       <h1 [ngClass]="getStockClass(stock.attributes)" slot="end">

@@ -20,6 +20,7 @@ export class SaleWrite {
   public gross_value: number;
   public discount: number;
   public net_value: number;
+  public description?: string;
   public merchandises: SaleMerchandiseWrite[];
 }
 

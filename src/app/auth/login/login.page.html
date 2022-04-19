@@ -5,12 +5,12 @@
     <ion-list>
       <ion-item>
         <ion-label position="floating">E-mail</ion-label>
-        <ion-input ngModel required type="email" name="email"></ion-input>
+        <ion-input required type="email" name="email" [(ngModel)]="credentials.username"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input ngModel required type="password" name="password" [minlength]="6"></ion-input>
+        <ion-input required type="password" name="password" [minlength]="6" [(ngModel)]="credentials.password"></ion-input>
       </ion-item>
     </ion-list>
 

@@ -37,11 +37,11 @@ export class StockPage implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.loadStorageList();
-
     this.stockSubscription$ = this.stockService.listenFindOperationList(
       (stockList: OperationStockRead[]) => this.stockList = stockList
     );
+
+    this.loadStorageList();
   }
 
   public ngOnDestroy(): void {

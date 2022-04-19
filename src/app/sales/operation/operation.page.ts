@@ -79,7 +79,7 @@ export class OperationPage implements OnInit, OnDestroy {
     this.navCtrl.navigateForward(`/home/operations/sales/sale`);
   }
 
-  public handleDetailClick(operation: PurchaseDecoded): void {
+  public handleDetailClick(operation: PurchaseDecoded | SaleDecoded): void {
     const queryParams = { operationType: this.selectedOperationType };
     this.navCtrl.navigateForward(`/home/operations/sales/details/${operation.id}`, { queryParams });
   }

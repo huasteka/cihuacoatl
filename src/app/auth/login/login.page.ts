@@ -10,6 +10,11 @@ import { AuthService } from 'src/services/auth/auth';
   styleUrls: ['login.page.scss'],
 })
 export class LoginPage {
+  public credentials = {
+    username: 'teste@admin.com',
+    password: 'teste@admin',
+  };
+
   constructor(
     private navigationCtrl: NavController,
     private loadingCtrl: LoadingController,
