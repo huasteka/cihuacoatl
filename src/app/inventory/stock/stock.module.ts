@@ -8,6 +8,7 @@ import { StockService } from 'src/services/inventory/stock';
 import { StorageService } from 'src/services/inventory/storage';
 
 import { StockPage } from './stock.page';
+import { StockDetailPage } from './stock-detail/stock-detail.page';
 import { StockOperationPage } from './stock-operation/stock-operation.page';
 import { StockSetMinimumFormPage } from './stock-set-minimum/stock-set-minimum.page';
 import { StockRoutingModule } from './stock-routing.module';
@@ -22,6 +23,7 @@ import { StockRoutingModule } from './stock-routing.module';
   ],
   declarations: [
     StockPage,
+    StockDetailPage,
     StockSetMinimumFormPage,
     StockOperationPage,
   ],

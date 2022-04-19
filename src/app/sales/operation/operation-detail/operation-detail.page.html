@@ -1,0 +1,140 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="getDefaultHref()"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Operation Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="selectedOperation">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ operationType }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label class="operation-detail-label">
+              Code
+            </ion-label>
+
+            <div slot="end">
+              {{ selectedOperation.code || '-' }}
+            </div>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="operation-detail-label">
+              Gross Value
+            </ion-label>
+
+            <div slot="end">
+              {{ getCurrency(selectedOperation.gross_value) }}
+            </div>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="operation-detail-label">
+              Discount
+            </ion-label>
+
+            <div slot="end">
+              {{ getCurrency(selectedOperation.discount) }}
+            </div>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="operation-detail-label">
+              Net Value
+            </ion-label>
+
+            <div slot="end">
+              {{ getCurrency(selectedOperation.net_value) }}
+            </div>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="operation-detail-label">Description</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <ion-textarea [readonly]="true">{{ selectedOperation.description }}</ion-textarea>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngFor="let item of getPurchasedMerchandises()">
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            <h2 class="operation-detail-label">Supplier</h2>
+            <h1>{{ item.supplier.trade_name }}</h1>
+            <h3>{{ item.supplier.name }}</h3>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h2 class="operation-detail-label">Product</h2>
+            <h1>{{ item.product.name }}</h1>
+          </ion-label>
+
+          <div slot="end">
+            <ion-badge>{{ item.product.code }}</ion-badge>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h2 class="operation-detail-label">Price</h2>
+            <h1>{{ getCurrency(item.purchase_price) }} x {{ item.quantity }}</h1>
+          </ion-label>
+
+          <h1 slot="end">
+            {{ getCurrency(item.purchase_price * item.quantity) }}
+          </h1>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngFor="let item of getSoldMerchandises()">
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            <h2 class="operation-detail-label">Client</h2>
+            <h1>{{ item.client.name || '-' }}</h1>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h2 class="operation-detail-label">Product</h2>
+            <h1>{{ item.product.name }}</h1>
+          </ion-label>
+
+          <div slot="end">
+            <ion-badge>{{ item.product.code }}</ion-badge>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h2 class="operation-detail-label">Price</h2>
+            <h1>{{ getCurrency(item.retail_price) }} x {{ item.quantity }}</h1>
+          </ion-label>
+
+          <h1 slot="end">
+            {{ getCurrency(item.retail_price * item.quantity) }}
+          </h1>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

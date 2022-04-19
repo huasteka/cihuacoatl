@@ -37,6 +37,11 @@ export interface SalesDataMap<T> {
   [attribute: string]: T;
 }
 
+export enum OperationType {
+  operationPurchase = 'PURCHASE',
+  operationSale = 'SALE',
+}
+
 export const extractRelationships = (relationships: SalesResponseRelationship): SalesDataMap<any> =>
   Object.keys(relationships || {}).reduce(
     (result, attribute) => ({

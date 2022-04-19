@@ -37,11 +37,11 @@ export class StockPage implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.loadStorageList();
-
     this.stockSubscription$ = this.stockService.listenFindOperationList(
       (stockList: OperationStockRead[]) => this.stockList = stockList
     );
+
+    this.loadStorageList();
   }
 
   public ngOnDestroy(): void {
@@ -65,7 +65,7 @@ export class StockPage implements OnInit, OnDestroy {
   }
 
   public handleDetailClick(stock: OperationStockRead): void {
-    this.navCtrl.navigateForward(`/home/operations/stock/set-minimum`, { state: stock });
+    this.navCtrl.navigateForward(`/home/operations/stock/details`, { state: stock });
   }
 
   public getStockClass({ operation_type }: StockReadAttributes) {

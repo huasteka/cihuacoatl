@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/operations/stock"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Stock Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngIf="selectedStock">
+    <ion-card-header class="stock-detail-header">
+      <ion-card-title>{{ selectedStock.attributes.operation_type }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <h2>Storage</h2>
+            <h1>{{ selectedStock.attributes.stock.storage.name }}</h1>
+          </ion-label>
+
+          <div slot="end">
+            <ion-badge>{{ selectedStock.attributes.stock.storage.code }}</ion-badge>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h2>Item</h2>
+            <h1>{{ selectedStock.attributes.stock.item.name }}</h1>
+          </ion-label>
+
+          <div slot="end">
+            <ion-badge>{{ selectedStock.attributes.stock.item.code }}</ion-badge>
+          </div>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h2>Quantity</h2>
+            <h1>{{ selectedStock.attributes.quantity }}</h1>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isPurchase() ? 'Purchase Product' : 'Sell Product' }}</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="handleCloseModal()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<form *ngIf="merchandiseForm" [formGroup]="merchandiseForm">
+  <h3>Merchandise</h3>
+
+  <ion-item>
+    <ion-label position="stacked">Product</ion-label>
+    <ion-select formControlName="id" (ionChange)="handleProductSelect($event)">
+      <ion-select-option *ngFor="let merchandise of merchandiseList" [value]="merchandise.id">
+        {{ merchandise.product.name }} ({{ merchandise.product.code }})
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <div *ngIf="isPurchase()">
+    <ion-item>
+      <ion-label position="stacked">Supplier</ion-label>
+      <ion-select formControlName="supplier_id">
+        <ion-select-option *ngFor="let supplier of supplierList" [value]="supplier.id">
+          {{ supplier.trade_name }} ({{ supplier.name }})
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Purchase Price</ion-label>
+      <ion-input type="number" inputmode="number" formControlName="purchase_price"></ion-input>
+    </ion-item>
+  </div>
+
+  <div *ngIf="!isPurchase()">
+    <ion-item>
+      <ion-label position="stacked">Client</ion-label>
+      <ion-select formControlName="client_id">
+        <ion-select-option *ngFor="let client of clientList" [value]="client.id">
+          {{ client.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Retail Price</ion-label>
+      <ion-input type="number" formControlName="retail_price" [readonly]="true" [min]="0"></ion-input>
+    </ion-item>
+  </div>
+
+  <ion-item>
+    <ion-label position="stacked">Quantity</ion-label>
+    <ion-input type="number" inputmode="number" formControlName="quantity" [min]="0"></ion-input>
+  </ion-item>
+
+  <ion-button type="button" expand="block" fill="outline" size="large" [disabled]="!merchandiseForm.valid"
+    (click)="handleMerchandiseSubmit()">
+    <span>{{ isPurchase() ? 'Purchase' : 'Sell' }}</span>
+  </ion-button>
+</form>

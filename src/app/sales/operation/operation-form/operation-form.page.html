@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home/operations/sales"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{ isPurchase() ? 'Create Purchase Order' : 'Create Sale Order' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form *ngIf="operationForm" [formGroup]="operationForm" (ngSubmit)="handleSubmit()">
+    <ion-item>
+      <ion-label position="stacked">Code</ion-label>
+      <ion-input type="text" formControlName="code"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Gross Value</ion-label>
+      <ion-input type="number" inputmode="number" formControlName="gross_value" [readonly]="true"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Discount</ion-label>
+      <ion-input type="number" inputmode="number" formControlName="discount" [min]="0"
+        [max]="operationForm.value.gross_value" (ionChange)="calculateNetValue()"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Net Value</ion-label>
+      <ion-input type="number" formControlName="net_value" [readonly]="true"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-input type="text" formControlName="description"></ion-input>
+    </ion-item>
+
+    <ion-list>
+      <ion-list-header>
+        <ion-label>{{ isPurchase() ? 'Purchased Products' : 'Sold Products' }}</ion-label>
+      </ion-list-header>
+
+      <ion-item *ngIf="operationMerchandiseList.length < 1">
+        <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+        <ion-label>
+          {{ 'There are no merchandises' }}
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div *ngFor="let operation of operationMerchandiseList; index as i">
+      <ion-card>
+        <ion-item>
+          <ion-button slot="end" fill="clear" color="danger" (click)="handleRemoveMerchandise(i)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Product</ion-label>
+          <span slot="end">{{ getMerchandise(operation.id).product?.name }}</span>
+        </ion-item>
+
+        <ion-item *ngIf="!isPurchase()">
+          <ion-label>Client</ion-label>
+          <span slot="end">{{ getClient(operation)?.name }}</span>
+        </ion-item>
+
+        <ion-item *ngIf="isPurchase()">
+          <ion-label>Supplier</ion-label>
+          <span slot="end">{{ getSupplier(operation)?.name }}</span>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>{{ isPurchase() ? 'Purchase Price' : 'Retail Price' }}</ion-label>
+          <span slot="end">{{ getPrice(operation) }}</span>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Quantity</ion-label>
+          <span slot="end">{{ operation.quantity }}</span>
+        </ion-item>
+      </ion-card>
+    </div>
+
+    <ion-button type="button" expand="block" fill="outline" size="large" (click)="handleOpenModal()">
+      <span>{{ isPurchase() ? 'Purchase Product' : 'Sell Product' }}</span>
+    </ion-button>
+
+    <ion-button type="submit" expand="block" fill="outline" color="success" size="large"
+      [disabled]="!operationForm.valid">
+      <span>Submit</span>
+    </ion-button>
+  </form>
+</ion-content>
+
+<ion-modal [isOpen]="isModalOpen" [swipeToClose]="true">
+  <ng-template>
+    <app-operation-merchandise-form [operationType]="operationType" [clientList]="getCollection(clientMap)"
+      [supplierList]="getCollection(supplierMap)" [merchandiseList]="getCollection(merchandiseMap)"
+      (submitModal)="handleMerchandiseSubmit($event)" (closeModal)="handleCloseModal()">
+    </app-operation-merchandise-form>
+  </ng-template>
+</ion-modal>
